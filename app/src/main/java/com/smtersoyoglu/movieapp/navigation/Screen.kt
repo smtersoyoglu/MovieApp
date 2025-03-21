@@ -7,5 +7,25 @@ sealed interface Screen {
     data object Home : Screen
 
     @Serializable
-    data object Detail : Screen
+    data class Detail(val movieId: Int) : Screen
+
+    @Serializable
+    data object Search : Screen
+
+    @Serializable
+    data object Favorite : Screen
+
+    companion object {
+        fun getRoute(screen: Screen): String {
+            return screen::class.qualifiedName.orEmpty()
+        }
+
+        fun shouldShowBottomBar(currentRoute: String?): Boolean {
+            return when (currentRoute) {
+                getRoute(Home), getRoute(Search), getRoute(Favorite) -> true
+
+                else -> false
+            }
+        }
+    }
 }

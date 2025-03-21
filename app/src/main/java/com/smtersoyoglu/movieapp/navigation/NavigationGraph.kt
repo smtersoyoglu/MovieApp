@@ -6,7 +6,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.smtersoyoglu.movieapp.presentation.detail.DetailScreen
+import com.smtersoyoglu.movieapp.presentation.favorite.FavoriteScreen
 import com.smtersoyoglu.movieapp.presentation.home.HomeScreen
+import com.smtersoyoglu.movieapp.presentation.search.SearchScreen
 
 @Composable
 fun NavigationGraph(
@@ -22,8 +24,17 @@ fun NavigationGraph(
         composable<Screen.Home> {
             HomeScreen()
         }
+
         composable<Screen.Detail> {
             DetailScreen()
+        }
+
+        composable<Screen.Search> {
+            SearchScreen()
+        }
+
+        composable<Screen.Favorite> {
+            FavoriteScreen()
         }
     }
 }
