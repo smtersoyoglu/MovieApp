@@ -2,9 +2,16 @@ package com.smtersoyoglu.movieapp.data.source.remote
 
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieResponseDto
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MovieService {
+
+    @GET("trending/movie/{time_window}")
+    suspend fun getTrendingMovies(
+        @Path("time_window") timeWindow: String = "week",
+        @Query("language") language: String = "en-US"
+    ): MovieResponseDto
 
     @GET("movie/now_playing")
     suspend fun getNowPlayingMovies(
@@ -34,7 +41,6 @@ interface MovieService {
         @Query("page") page: Int = 1,
         @Query("region") region: String? = null
     ): MovieResponseDto
-
 
 
 }
