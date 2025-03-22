@@ -13,6 +13,20 @@ class MovieRepositoryImpl @Inject constructor(
     private val movieService: MovieService,
 ) : MovieRepository {
 
+
+    override fun getTrendingMovies(
+        timeWindow: String,
+        language: String,
+    ): Flow<Resource<List<Movie>>> = flow {
+        try {
+            val response = movieService.getTrendingMovies(timeWindow, language)
+            val movies = response.results.map { it.toMovie() }
+            emit(Resource.Success(movies))
+        } catch (e: Exception) {
+            emit(Resource.Error(e.message ?: "An error occurred while fetching trending movies"))
+        }
+    }
+
     override fun getNowPlayingMovies(
         language: String,
         page: Int,
