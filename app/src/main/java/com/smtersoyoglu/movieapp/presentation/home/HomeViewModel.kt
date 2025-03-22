@@ -6,6 +6,7 @@ import com.smtersoyoglu.movieapp.common.Resource
 import com.smtersoyoglu.movieapp.domain.usecase.GetNowPlayingMoviesUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.GetPopularMoviesUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.GetTopRatedMoviesUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.GetTrendingMoviesUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.GetUpcomingMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+    private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
     private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase,
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
     private val getTopRatedMoviesUseCase: GetTopRatedMoviesUseCase,
@@ -30,10 +32,23 @@ class HomeViewModel @Inject constructor(
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     init {
+        getTrendingMovies()
         getNowPlayingMovies()
         getPopularMovies()
         getTopRatedMovies()
         getUpcomingMovies()
+    }
+
+    private fun getTrendingMovies() {
+        getTrendingMoviesUseCase()
+            .onStart { updateUiState { copy(isLoading = true) } }
+            .onCompletion { updateUiState { copy(isLoading = false) } }
+            .onEach { resource ->
+                when (resource) {
+                    is Resource.Success -> { updateUiState { copy(trendingMovieList = resource.data ?: emptyList()) } }
+                    is Resource.Error -> { updateUiState { copy(error = resource.message ?: "Unknown error") } }
+                }
+            }.launchIn(viewModelScope)
     }
 
     private fun getNowPlayingMovies() {
