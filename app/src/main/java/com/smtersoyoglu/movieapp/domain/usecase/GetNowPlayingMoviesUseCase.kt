@@ -7,14 +7,14 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetNowPlayingMoviesUseCase @Inject constructor(
-    private val repository: MovieRepository,
+    private val movieRepository: MovieRepository,
 ) {
     operator fun invoke(
         language: String = "en-US",
         page: Int = 1,
         region: String? = null,
     ): Flow<Resource<List<Movie>>> {
-        return repository.getNowPlayingMovies(language, page, region)
+        return movieRepository.getNowPlayingMovies(language, page, region)
     }
 
 }

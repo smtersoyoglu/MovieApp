@@ -6,15 +6,13 @@ import com.smtersoyoglu.movieapp.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetPopularMoviesUseCase @Inject constructor(
+class GetTrendingMoviesUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
 ) {
     operator fun invoke(
+        timeWindow: String = "week",
         language: String = "en-US",
-        page: Int = 1,
-        region: String? = null,
     ): Flow<Resource<List<Movie>>> {
-        return movieRepository.getPopularMovies(language, page, region)
+        return movieRepository.getTrendingMovies(timeWindow, language)
     }
-
 }
