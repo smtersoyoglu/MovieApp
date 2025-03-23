@@ -1,4 +1,5 @@
 [versions]
+accompanistPager = "0.28.0"
 agp = "8.9.0"
 kotlin = "2.1.10"
 coreKtx = "1.15.0"
@@ -20,6 +21,8 @@ navigation = "2.8.6"
 kotlinxSerialization = "1.8.0"
 
 [libraries]
+accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanistPager" }
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistPager" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
