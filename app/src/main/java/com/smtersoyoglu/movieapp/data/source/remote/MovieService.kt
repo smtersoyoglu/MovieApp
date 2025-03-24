@@ -1,5 +1,6 @@
 package com.smtersoyoglu.movieapp.data.source.remote
 
+import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieDetailsDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -41,6 +42,13 @@ interface MovieService {
         @Query("page") page: Int = 1,
         @Query("region") region: String? = null
     ): MovieResponseDto
+
+    @GET("movie/{movie_id}")
+    suspend fun getMovieDetails(
+        @Path("movie_id") movieId: Int,
+        @Query("language") language: String = "en-US",
+        @Query("append_to_response") appendToResponse: String? = null
+    ): MovieDetailsDto
 
 
 }
