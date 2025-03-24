@@ -2,6 +2,7 @@ package com.smtersoyoglu.movieapp.domain.repository
 
 import com.smtersoyoglu.movieapp.common.Resource
 import com.smtersoyoglu.movieapp.domain.model.Movie
+import com.smtersoyoglu.movieapp.domain.model.MovieDetails
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
@@ -15,5 +16,7 @@ interface MovieRepository {
     fun getTopRatedMovies(language: String = "en-US", page: Int = 1, region: String? = null, ): Flow<Resource<List<Movie>>>
 
     fun getUpcomingMovies(language: String = "en-US", page: Int = 1, region: String? = null, ): Flow<Resource<List<Movie>>>
+
+    suspend fun getMovieDetails(movieId: Int, language: String = "en-US", appendToResponse: String? = null): Resource<MovieDetails>
 
 }

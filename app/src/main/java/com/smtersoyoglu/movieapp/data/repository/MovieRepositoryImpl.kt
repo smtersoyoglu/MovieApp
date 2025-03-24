@@ -2,8 +2,10 @@ package com.smtersoyoglu.movieapp.data.repository
 
 import com.smtersoyoglu.movieapp.common.Resource
 import com.smtersoyoglu.movieapp.data.mapper.toMovie
+import com.smtersoyoglu.movieapp.data.mapper.toMovieDetails
 import com.smtersoyoglu.movieapp.data.source.remote.MovieService
 import com.smtersoyoglu.movieapp.domain.model.Movie
+import com.smtersoyoglu.movieapp.domain.model.MovieDetails
 import com.smtersoyoglu.movieapp.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -80,6 +82,19 @@ class MovieRepositoryImpl @Inject constructor(
             emit(Resource.Success(movies))
         } catch (e: Exception) {
             emit(Resource.Error(e.message ?: "An error occurred while fetching upcoming movies"))
+        }
+    }
+
+    override suspend fun getMovieDetails(
+        movieId: Int,
+        language: String,
+        appendToResponse: String?,
+    ): Resource<MovieDetails> {
+        return try {
+            val response = movieService.getMovieDetails(movieId, language, appendToResponse)
+            Resource.Success(response.toMovieDetails())
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "An error occurred while fetching movie details")
         }
     }
 
