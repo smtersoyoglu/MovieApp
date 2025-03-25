@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class MovieDetailsDto(
     @SerializedName("adult") val adult: Boolean,
     @SerializedName("backdrop_path") val backdropPath: String?,
-    @SerializedName("belongs_to_collection") val belongsToCollection: Any?,
+    @SerializedName("belongs_to_collection") val belongsToCollection: BelongsToCollection?,
     @SerializedName("budget") val budget: Long,
     @SerializedName("genres") val genres: List<GenreDto>,
     @SerializedName("homepage") val homepage: String?,
@@ -28,4 +28,11 @@ data class MovieDetailsDto(
     @SerializedName("video") val video: Boolean,
     @SerializedName("vote_average") val voteAverage: Double,
     @SerializedName("vote_count") val voteCount: Int,
+)
+
+data class BelongsToCollection(
+    @SerializedName("backdrop_path") val backdropPath: String,
+    @SerializedName("id") val id: Int,
+    @SerializedName("name") val name: String,
+    @SerializedName("poster_path") val posterPath: String
 )
