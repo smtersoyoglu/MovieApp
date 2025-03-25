@@ -2,7 +2,9 @@ package com.smtersoyoglu.movieapp.domain.repository
 
 import com.smtersoyoglu.movieapp.common.Resource
 import com.smtersoyoglu.movieapp.domain.model.Movie
+import com.smtersoyoglu.movieapp.domain.model.MovieCredits
 import com.smtersoyoglu.movieapp.domain.model.MovieDetails
+import com.smtersoyoglu.movieapp.domain.model.MovieVideos
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
@@ -19,4 +21,7 @@ interface MovieRepository {
 
     suspend fun getMovieDetails(movieId: Int, language: String = "en-US", appendToResponse: String? = null): Resource<MovieDetails>
 
+    suspend fun getMovieCredits(movieId: Int, language: String = "en-US") : Resource<MovieCredits>
+
+    suspend fun getMovieVideos(movieId: Int, language: String = "en-US") : Resource<MovieVideos>
 }

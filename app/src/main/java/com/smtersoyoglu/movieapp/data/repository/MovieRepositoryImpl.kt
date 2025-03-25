@@ -1,11 +1,15 @@
 package com.smtersoyoglu.movieapp.data.repository
 
 import com.smtersoyoglu.movieapp.common.Resource
+import com.smtersoyoglu.movieapp.data.mapper.toCredits
 import com.smtersoyoglu.movieapp.data.mapper.toMovie
 import com.smtersoyoglu.movieapp.data.mapper.toMovieDetails
+import com.smtersoyoglu.movieapp.data.mapper.toMovieVideos
 import com.smtersoyoglu.movieapp.data.source.remote.MovieService
 import com.smtersoyoglu.movieapp.domain.model.Movie
+import com.smtersoyoglu.movieapp.domain.model.MovieCredits
 import com.smtersoyoglu.movieapp.domain.model.MovieDetails
+import com.smtersoyoglu.movieapp.domain.model.MovieVideos
 import com.smtersoyoglu.movieapp.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -98,5 +102,28 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getMovieCredits(
+        movieId: Int,
+        language: String,
+    ): Resource<MovieCredits> {
+        return try {
+            val response = movieService.getMovieCredits(movieId, language)
+            Resource.Success(response.toCredits())
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "An error occurred while fetching movie credits")
+        }
+    }
+
+    override suspend fun getMovieVideos(
+        movieId: Int,
+        language: String,
+    ): Resource<MovieVideos> {
+        return try {
+            val response = movieService.getMovieVideos(movieId, language)
+            Resource.Success(response.toMovieVideos())
+        } catch (e : Exception) {
+            Resource.Error(e.message ?: "An error occurred while fetching movie videos")
+        }
+    }
 
 }
