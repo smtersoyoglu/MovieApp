@@ -1,7 +1,9 @@
 package com.smtersoyoglu.movieapp.data.source.remote
 
+import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieCreditsDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieDetailsDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieResponseDto
+import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieVideosResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -28,7 +30,6 @@ interface MovieService {
         @Query("region") region: String? = null
     ): MovieResponseDto
 
-
     @GET("movie/top_rated")
     suspend fun getTopRatedMovies(
         @Query("language") language: String = "en-US",
@@ -50,5 +51,16 @@ interface MovieService {
         @Query("append_to_response") appendToResponse: String? = null
     ): MovieDetailsDto
 
+    @GET("movie/{movie_id}/credits")
+    suspend fun getMovieCredits(
+        @Path("movie_id") movieId: Int,
+        @Query("language") language: String = "en-US"
+    ) : MovieCreditsDto
+
+    @GET("movie/{movie_id}/videos")
+    suspend fun getMovieVideos(
+        @Path("movie_id") movieId: Int,
+        @Query("language") language: String = "en-US"
+    ) : MovieVideosResponseDto
 
 }
