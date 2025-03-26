@@ -1,0 +1,87 @@
+package com.smtersoyoglu.movieapp.presentation.detail
+
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
+import com.smtersoyoglu.movieapp.common.Resource
+import com.smtersoyoglu.movieapp.domain.usecase.GetMovieCreditsUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.GetMovieDetailsUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.GetMovieVideosUseCase
+import com.smtersoyoglu.movieapp.navigation.Screen
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class DetailViewModel @Inject constructor(
+    private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
+    private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
+    private val getMovieVideosUseCase: GetMovieVideosUseCase,
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(DetailUiState())
+    val uiState: StateFlow<DetailUiState> = _uiState.asStateFlow()
+
+    private val args = savedStateHandle.toRoute<Screen.Detail>()
+
+
+    init {
+        getMovieDetails(args.movieId)
+        getMovieCredits(args.movieId)
+        getMovieVideos(args.movieId)
+    }
+
+    private fun getMovieDetails(movieId: Int) {
+        viewModelScope.launch {
+            updateState { copy(isLoading = true) }
+            when (val result = getMovieDetailsUseCase(movieId)) {
+                is Resource.Success -> {
+                    updateState { copy(isLoading = false, movieDetails = result.data, error = null) }
+                }
+                is Resource.Error -> {
+                    updateState { copy(isLoading = false, error = result.message) }
+                }
+            }
+        }
+    }
+
+    private fun getMovieCredits(movieId: Int) {
+        viewModelScope.launch {
+            updateState { copy(isLoading = true) }
+            when (val result = getMovieCreditsUseCase(movieId)) {
+                is Resource.Success -> {
+                    updateState { copy(isLoading = false, movieCredits = result.data, error = null) }
+                }
+                is Resource.Error -> {
+                    updateState { copy(isLoading = false, error = result.message) }
+                }
+            }
+        }
+
+    }
+
+    private fun getMovieVideos(movieId: Int) {
+        viewModelScope.launch {
+            updateState { copy(isLoading = true) }
+            when (val result = getMovieVideosUseCase(movieId)) {
+                is Resource.Success -> {
+                    updateState { copy(isLoading = false, movieVideos = result.data, error = null) }
+                    }
+                is Resource.Error -> {
+                    updateState { copy(isLoading = false, error = result.message) }
+                }
+            }
+        }
+
+    }
+
+    private fun updateState(block: DetailUiState.() -> DetailUiState) {
+        _uiState.update(block)
+    }
+}
