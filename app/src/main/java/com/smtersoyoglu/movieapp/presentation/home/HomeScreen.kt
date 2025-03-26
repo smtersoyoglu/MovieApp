@@ -42,10 +42,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.smtersoyoglu.movieapp.R
 import com.smtersoyoglu.movieapp.domain.model.Movie
+import com.smtersoyoglu.movieapp.navigation.Screen
 import com.smtersoyoglu.movieapp.presentation.components.EmptyScreen
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
 import kotlinx.coroutines.delay
@@ -53,7 +55,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
-    onMovieClicked: (Int) -> Unit = {},
+    navController: NavController,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -79,7 +81,10 @@ fun HomeScreen(
                             movies = uiState.trendingMovieList,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(450.dp)
+                                .height(450.dp),
+                            onMovieClicked = { movieId ->
+                                navController.navigate(Screen.Detail(movieId))
+                            }
                         )
                     }
 
@@ -87,32 +92,36 @@ fun HomeScreen(
                         MovieSection(
                             title = "Now Playing",
                             movies = uiState.nowPlayingMovieList,
-                            onMovieClicked = onMovieClicked
-                        )
+                            onMovieClicked = { movieId ->
+                                navController.navigate(Screen.Detail(movieId))
+                            }                        )
                     }
 
                     item {
                         MovieSection(
                             title = "Popular",
                             movies = uiState.popularMovieList,
-                            onMovieClicked = onMovieClicked
-                        )
+                            onMovieClicked = { movieId ->
+                                navController.navigate(Screen.Detail(movieId))
+                            }                        )
                     }
 
                     item {
                         MovieSection(
                             title = "Top Rated",
                             movies = uiState.topRatedMovieList,
-                            onMovieClicked = onMovieClicked
-                        )
+                            onMovieClicked = { movieId ->
+                                navController.navigate(Screen.Detail(movieId))
+                            }                        )
                     }
 
                     item {
                         MovieSection(
                             title = "Upcoming",
                             movies = uiState.upcomingMovieList,
-                            onMovieClicked = onMovieClicked
-                        )
+                            onMovieClicked = { movieId ->
+                                navController.navigate(Screen.Detail(movieId))
+                            }                        )
                     }
                 }
             }
@@ -123,7 +132,8 @@ fun HomeScreen(
 @Composable
 fun FeaturedMovieCard(
     movies: List<Movie>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onMovieClicked: (Int) -> Unit
 ) {
     if (movies.isEmpty()) {
         EmptyScreen(message = "Trend filmler yüklenemedi.")
@@ -146,12 +156,16 @@ fun FeaturedMovieCard(
             modifier = Modifier.fillMaxSize()
         ) { page ->
             val movie = movies[page]
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable { onMovieClicked(movie.id) }
+            ) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data("https://image.tmdb.org/t/p/original${movie.backdropPath ?: movie.posterPath}")
                         .crossfade(true)
-                        .error(R.drawable.ic_favorite)
+                        .error(R.drawable.ic_error)
                         .build(),
                     contentDescription = movie.title,
                     contentScale = ContentScale.Crop,
@@ -165,7 +179,7 @@ fun FeaturedMovieCard(
                             Brush.verticalGradient(
                                 colors = listOf(
                                     Color.Transparent,
-                                    Color.Black.copy(alpha = 0.9f)
+                                    Color.Black.copy(alpha = 0.4f)
                                 ),
                                 startY = 0f,
                                 endY = 600f
@@ -189,7 +203,6 @@ fun FeaturedMovieCard(
                         .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-
                     Text(
                         text = movie.title,
                         color = Color.White,
@@ -206,27 +219,29 @@ fun FeaturedMovieCard(
                             Text(
                                 text = it,
                                 color = Color.White.copy(alpha = 0.8f),
-                                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp)
+                                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 16.sp)
                             )
                         }
 
+                        Spacer(modifier = Modifier.width(8.dp))
+
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_search),
+                            painter = painterResource(id = R.drawable.ic_rating),
                             contentDescription = "Rating",
                             tint = Color.Yellow,
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(14.dp)
                         )
                         Text(
                             text = movie.voteAverage.toString(),
                             color = Color.White.copy(alpha = 0.8f),
-                            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp)
+                            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 16.sp)
                         )
                     }
 
                     Text(
                         text = movie.overview.take(100) + "...",
                         color = Color.White.copy(alpha = 0.7f),
-                        style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
+                        style = MaterialTheme.typography.bodySmall.copy(fontSize = 16.sp),
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -312,7 +327,7 @@ fun MovieItem(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data("https://image.tmdb.org/t/p/w500$poster")
                         .crossfade(true)
-                        .error(R.drawable.ic_launcher_foreground)
+                        .error(R.drawable.ic_error)
                         .build(),
                     contentDescription = movie.title,
                     contentScale = ContentScale.Crop,
@@ -324,9 +339,9 @@ fun MovieItem(
             }
             Text(
                 text = movie.title,
-                style = MaterialTheme.typography.bodySmall.copy(
+                style = MaterialTheme.typography.bodyMedium.copy(
                     color = Color.White,
-                    fontSize = 14.sp
+                    fontSize = 16.sp
                 ),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
