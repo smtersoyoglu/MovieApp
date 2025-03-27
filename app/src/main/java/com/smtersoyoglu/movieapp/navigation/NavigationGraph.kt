@@ -22,11 +22,15 @@ fun NavigationGraph(
         startDestination = startDestination,
     ) {
         composable<Screen.Home> {
-            HomeScreen()
+            HomeScreen(
+                navController = navController
+            )
         }
 
         composable<Screen.Detail> {
-            DetailScreen()
+            DetailScreen(
+                onBackClick = { navController.popBackStack() }
+            )
         }
 
         composable<Screen.Search> {

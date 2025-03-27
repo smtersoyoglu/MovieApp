@@ -46,8 +46,8 @@ fun BottomNavBar(navController: NavController) {
     )
 
     NavigationBar(
-        containerColor = Color.White,
-        contentColor = Color.Black,
+        containerColor = Color.Black,
+        contentColor = Color.White,
         modifier = Modifier
     ) {
         bottomNavItems.forEach { item ->
@@ -65,7 +65,8 @@ fun BottomNavBar(navController: NavController) {
                     Text(
                         text = item.title,
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 12.sp
+                        fontSize = 12.sp,
+                        color = Color.White
                     )
                 },
                 selected = selected,
