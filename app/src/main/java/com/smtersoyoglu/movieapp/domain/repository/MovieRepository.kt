@@ -24,4 +24,6 @@ interface MovieRepository {
     suspend fun getMovieCredits(movieId: Int, language: String = "en-US") : Resource<MovieCredits>
 
     suspend fun getMovieVideos(movieId: Int, language: String = "en-US") : Resource<MovieVideos>
+
+    suspend fun getSimilarMovies(movieId: Int, language: String = "en-US", page: Int = 1) : Resource<List<Movie>>
 }

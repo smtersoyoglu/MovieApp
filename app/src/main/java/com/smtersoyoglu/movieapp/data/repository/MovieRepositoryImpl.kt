@@ -126,4 +126,18 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getSimilarMovies(
+        movieId: Int,
+        language: String,
+        page: Int,
+    ): Resource<List<Movie>> {
+        return try {
+            val response = movieService.getSimilarMovies(movieId, language, page)
+            val movies = response.results.map { it.toMovie() }
+            Resource.Success(movies)
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "An error occurred while fetching similar movies")
+        }
+    }
+
 }
