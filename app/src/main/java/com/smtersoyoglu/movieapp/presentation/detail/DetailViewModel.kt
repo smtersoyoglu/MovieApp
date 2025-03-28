@@ -8,6 +8,7 @@ import com.smtersoyoglu.movieapp.common.Resource
 import com.smtersoyoglu.movieapp.domain.usecase.GetMovieCreditsUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.GetMovieDetailsUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.GetMovieVideosUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.GetSimilarMoviesUseCase
 import com.smtersoyoglu.movieapp.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +23,7 @@ class DetailViewModel @Inject constructor(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
     private val getMovieVideosUseCase: GetMovieVideosUseCase,
+    private val getSimilarMoviesUseCase: GetSimilarMoviesUseCase,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -35,6 +37,7 @@ class DetailViewModel @Inject constructor(
         getMovieDetails(args.movieId)
         getMovieCredits(args.movieId)
         getMovieVideos(args.movieId)
+        getSimilarMovies(args.movieId)
     }
 
     private fun getMovieDetails(movieId: Int) {
@@ -72,13 +75,27 @@ class DetailViewModel @Inject constructor(
             when (val result = getMovieVideosUseCase(movieId)) {
                 is Resource.Success -> {
                     updateState { copy(isLoading = false, movieVideos = result.data, error = null) }
-                    }
+                }
                 is Resource.Error -> {
                     updateState { copy(isLoading = false, error = result.message) }
                 }
             }
         }
 
+    }
+
+    private fun getSimilarMovies(movieId: Int) {
+        viewModelScope.launch {
+            updateState { copy(isLoading = true) }
+            when (val result = getSimilarMoviesUseCase(movieId)) {
+                is Resource.Success -> {
+                    updateState { copy(isLoading = false, similarMovies = result.data ?: emptyList(), error = null) }
+                }
+                is Resource.Error -> {
+                    updateState { copy(isLoading = false, error = result.message) }
+                }
+            }
+        }
     }
 
     private fun updateState(block: DetailUiState.() -> DetailUiState) {
