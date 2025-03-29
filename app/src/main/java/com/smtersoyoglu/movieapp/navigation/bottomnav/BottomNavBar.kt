@@ -30,8 +30,8 @@ fun BottomNavBar(navController: NavController) {
     val bottomNavItems = listOf(
         BottomNavItem(
             route = Screen.Home,
-            title = "Home",
-            icon = R.drawable.ic_home
+            title = "Movies",
+            icon = R.drawable.ic_movie
         ),
         BottomNavItem(
             route = Screen.Search,
@@ -84,7 +84,7 @@ fun BottomNavBar(navController: NavController) {
                     selectedTextColor = Color.Black,
                     unselectedIconColor = Color.Gray,
                     unselectedTextColor = Color.Gray,
-                    indicatorColor = Color(0xFFBBDEFB)
+                    indicatorColor = Color(0xFFB5C3CE)
                 )
             )
         }

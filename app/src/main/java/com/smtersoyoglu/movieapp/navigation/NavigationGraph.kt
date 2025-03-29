@@ -29,6 +29,7 @@ fun NavigationGraph(
 
         composable<Screen.Detail> {
             DetailScreen(
+                navController = navController,
                 onBackClick = { navController.popBackStack() }
             )
         }
