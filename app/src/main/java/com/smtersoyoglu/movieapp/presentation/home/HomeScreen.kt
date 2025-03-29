@@ -68,9 +68,11 @@ fun HomeScreen(
             uiState.isLoading -> {
                 LoadingBar()
             }
+
             !uiState.error.isNullOrBlank() -> {
                 EmptyScreen(message = uiState.error ?: "Bilinmeyen bir hata oluştu")
             }
+
             else -> {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
@@ -94,7 +96,8 @@ fun HomeScreen(
                             movies = uiState.nowPlayingMovieList,
                             onMovieClicked = { movieId ->
                                 navController.navigate(Screen.Detail(movieId))
-                            }                        )
+                            }
+                        )
                     }
 
                     item {
@@ -103,7 +106,8 @@ fun HomeScreen(
                             movies = uiState.popularMovieList,
                             onMovieClicked = { movieId ->
                                 navController.navigate(Screen.Detail(movieId))
-                            }                        )
+                            }
+                        )
                     }
 
                     item {
@@ -112,7 +116,8 @@ fun HomeScreen(
                             movies = uiState.topRatedMovieList,
                             onMovieClicked = { movieId ->
                                 navController.navigate(Screen.Detail(movieId))
-                            }                        )
+                            }
+                        )
                     }
 
                     item {
@@ -121,7 +126,8 @@ fun HomeScreen(
                             movies = uiState.upcomingMovieList,
                             onMovieClicked = { movieId ->
                                 navController.navigate(Screen.Detail(movieId))
-                            }                        )
+                            }
+                        )
                     }
                 }
             }
@@ -133,7 +139,7 @@ fun HomeScreen(
 fun FeaturedMovieCard(
     movies: List<Movie>,
     modifier: Modifier = Modifier,
-    onMovieClicked: (Int) -> Unit
+    onMovieClicked: (Int) -> Unit,
 ) {
     if (movies.isEmpty()) {
         EmptyScreen(message = "Trend filmler yüklenemedi.")
@@ -258,7 +264,8 @@ fun FeaturedMovieCard(
             horizontalArrangement = Arrangement.Center
         ) {
             repeat(movies.size) { index ->
-                val color = if (pagerState.currentPage == index) Color.White else Color.Gray.copy(alpha = 0.5f)
+                val color =
+                    if (pagerState.currentPage == index) Color.White else Color.Gray.copy(alpha = 0.5f)
                 Box(
                     modifier = Modifier
                         .size(8.dp)
