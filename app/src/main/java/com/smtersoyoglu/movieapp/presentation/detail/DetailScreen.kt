@@ -1,11 +1,13 @@
 package com.smtersoyoglu.movieapp.presentation.detail
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,11 +20,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -41,25 +42,30 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.smtersoyoglu.movieapp.R
 import com.smtersoyoglu.movieapp.domain.model.Genre
+import com.smtersoyoglu.movieapp.domain.model.Movie
 import com.smtersoyoglu.movieapp.domain.model.MovieCredits
 import com.smtersoyoglu.movieapp.domain.model.MovieVideo
+import com.smtersoyoglu.movieapp.navigation.Screen
+import com.smtersoyoglu.movieapp.presentation.components.EmptyScreen
+import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
+import java.util.Locale
 
 @Composable
 fun DetailScreen(
     viewModel: DetailViewModel = hiltViewModel(),
+    navController: NavController,
     onBackClick: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -71,17 +77,11 @@ fun DetailScreen(
     ) {
         when {
             uiState.isLoading -> {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center)
-                )
+                LoadingBar()
             }
 
             uiState.error != null -> {
-                Text(
-                    text = uiState.error ?: "An error occurred",
-                    color = Color.Red,
-                    modifier = Modifier.align(Alignment.Center)
-                )
+                EmptyScreen(message = uiState.error ?: "Bilinmeyen bir hata oluştu")
             }
 
             else -> {
@@ -111,6 +111,11 @@ fun DetailScreen(
                                 MovieCastAndCrew(credits = credits)
                             }
                         }
+                        item {
+                            SimilarMoviesSection(movies = uiState.similarMovies) { movieId ->
+                                navController.navigate(Screen.Detail(movieId))
+                            }
+                        }
                     }
                 }
             }
@@ -124,7 +129,7 @@ fun DetailScreen(
                 .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.8f))
         ) {
             Icon(
-                modifier = Modifier.size(30.dp),
+                modifier = Modifier.size(28.dp),
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Back",
                 tint = MaterialTheme.colorScheme.onSurface
@@ -133,6 +138,7 @@ fun DetailScreen(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MovieHeader(
     posterPath: String?,
@@ -196,7 +202,9 @@ fun MovieHeader(
                                 })
                             }
                         },
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(top = 100.dp)
                     )
                 }
             }
@@ -205,7 +213,8 @@ fun MovieHeader(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 8.dp)
+                .padding(horizontal = 8.dp, vertical = 8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = title,
@@ -220,40 +229,42 @@ fun MovieHeader(
                     text = tagline,
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.White.copy(alpha = 0.7f),
-                    modifier = Modifier.padding(top = 4.dp)
+                    modifier = Modifier.padding(top = 4.dp),
+                    textAlign = TextAlign.Center
                 )
             }
 
+            val year = releaseDate?.takeIf { it.length >= 4 }?.substring(0, 4) ?: "N/A"
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.padding(top = 8.dp),
             ) {
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+
                 ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_calendar),
+                        contentDescription = "Release Date",
+                        tint = Color.White,
+                    )
                     Text(
-                        text = releaseDate?.substring(0, 4) ?: "N/A",
+                        text = year,
                         color = Color.White.copy(alpha = 0.6f),
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Icon(
+                        painter = painterResource(R.drawable.ic_time),
+                        contentDescription = "Runtime",
+                        tint = Color.White,
                     )
                     Text(
                         text = runtime?.let { "${it / 60}h ${it % 60}m" } ?: "N/A",
                         color = Color.White.copy(alpha = 0.6f),
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyLarge
                     )
-                    Text(
-                        text = genres.joinToString(" • ") { it.name },
-                        color = Color.White.copy(alpha = 0.6f),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
+
+                    Spacer(modifier = Modifier.width(12.dp))
                     Icon(
                         painter = painterResource(R.drawable.ic_rating),
                         contentDescription = "Rating",
@@ -261,10 +272,18 @@ fun MovieHeader(
                         modifier = Modifier.size(16.dp)
                     )
                     Text(
-                        text = String.format("%.1f", rating),
+                        text = "%.1f".format(rating),
                         color = Color.White,
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyLarge
                     )
+                }
+            }
+            FlowRow(
+                modifier = Modifier.padding(top = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                genres.forEach { genre ->
+                    GenreChip(genre.name)
                 }
             }
         }
@@ -272,17 +291,39 @@ fun MovieHeader(
 }
 
 @Composable
+fun GenreChip(genre: String) {
+    Box(
+        modifier = Modifier
+            .background(
+                color = Color.White.copy(alpha = 0.2f),
+                shape = RoundedCornerShape(16.dp)
+            )
+            .padding(horizontal = 12.dp, vertical = 8.dp)
+    ) {
+        Text(
+            text = genre,
+            color = Color.White,
+            style = MaterialTheme.typography.bodyLarge
+        )
+    }
+}
+
+@Composable
 fun MovieOverview(overview: String?) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 8.dp)
+        modifier = Modifier.fillMaxWidth().padding(start = 8.dp, end = 4.dp)
+
     ) {
+        Text(
+            text = "Overview",
+            style = MaterialTheme.typography.headlineSmall,
+            color = Color.White
+        )
+        Spacer(modifier = Modifier.height(6.dp))
         Text(
             text = overview ?: "No overview available",
             style = MaterialTheme.typography.bodyMedium,
             color = Color.White,
-            modifier = Modifier.fillMaxWidth()
         )
     }
 }
@@ -331,31 +372,79 @@ fun CastItem(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .width(100.dp)
-            .padding(end = 8.dp),
+        modifier = modifier.padding(end = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AsyncImage(
-            model = "https://image.tmdb.org/t/p/w185$profilePath",
+            model = "https://image.tmdb.org/t/p/w500$profilePath",
             contentDescription = name,
             modifier = Modifier
-                .size(80.dp)
-                .clip(CircleShape),
+                .size(100.dp)
+                .clip(RoundedCornerShape(12.dp)),
             contentScale = ContentScale.Crop
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = name,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.labelSmall,
             color = Color.White,
+            maxLines = 1,
             textAlign = TextAlign.Center
         )
         Text(
             text = character,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.labelSmall,
+            maxLines = 2,
             color = Color.White.copy(alpha = 0.6f),
             textAlign = TextAlign.Center
+        )
+    }
+}
+@Composable
+fun SimilarMoviesSection(movies: List<Movie>, onMovieClick: (Int) -> Unit) {
+    Column(modifier = Modifier.padding(vertical = 8.dp)) {
+        Text(
+            text = "Similar Movies",
+            style = MaterialTheme.typography.headlineSmall,
+            color = Color.White,
+            modifier = Modifier.padding(horizontal = 8.dp)
+        )
+
+        LazyRow(
+            contentPadding = PaddingValues(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(movies) { movie ->
+                SimilarMovieItem(movie, onMovieClick)
+            }
+        }
+    }
+}
+
+@Composable
+fun SimilarMovieItem(movie: Movie, onClick: (Int) -> Unit) {
+    Column(
+        modifier = Modifier
+            .width(140.dp)
+            .clickable { onClick(movie.id) }
+    ) {
+        AsyncImage(
+            model = "https://image.tmdb.org/t/p/w500${movie.posterPath}",
+            contentDescription = movie.title,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .clip(RoundedCornerShape(12.dp)),
+            contentScale = ContentScale.Crop
+        )
+
+        Text(
+            text = movie.title,
+            style = MaterialTheme.typography.bodyMedium,
+            color = Color.White,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(top = 4.dp)
         )
     }
 }
