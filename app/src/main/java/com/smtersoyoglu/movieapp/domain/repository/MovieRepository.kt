@@ -5,6 +5,7 @@ import com.smtersoyoglu.movieapp.domain.model.Movie
 import com.smtersoyoglu.movieapp.domain.model.MovieCredits
 import com.smtersoyoglu.movieapp.domain.model.MovieDetails
 import com.smtersoyoglu.movieapp.domain.model.MovieVideos
+import com.smtersoyoglu.movieapp.domain.model.PersonDetails
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
@@ -26,4 +27,6 @@ interface MovieRepository {
     suspend fun getMovieVideos(movieId: Int, language: String = "en-US") : Resource<MovieVideos>
 
     suspend fun getSimilarMovies(movieId: Int, language: String = "en-US", page: Int = 1) : Resource<List<Movie>>
+
+    suspend fun getPersonDetails(personId: Int, appendToResponse: String? = null, language: String = "en-US") : Resource<PersonDetails>
 }
