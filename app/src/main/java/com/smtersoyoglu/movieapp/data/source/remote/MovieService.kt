@@ -4,6 +4,7 @@ import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieCreditsDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieDetailsDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieResponseDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieVideosResponseDto
+import com.smtersoyoglu.movieapp.data.source.remote.dto.PersonDetailsDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -69,5 +70,12 @@ interface MovieService {
         @Query("language") language: String = "en-US",
         @Query("page") page: Int = 1
     ): MovieResponseDto
+
+    @GET("person/{person_id}")
+    suspend fun getPersonDetails(
+        @Path("person_id") personId: Int,
+        @Query("append_to_response") appendToResponse: String? = null,
+        @Query("language") language: String = "en-US"
+    ): PersonDetailsDto
 
 }
