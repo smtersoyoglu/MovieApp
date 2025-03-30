@@ -60,7 +60,6 @@ import com.smtersoyoglu.movieapp.domain.model.MovieVideo
 import com.smtersoyoglu.movieapp.navigation.Screen
 import com.smtersoyoglu.movieapp.presentation.components.EmptyScreen
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
-import java.util.Locale
 
 @Composable
 fun DetailScreen(
@@ -108,7 +107,12 @@ fun DetailScreen(
 
                         item {
                             uiState.movieCredits?.let { credits ->
-                                MovieCastAndCrew(credits = credits)
+                                MovieCastAndCrew(
+                                    credits = credits,
+                                    onCastClick = { personId ->
+                                        navController.navigate(Screen.Person(personId))
+                                    }
+                                )
                             }
                         }
                         item {
@@ -149,7 +153,7 @@ fun MovieHeader(
     runtime: Int?,
     genres: List<Genre>,
     rating: Double,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var showVideo by remember { mutableStateOf(false) }
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -234,14 +238,14 @@ fun MovieHeader(
                 )
             }
 
-            val year = releaseDate?.takeIf { it.length >= 4 }?.substring(0, 4) ?: "N/A"
             Row(
                 modifier = Modifier.padding(top = 8.dp),
             ) {
+                val year = releaseDate?.takeIf { it.length >= 4 }?.substring(0, 4) ?: "N/A"
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
 
-                ) {
+                    ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_calendar),
                         contentDescription = "Release Date",
@@ -311,7 +315,9 @@ fun GenreChip(genre: String) {
 @Composable
 fun MovieOverview(overview: String?) {
     Column(
-        modifier = Modifier.fillMaxWidth().padding(start = 8.dp, end = 4.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 8.dp, end = 4.dp)
 
     ) {
         Text(
@@ -329,7 +335,10 @@ fun MovieOverview(overview: String?) {
 }
 
 @Composable
-fun MovieCastAndCrew(credits: MovieCredits) {
+fun MovieCastAndCrew(
+    credits: MovieCredits,
+    onCastClick: (Int) -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -340,7 +349,7 @@ fun MovieCastAndCrew(credits: MovieCredits) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Cast • Writer • Director",
+                text = "Cast",
                 style = MaterialTheme.typography.headlineSmall,
                 color = Color.White
             )
@@ -357,7 +366,9 @@ fun MovieCastAndCrew(credits: MovieCredits) {
                 CastItem(
                     name = cast.name,
                     character = cast.character,
-                    profilePath = cast.profilePath
+                    profilePath = cast.profilePath,
+                    personId = cast.id,
+                    onCastClick = onCastClick
                 )
             }
         }
@@ -369,10 +380,14 @@ fun CastItem(
     name: String,
     character: String,
     profilePath: String?,
+    personId: Int,
+    onCastClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.padding(end = 8.dp),
+        modifier = modifier
+            .padding(end = 8.dp)
+            .clickable { onCastClick(personId) },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AsyncImage(
@@ -394,12 +409,13 @@ fun CastItem(
         Text(
             text = character,
             style = MaterialTheme.typography.labelSmall,
-            maxLines = 2,
+            maxLines = 1,
             color = Color.White.copy(alpha = 0.6f),
             textAlign = TextAlign.Center
         )
     }
 }
+
 @Composable
 fun SimilarMoviesSection(movies: List<Movie>, onMovieClick: (Int) -> Unit) {
     Column(modifier = Modifier.padding(vertical = 8.dp)) {
