@@ -46,6 +46,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.smtersoyoglu.movieapp.R
+import com.smtersoyoglu.movieapp.common.formatDate
 import com.smtersoyoglu.movieapp.domain.model.Movie
 import com.smtersoyoglu.movieapp.navigation.Screen
 import com.smtersoyoglu.movieapp.presentation.components.EmptyScreen
@@ -223,7 +224,7 @@ fun FeaturedMovieCard(
                     ) {
                         movie.releaseDate?.let {
                             Text(
-                                text = it,
+                                text = it.formatDate(),
                                 color = Color.White.copy(alpha = 0.8f),
                                 style = MaterialTheme.typography.bodyMedium.copy(fontSize = 16.sp)
                             )
