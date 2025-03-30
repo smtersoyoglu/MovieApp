@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.smtersoyoglu.movieapp.presentation.detail.DetailScreen
 import com.smtersoyoglu.movieapp.presentation.favorite.FavoriteScreen
 import com.smtersoyoglu.movieapp.presentation.home.HomeScreen
+import com.smtersoyoglu.movieapp.presentation.person.PersonDetailScreen
 import com.smtersoyoglu.movieapp.presentation.search.SearchScreen
 
 @Composable
@@ -30,6 +31,12 @@ fun NavigationGraph(
         composable<Screen.Detail> {
             DetailScreen(
                 navController = navController,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Screen.Person> {
+            PersonDetailScreen(
                 onBackClick = { navController.popBackStack() }
             )
         }

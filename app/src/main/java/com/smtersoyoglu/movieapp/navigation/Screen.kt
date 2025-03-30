@@ -10,6 +10,9 @@ sealed interface Screen {
     data class Detail(val movieId: Int) : Screen
 
     @Serializable
+    data class Person(val personId: Int) : Screen
+
+    @Serializable
     data object Search : Screen
 
     @Serializable
