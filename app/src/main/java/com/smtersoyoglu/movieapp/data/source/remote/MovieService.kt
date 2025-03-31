@@ -78,4 +78,9 @@ interface MovieService {
         @Query("language") language: String = "en-US"
     ): PersonDetailsDto
 
+    @GET("person/{person_id}/movie_credits")
+    suspend fun getPersonMovieCredits(
+        @Path("person_id") personId: Int,
+        @Query("language") language: String = "en-US"
+    ): MovieCreditsDto
 }

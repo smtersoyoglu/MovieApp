@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class MovieCreditsDto(
     @SerializedName("id") val id: Int,
     @SerializedName("cast") val cast: List<CastDto>,
-    @SerializedName("crew") val crew: List<CrewDto>
+    @SerializedName("crew") val crew: List<CrewDto>,
 )
 
 data class CastDto(
@@ -20,7 +20,10 @@ data class CastDto(
     @SerializedName("cast_id") val castId: Int,
     @SerializedName("character") val character: String,
     @SerializedName("credit_id") val creditId: String,
-    @SerializedName("order") val order: Int
+    @SerializedName("order") val order: Int,
+    @SerializedName("title") val title: String?,
+    @SerializedName("poster_path") val posterPath: String?,
+    @SerializedName("release_date") val releaseDate: String?,
 )
 
 data class CrewDto(
@@ -34,5 +37,8 @@ data class CrewDto(
     @SerializedName("profile_path") val profilePath: String?,
     @SerializedName("credit_id") val creditId: String,
     @SerializedName("department") val department: String,
-    @SerializedName("job") val job: String
+    @SerializedName("job") val job: String,
+    @SerializedName("title") val title: String?,
+    @SerializedName("poster_path") val posterPath: String?,
+    @SerializedName("release_date") val releaseDate: String?
 )
