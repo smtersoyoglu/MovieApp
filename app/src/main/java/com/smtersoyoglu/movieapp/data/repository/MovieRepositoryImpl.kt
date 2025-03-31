@@ -6,12 +6,14 @@ import com.smtersoyoglu.movieapp.data.mapper.toMovie
 import com.smtersoyoglu.movieapp.data.mapper.toMovieDetails
 import com.smtersoyoglu.movieapp.data.mapper.toMovieVideos
 import com.smtersoyoglu.movieapp.data.mapper.toPersonDetails
+import com.smtersoyoglu.movieapp.data.mapper.toPersonMovieCredits
 import com.smtersoyoglu.movieapp.data.source.remote.MovieService
 import com.smtersoyoglu.movieapp.domain.model.Movie
 import com.smtersoyoglu.movieapp.domain.model.MovieCredits
 import com.smtersoyoglu.movieapp.domain.model.MovieDetails
 import com.smtersoyoglu.movieapp.domain.model.MovieVideos
 import com.smtersoyoglu.movieapp.domain.model.PersonDetails
+import com.smtersoyoglu.movieapp.domain.model.PersonMovieCredits
 import com.smtersoyoglu.movieapp.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -152,6 +154,18 @@ class MovieRepositoryImpl @Inject constructor(
             Resource.Success(response.toPersonDetails())
         } catch (e: Exception) {
             Resource.Error(e.message ?: "An error occurred while fetching person details")
+        }
+    }
+
+    override suspend fun getPersonMovieCredits(
+        personId: Int,
+        language: String,
+    ): Resource<PersonMovieCredits> {
+        return try {
+            val response = movieService.getPersonMovieCredits(personId, language)
+            Resource.Success(response.toPersonMovieCredits())
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "An error occurred while fetching person movie credits")
         }
     }
 
