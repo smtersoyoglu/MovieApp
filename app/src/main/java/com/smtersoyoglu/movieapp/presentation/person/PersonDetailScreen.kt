@@ -1,15 +1,21 @@
 package com.smtersoyoglu.movieapp.presentation.person
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -28,16 +34,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.smtersoyoglu.movieapp.common.formatDate
+import com.smtersoyoglu.movieapp.domain.model.PersonMovieCast
+import com.smtersoyoglu.movieapp.domain.model.PersonMovieCredits
+import com.smtersoyoglu.movieapp.navigation.Screen
 import com.smtersoyoglu.movieapp.presentation.components.EmptyScreen
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
 
 @Composable
 fun PersonDetailScreen(
     viewModel: PersonDetailViewModel = hiltViewModel(),
+    navController: NavController,
     onBackClick: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -73,6 +85,14 @@ fun PersonDetailScreen(
 
                         item {
                             PersonBiography(biography = personDetails.biography)
+                        }
+
+                        item {
+                            uiState.personMovieCredits?.let { credits ->
+                                PersonMoviesSection(credits = credits) { movieId ->
+                                    navController.navigate(Screen.Detail(movieId))
+                                }
+                            }
                         }
                     }
                 }
@@ -174,3 +194,57 @@ fun PersonBiography(biography: String?) {
     }
 }
 
+@Composable
+fun PersonMoviesSection(
+    credits: PersonMovieCredits,
+    onMovieClick: (Int) -> Unit
+) {
+    Column(modifier = Modifier.padding(vertical = 8.dp)) {
+        Text(
+            text = "Movies Acted In",
+            style = MaterialTheme.typography.headlineSmall,
+            color = Color.White,
+            modifier = Modifier.padding(horizontal = 8.dp)
+        )
+
+        LazyRow(
+            contentPadding = PaddingValues(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(credits.cast) { movie ->
+                PersonMovieItem(movie = movie, onClick = onMovieClick)
+            }
+        }
+    }
+}
+
+@Composable
+fun PersonMovieItem(
+    movie: PersonMovieCast,
+    onClick: (Int) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .width(140.dp)
+            .clickable { onClick(movie.id) }
+    ) {
+        AsyncImage(
+            model = "https://image.tmdb.org/t/p/w500${movie.posterPath}",
+            contentDescription = movie.title,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .clip(RoundedCornerShape(12.dp)),
+            contentScale = ContentScale.Crop
+        )
+
+        Text(
+            text = movie.title,
+            style = MaterialTheme.typography.bodyMedium,
+            color = Color.White,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(top = 4.dp)
+        )
+    }
+}

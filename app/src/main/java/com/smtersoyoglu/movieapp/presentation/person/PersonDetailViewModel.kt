@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.smtersoyoglu.movieapp.common.Resource
 import com.smtersoyoglu.movieapp.domain.usecase.GetPersonDetailsUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.GetPersonMovieCreditsUseCase
 import com.smtersoyoglu.movieapp.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PersonDetailViewModel @Inject constructor(
     private val getPersonDetailsUseCase: GetPersonDetailsUseCase,
+    private val getPersonMovieCreditsUseCase: GetPersonMovieCreditsUseCase,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -28,6 +30,7 @@ class PersonDetailViewModel @Inject constructor(
 
     init {
         getPersonDetails(args.personId)
+        getPersonMovieCredits(args.personId)
     }
 
     private fun getPersonDetails(personId: Int) {
@@ -36,6 +39,20 @@ class PersonDetailViewModel @Inject constructor(
             when (val result = getPersonDetailsUseCase(personId)) {
                 is Resource.Success -> {
                     updateState { copy(isLoading = false, personDetails = result.data, error = null) }
+                }
+                is Resource.Error -> {
+                    updateState { copy(isLoading = false, error = result.message) }
+                }
+            }
+        }
+    }
+
+    private fun getPersonMovieCredits(personId: Int) {
+        viewModelScope.launch {
+            updateState { copy(isLoading = true) }
+            when (val result = getPersonMovieCreditsUseCase(personId)) {
+                is Resource.Success -> {
+                    updateState { copy(isLoading = false, personMovieCredits = result.data, error = null) }
                 }
                 is Resource.Error -> {
                     updateState { copy(isLoading = false, error = result.message) }
