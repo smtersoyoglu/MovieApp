@@ -37,12 +37,15 @@ fun NavigationGraph(
 
         composable<Screen.Person> {
             PersonDetailScreen(
+                navController = navController,
                 onBackClick = { navController.popBackStack() }
             )
         }
 
         composable<Screen.Search> {
-            SearchScreen()
+            SearchScreen(
+                navController = navController
+            )
         }
 
         composable<Screen.Favorite> {
