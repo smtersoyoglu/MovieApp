@@ -169,4 +169,19 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getSearchMovies(
+        query: String,
+        page: Int,
+        includeAdult: Boolean,
+        language: String,
+    ): Resource<List<Movie>> {
+        return try {
+            val response = movieService.searchMovies(query, page, includeAdult, language)
+            val movies = response.results.map { it.toMovie() }
+            Resource.Success(movies)
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "An error occurred while searching movies")
+        }
+    }
+
 }

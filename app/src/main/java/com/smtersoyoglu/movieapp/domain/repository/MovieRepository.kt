@@ -32,4 +32,7 @@ interface MovieRepository {
     suspend fun getPersonDetails(personId: Int, appendToResponse: String? = null, language: String = "en-US") : Resource<PersonDetails>
 
     suspend fun getPersonMovieCredits(personId: Int, language: String = "en-US") : Resource<PersonMovieCredits>
+
+    suspend fun getSearchMovies(query: String, page: Int = 1, includeAdult: Boolean = false, language: String = "en-US") : Resource<List<Movie>>
+
 }
