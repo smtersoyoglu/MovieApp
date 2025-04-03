@@ -1,5 +1,6 @@
 package com.smtersoyoglu.movieapp.data.source.remote
 
+import com.smtersoyoglu.movieapp.data.source.remote.dto.GenreResponseDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieCreditsDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieDetailsDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieResponseDto
@@ -89,6 +90,18 @@ interface MovieService {
         @Query("query") query: String,
         @Query("page") page: Int = 1,
         @Query("include_adult") includeAdult: Boolean = false,
+        @Query("language") language: String = "en-US"
+    ): MovieResponseDto
+
+    @GET("genre/movie/list")
+    suspend fun getGenres(
+        @Query("language") language: String = "en-US"
+    ): GenreResponseDto
+
+    @GET("discover/movie")
+    suspend fun getMoviesByGenre(
+        @Query("with_genres") genreId: Int,
+        @Query("page") page: Int = 1,
         @Query("language") language: String = "en-US"
     ): MovieResponseDto
 }
