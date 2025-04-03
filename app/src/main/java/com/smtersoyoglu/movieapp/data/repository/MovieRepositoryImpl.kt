@@ -2,12 +2,15 @@ package com.smtersoyoglu.movieapp.data.repository
 
 import com.smtersoyoglu.movieapp.common.Resource
 import com.smtersoyoglu.movieapp.data.mapper.toCredits
+import com.smtersoyoglu.movieapp.data.mapper.toGenre
+import com.smtersoyoglu.movieapp.data.mapper.toGenreList
 import com.smtersoyoglu.movieapp.data.mapper.toMovie
 import com.smtersoyoglu.movieapp.data.mapper.toMovieDetails
 import com.smtersoyoglu.movieapp.data.mapper.toMovieVideos
 import com.smtersoyoglu.movieapp.data.mapper.toPersonDetails
 import com.smtersoyoglu.movieapp.data.mapper.toPersonMovieCredits
 import com.smtersoyoglu.movieapp.data.source.remote.MovieService
+import com.smtersoyoglu.movieapp.domain.model.Genre
 import com.smtersoyoglu.movieapp.domain.model.Movie
 import com.smtersoyoglu.movieapp.domain.model.MovieCredits
 import com.smtersoyoglu.movieapp.domain.model.MovieDetails
@@ -181,6 +184,30 @@ class MovieRepositoryImpl @Inject constructor(
             Resource.Success(movies)
         } catch (e: Exception) {
             Resource.Error(e.message ?: "An error occurred while searching movies")
+        }
+    }
+
+    override suspend fun getGenres(language: String): Resource<List<Genre>> {
+        return try {
+            val response = movieService.getGenres(language)
+            Resource.Success(response.toGenreList())
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "An error occurred while fetching genres")
+        }
+
+    }
+
+    override suspend fun getMoviesByGenre(
+        genreId: Int,
+        page: Int,
+        language: String,
+    ): Resource<List<Movie>> {
+        return try {
+            val response = movieService.getMoviesByGenre(genreId, page, language)
+            val movies = response.results.map { it.toMovie() }
+            Resource.Success(movies)
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "An error occurred while fetching movies by genre")
         }
     }
 

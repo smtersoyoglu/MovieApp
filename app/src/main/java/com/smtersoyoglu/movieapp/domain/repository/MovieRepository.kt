@@ -1,6 +1,7 @@
 package com.smtersoyoglu.movieapp.domain.repository
 
 import com.smtersoyoglu.movieapp.common.Resource
+import com.smtersoyoglu.movieapp.domain.model.Genre
 import com.smtersoyoglu.movieapp.domain.model.Movie
 import com.smtersoyoglu.movieapp.domain.model.MovieCredits
 import com.smtersoyoglu.movieapp.domain.model.MovieDetails
@@ -34,5 +35,10 @@ interface MovieRepository {
     suspend fun getPersonMovieCredits(personId: Int, language: String = "en-US") : Resource<PersonMovieCredits>
 
     suspend fun getSearchMovies(query: String, page: Int = 1, includeAdult: Boolean = false, language: String = "en-US") : Resource<List<Movie>>
+
+    suspend fun getGenres(language: String = "en-US") : Resource<List<Genre>>
+
+    suspend fun getMoviesByGenre(genreId: Int, page: Int = 1, language: String = "en-US") : Resource<List<Movie>>
+
 
 }
