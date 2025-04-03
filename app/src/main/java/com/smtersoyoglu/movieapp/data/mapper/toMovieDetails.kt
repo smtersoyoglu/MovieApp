@@ -1,6 +1,7 @@
 package com.smtersoyoglu.movieapp.data.mapper
 
 import com.smtersoyoglu.movieapp.data.source.remote.dto.GenreDto
+import com.smtersoyoglu.movieapp.data.source.remote.dto.GenreResponseDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieDetailsDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.ProductionCompanyDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.ProductionCountryDto
@@ -40,6 +41,11 @@ fun MovieDetailsDto.toMovieDetails(): MovieDetails {
 
 fun GenreDto.toGenre(): Genre {
     return Genre(id = id, name = name)
+}
+
+
+fun GenreResponseDto.toGenreList(): List<Genre> {
+    return genres.map { it.toGenre() }
 }
 
 fun ProductionCompanyDto.toProductionCompany(): ProductionCompany {
