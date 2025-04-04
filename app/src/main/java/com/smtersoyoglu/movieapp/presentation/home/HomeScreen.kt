@@ -239,7 +239,7 @@ fun FeaturedMovieCard(
                             modifier = Modifier.size(14.dp)
                         )
                         Text(
-                            text = movie.voteAverage.toString(),
+                            text = "%.1f".format(movie.voteAverage),
                             color = Color.White.copy(alpha = 0.8f),
                             style = MaterialTheme.typography.bodyMedium.copy(fontSize = 16.sp)
                         )
