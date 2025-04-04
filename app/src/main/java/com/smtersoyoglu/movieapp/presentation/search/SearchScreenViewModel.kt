@@ -25,10 +25,10 @@ class SearchScreenViewModel @Inject constructor(
     private val getMoviesByGenreUseCase: GetMoviesByGenreUseCase,
 ) : ViewModel() {
 
-    private val searchQueryFlow = MutableStateFlow("")
-
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState: StateFlow<SearchUiState> = _uiState.asStateFlow()
+
+    private val searchQueryFlow = MutableStateFlow("")
 
     init {
         getGenres()
@@ -38,9 +38,6 @@ class SearchScreenViewModel @Inject constructor(
                 .collectLatest { query ->
                     if (query.isNotBlank()) {
                         getSearchMovies(query)
-                    } else {
-                        updateUiState { copy(movies = emptyList(), error = null) }
-                        uiState.value.genres.firstOrNull()?.let { getMoviesByGenre(it.id) }
                     }
                 }
         }
@@ -48,6 +45,9 @@ class SearchScreenViewModel @Inject constructor(
 
     fun updateSearchQuery(query: String) {
         searchQueryFlow.value = query
+        if (query.isBlank()) {
+            uiState.value.selectedGenreId?.let { getMoviesByGenre(it) }
+        }
     }
 
     private fun getSearchMovies(query: String, page: Int = 1) {
@@ -64,7 +64,6 @@ class SearchScreenViewModel @Inject constructor(
                         )
                     }
                 }
-
                 is Resource.Error -> {
                     updateUiState { copy(isLoading = false, error = result.message) }
                 }
@@ -74,14 +73,18 @@ class SearchScreenViewModel @Inject constructor(
 
     private fun getGenres() {
         viewModelScope.launch {
+            updateUiState { copy(isLoading = true) }
             when (val result = getGenresUseCase()) {
                 is Resource.Success -> {
-                    updateUiState { copy(genres = result.data ?: emptyList()) }
-                    result.data?.firstOrNull()?.let { getMoviesByGenre(it.id) }
+                    val genres = result.data ?: emptyList()
+                    updateUiState { copy(genres = genres, isLoading = false) }
+                    genres.firstOrNull()?.let { genre ->
+                        updateUiState { copy(selectedGenreId = genre.id) }
+                        getMoviesByGenre(genre.id)
+                    }
                 }
-
                 is Resource.Error -> {
-                    updateUiState { copy(error = result.message) }
+                    updateUiState { copy(isLoading = false, error = result.message) }
                 }
             }
         }
