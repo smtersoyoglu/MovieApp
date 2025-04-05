@@ -396,7 +396,9 @@ fun CastItem(
             modifier = Modifier
                 .size(100.dp)
                 .clip(RoundedCornerShape(12.dp)),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            error  = painterResource(R.drawable.ic_no_image_person),
+            fallback = painterResource(R.drawable.ic_no_image_person)
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
@@ -451,7 +453,9 @@ fun SimilarMovieItem(movie: Movie, onClick: (Int) -> Unit) {
                 .fillMaxWidth()
                 .height(200.dp)
                 .clip(RoundedCornerShape(12.dp)),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            error  = painterResource(R.drawable.ic_image_not_found),
+            fallback = painterResource(R.drawable.ic_image_not_found)
         )
 
         Text(

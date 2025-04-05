@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -165,7 +164,9 @@ fun MovieGridItem(movie: Movie, onMovieClick: (Int) -> Unit) {
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(2 / 3f)
+                    .aspectRatio(2 / 3f),
+                error  = painterResource(R.drawable.ic_image_not_found),
+                fallback = painterResource(R.drawable.ic_image_not_found)
             )
             Row(
                 modifier = Modifier

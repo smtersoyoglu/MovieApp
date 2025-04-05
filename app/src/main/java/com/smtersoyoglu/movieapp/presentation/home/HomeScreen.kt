@@ -342,7 +342,9 @@ fun MovieItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(200.dp)
-                        .clip(RoundedCornerShape(12.dp))
+                        .clip(RoundedCornerShape(12.dp)),
+                    error  = painterResource(R.drawable.ic_image_not_found),
+                    fallback = painterResource(R.drawable.ic_image_not_found)
                 )
             }
             Text(
