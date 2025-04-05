@@ -7,6 +7,8 @@ import com.smtersoyoglu.movieapp.domain.model.MovieCredits
 import com.smtersoyoglu.movieapp.domain.model.MovieDetails
 import com.smtersoyoglu.movieapp.domain.model.MovieVideos
 import com.smtersoyoglu.movieapp.domain.model.PersonDetails
+import com.smtersoyoglu.movieapp.domain.model.PersonExternalIds
+import com.smtersoyoglu.movieapp.domain.model.PersonImage
 import com.smtersoyoglu.movieapp.domain.model.PersonMovieCredits
 import kotlinx.coroutines.flow.Flow
 
@@ -33,6 +35,10 @@ interface MovieRepository {
     suspend fun getPersonDetails(personId: Int, appendToResponse: String? = null, language: String = "en-US") : Resource<PersonDetails>
 
     suspend fun getPersonMovieCredits(personId: Int, language: String = "en-US") : Resource<PersonMovieCredits>
+
+    suspend fun getPersonExternalIds(personId: Int, language: String = "en-US"): Resource<PersonExternalIds>
+
+    suspend fun getPersonImages(personId: Int): Resource<List<PersonImage>>
 
     suspend fun getSearchMovies(query: String, page: Int = 1, includeAdult: Boolean = false, language: String = "en-US") : Resource<List<Movie>>
 
