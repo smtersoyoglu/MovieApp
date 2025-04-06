@@ -16,7 +16,6 @@ fun PersonDetailsDto.toPersonDetails(): PersonDetails {
         popularity = popularity,
         profilePath = profilePath,
         alsoKnownAs = alsoKnownAs,
-        homepage = homepage,
         imdbId = imdbId
     )
 }
