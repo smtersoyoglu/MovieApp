@@ -7,6 +7,7 @@ import androidx.navigation.toRoute
 import com.smtersoyoglu.movieapp.common.Resource
 import com.smtersoyoglu.movieapp.domain.usecase.GetMovieCreditsUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.GetMovieDetailsUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.GetMovieImagesUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.GetMovieVideosUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.GetSimilarMoviesUseCase
 import com.smtersoyoglu.movieapp.navigation.Screen
@@ -24,6 +25,7 @@ class DetailViewModel @Inject constructor(
     private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
     private val getMovieVideosUseCase: GetMovieVideosUseCase,
     private val getSimilarMoviesUseCase: GetSimilarMoviesUseCase,
+    private val getMovieImagesUseCase: GetMovieImagesUseCase,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -32,12 +34,12 @@ class DetailViewModel @Inject constructor(
 
     private val args = savedStateHandle.toRoute<Screen.Detail>()
 
-
     init {
         getMovieDetails(args.movieId)
         getMovieCredits(args.movieId)
         getMovieVideos(args.movieId)
         getSimilarMovies(args.movieId)
+        getMovieImages(args.movieId)
     }
 
     private fun getMovieDetails(movieId: Int) {
@@ -96,6 +98,24 @@ class DetailViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun getMovieImages(movieId: Int) {
+        viewModelScope.launch {
+            updateState { copy(isLoading = true) }
+            when (val result = getMovieImagesUseCase(movieId)) {
+                is Resource.Success -> {
+                    updateState { copy(isLoading = false, movieImages = result.data, error = null) }
+                }
+                is Resource.Error -> {
+                    updateState { copy(isLoading = false, error = result.message) }
+                }
+            }
+        }
+    }
+
+    fun selectTab(tabIndex: Int) {
+        _uiState.update { it.copy(selectedTab = tabIndex) }
     }
 
     private fun updateState(block: DetailUiState.() -> DetailUiState) {

@@ -3,6 +3,7 @@ package com.smtersoyoglu.movieapp.presentation.detail
 import com.smtersoyoglu.movieapp.domain.model.Movie
 import com.smtersoyoglu.movieapp.domain.model.MovieCredits
 import com.smtersoyoglu.movieapp.domain.model.MovieDetails
+import com.smtersoyoglu.movieapp.domain.model.MovieImages
 import com.smtersoyoglu.movieapp.domain.model.MovieVideos
 
 data class DetailUiState(
@@ -11,5 +12,7 @@ data class DetailUiState(
     val movieCredits: MovieCredits? = null,
     val movieVideos: MovieVideos? = null,
     val similarMovies: List<Movie> = emptyList(),
+    val movieImages: MovieImages? = null,
     val error: String? = null,
+    val selectedTab: Int = 0
 )
