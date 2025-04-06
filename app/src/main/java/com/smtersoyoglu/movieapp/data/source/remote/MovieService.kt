@@ -3,6 +3,7 @@ package com.smtersoyoglu.movieapp.data.source.remote
 import com.smtersoyoglu.movieapp.data.source.remote.dto.GenreResponseDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieCreditsDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieDetailsDto
+import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieImagesDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieResponseDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieVideosResponseDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.PersonDetailsDto
@@ -54,6 +55,11 @@ interface MovieService {
         @Query("language") language: String = "en-US",
         @Query("append_to_response") appendToResponse: String? = null
     ): MovieDetailsDto
+
+    @GET("movie/{movie_id}/images")
+    suspend fun getMovieImages(
+        @Path("movie_id") movieId: Int,
+    ) : MovieImagesDto
 
     @GET("movie/{movie_id}/credits")
     suspend fun getMovieCredits(

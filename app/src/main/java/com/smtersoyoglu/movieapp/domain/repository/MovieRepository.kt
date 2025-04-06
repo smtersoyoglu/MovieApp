@@ -5,6 +5,7 @@ import com.smtersoyoglu.movieapp.domain.model.Genre
 import com.smtersoyoglu.movieapp.domain.model.Movie
 import com.smtersoyoglu.movieapp.domain.model.MovieCredits
 import com.smtersoyoglu.movieapp.domain.model.MovieDetails
+import com.smtersoyoglu.movieapp.domain.model.MovieImages
 import com.smtersoyoglu.movieapp.domain.model.MovieVideos
 import com.smtersoyoglu.movieapp.domain.model.PersonDetails
 import com.smtersoyoglu.movieapp.domain.model.PersonExternalIds
@@ -33,6 +34,8 @@ interface MovieRepository {
     suspend fun getSimilarMovies(movieId: Int, language: String = "en-US", page: Int = 1) : Resource<List<Movie>>
 
     suspend fun getPersonDetails(personId: Int, appendToResponse: String? = null, language: String = "en-US") : Resource<PersonDetails>
+
+    suspend fun getMovieImages(movieId: Int): Resource<MovieImages>
 
     suspend fun getPersonMovieCredits(personId: Int, language: String = "en-US") : Resource<PersonMovieCredits>
 
