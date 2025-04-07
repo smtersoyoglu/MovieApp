@@ -24,9 +24,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -37,6 +40,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -53,12 +57,13 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.smtersoyoglu.movieapp.R
-import com.smtersoyoglu.movieapp.domain.model.Genre
 import com.smtersoyoglu.movieapp.domain.model.Movie
 import com.smtersoyoglu.movieapp.domain.model.MovieCredits
+import com.smtersoyoglu.movieapp.domain.model.MovieDetails
+import com.smtersoyoglu.movieapp.domain.model.MovieImage
 import com.smtersoyoglu.movieapp.domain.model.MovieVideo
 import com.smtersoyoglu.movieapp.navigation.Screen
-import com.smtersoyoglu.movieapp.presentation.components.EmptyScreen
+import com.smtersoyoglu.movieapp.presentation.components.ErrorScreen
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
 
 @Composable
@@ -80,7 +85,7 @@ fun DetailScreen(
             }
 
             uiState.error != null -> {
-                EmptyScreen(message = uiState.error ?: "Bilinmeyen bir hata oluştu")
+                ErrorScreen(message = uiState.error ?: "Bilinmeyen bir hata oluştu")
             }
 
             else -> {
@@ -90,19 +95,35 @@ fun DetailScreen(
                     ) {
                         item {
                             MovieHeader(
-                                posterPath = movieDetails.backdropPath,
+                                movieDetails = movieDetails,
                                 videos = uiState.movieVideos?.videos,
-                                title = movieDetails.title,
-                                releaseDate = movieDetails.releaseDate,
-                                runtime = movieDetails.runtime,
-                                genres = movieDetails.genres,
-                                rating = movieDetails.voteAverage,
-                                tagline = movieDetails.tagline
                             )
                         }
 
                         item {
-                            MovieOverview(overview = movieDetails.overview)
+                            TabRow(
+                                selectedTabIndex = uiState.selectedTab,
+                                containerColor = Color.Black,
+                                contentColor = Color.White
+                            ) {
+                                Tab(
+                                    selected = uiState.selectedTab == 0,
+                                    onClick = { viewModel.selectTab(0) },
+                                    text = { Text("Overview") }
+                                )
+                                Tab(
+                                    selected = uiState.selectedTab == 1,
+                                    onClick = { viewModel.selectTab(1) },
+                                    text = { Text("Images") }
+                                )
+                            }
+                        }
+
+                        item {
+                            when (uiState.selectedTab) {
+                                0 -> MovieOverview(overview = movieDetails.overview)
+                                1 -> MovieImagesSection(images = uiState.movieImages?.backdrops)
+                            }
                         }
 
                         item {
@@ -115,15 +136,20 @@ fun DetailScreen(
                                 )
                             }
                         }
+
                         item {
-                            SimilarMoviesSection(movies = uiState.similarMovies) { movieId ->
-                                navController.navigate(Screen.Detail(movieId))
-                            }
+                            SimilarMoviesSection(
+                                movies = uiState.similarMovies,
+                                onMovieClick = { movieId ->
+                                    navController.navigate(Screen.Detail(movieId))
+                                }
+                            )
                         }
                     }
                 }
             }
         }
+
         IconButton(
             onClick = onBackClick,
             modifier = Modifier
@@ -145,150 +171,143 @@ fun DetailScreen(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MovieHeader(
-    posterPath: String?,
+    movieDetails: MovieDetails,
     videos: List<MovieVideo>?,
-    title: String,
-    tagline: String?,
-    releaseDate: String?,
-    runtime: Int?,
-    genres: List<Genre>,
-    rating: Double,
     modifier: Modifier = Modifier,
 ) {
     var showVideo by remember { mutableStateOf(false) }
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    Column(
+    Box(
         modifier = modifier
             .fillMaxWidth()
+            .height(450.dp)
     ) {
+        AsyncImage(
+            model = "https://image.tmdb.org/t/p/original${movieDetails.backdropPath}",
+            contentDescription = "Movie Backdrop",
+            modifier = Modifier
+                .fillMaxSize(),
+            contentScale = ContentScale.Crop,
+            error = painterResource(R.drawable.ic_image_not_found),
+            fallback = painterResource(R.drawable.ic_image_not_found)
+        )
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(450.dp)
-        ) {
-            if (!showVideo) {
-                AsyncImage(
-                    model = "https://image.tmdb.org/t/p/original$posterPath",
-                    contentDescription = "Movie Poster",
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
-
-                videos?.find { it.type == "Trailer" && it.site == "YouTube" }?.let {
-                    IconButton(
-                        onClick = { showVideo = true },
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .size(48.dp)
-                            .background(Color.Black.copy(alpha = 0.5f), shape = CircleShape)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.PlayArrow,
-                            contentDescription = "Play Trailer",
-                            tint = Color.White,
-                            modifier = Modifier.size(32.dp)
-                        )
-                    }
-                }
-            } else {
-                // Fragman Oynatıcı
-                videos?.find { it.type == "Trailer" && it.site == "YouTube" }?.let { trailer ->
-                    AndroidView(
-                        factory = { ctx ->
-                            YouTubePlayerView(ctx).apply {
-                                lifecycleOwner.lifecycle.addObserver(this)
-                                enableAutomaticInitialization = false
-                                initialize(object : AbstractYouTubePlayerListener() {
-                                    override fun onReady(youTubePlayer: YouTubePlayer) {
-                                        youTubePlayer.loadVideo(trailer.key, 0f)
-                                    }
-                                })
-                            }
-                        },
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(top = 100.dp)
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.4f)),
+                        startY = 0f,
+                        endY = 450f
                     )
-                }
-            }
-        }
-
+                )
+        )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 8.dp),
+                .align(Alignment.BottomCenter)
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = title,
+                text = movieDetails.title,
                 style = MaterialTheme.typography.headlineMedium,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
-
-            if (!tagline.isNullOrBlank()) {
+            if (!movieDetails.tagline.isNullOrBlank()) {
                 Text(
-                    text = tagline,
+                    text = movieDetails.tagline,
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.White.copy(alpha = 0.7f),
-                    modifier = Modifier.padding(top = 4.dp),
                     textAlign = TextAlign.Center
                 )
             }
-
             Row(
                 modifier = Modifier.padding(top = 8.dp),
+                horizontalArrangement = Arrangement.Center
             ) {
-                val year = releaseDate?.takeIf { it.length >= 4 }?.substring(0, 4) ?: "N/A"
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-
-                    ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_calendar),
-                        contentDescription = "Release Date",
-                        tint = Color.White,
-                    )
-                    Text(
-                        text = year,
-                        color = Color.White.copy(alpha = 0.6f),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Icon(
-                        painter = painterResource(R.drawable.ic_time),
-                        contentDescription = "Runtime",
-                        tint = Color.White,
-                    )
-                    Text(
-                        text = runtime?.let { "${it / 60}h ${it % 60}m" } ?: "N/A",
-                        color = Color.White.copy(alpha = 0.6f),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Icon(
-                        painter = painterResource(R.drawable.ic_rating),
-                        contentDescription = "Rating",
-                        tint = Color.Yellow,
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Text(
-                        text = "%.1f".format(rating),
-                        color = Color.White,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
+                val year =
+                    movieDetails.releaseDate?.takeIf { it.length >= 4 }?.substring(0, 4) ?: "N/A"
+                Icon(
+                    painter = painterResource(R.drawable.ic_calendar),
+                    contentDescription = "Release Date",
+                    tint = Color.White
+                )
+                Text(
+                    text = year,
+                    color = Color.White.copy(alpha = 0.6f),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+                Icon(
+                    painter = painterResource(R.drawable.ic_time),
+                    contentDescription = "Runtime",
+                    tint = Color.White
+                )
+                Text(
+                    text = movieDetails.runtime?.let { "${it / 60}h ${it % 60}m" } ?: "N/A",
+                    color = Color.White.copy(alpha = 0.6f),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+                Icon(
+                    imageVector = Icons.Default.Star,
+                    contentDescription = "Rating",
+                    tint = Color.Yellow
+                )
+                Text(
+                    text = "%.1f".format(movieDetails.voteAverage),
+                    color = Color.White,
+                    style = MaterialTheme.typography.bodyLarge
+                )
             }
             FlowRow(
                 modifier = Modifier.padding(top = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                genres.forEach { genre ->
+                movieDetails.genres.forEach { genre ->
                     GenreChip(genre.name)
                 }
+            }
+            videos?.find { it.type == "Trailer" && it.site == "YouTube" }?.let {
+                IconButton(
+                    onClick = { showVideo = true },
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .background(Color.White, shape = CircleShape)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.PlayArrow,
+                        contentDescription = "Play Trailer",
+                        tint = Color.Black,
+                        modifier = Modifier.size(32.dp)
+                    )
+                }
+            }
+        }
+        if (showVideo) {
+            videos?.find { it.type == "Trailer" && it.site == "YouTube" }?.let { trailer ->
+                AndroidView(
+                    factory = { ctx ->
+                        YouTubePlayerView(ctx).apply {
+                            lifecycleOwner.lifecycle.addObserver(this)
+                            enableAutomaticInitialization = false
+                            initialize(object : AbstractYouTubePlayerListener() {
+                                override fun onReady(youTubePlayer: YouTubePlayer) {
+                                    youTubePlayer.loadVideo(trailer.key, 0f)
+                                }
+                            })
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 100.dp)
+                )
             }
         }
     }
@@ -317,7 +336,7 @@ fun MovieOverview(overview: String?) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 8.dp, end = 4.dp)
+            .padding(start = 8.dp, end = 4.dp, top = 8.dp)
 
     ) {
         Text(
@@ -331,6 +350,44 @@ fun MovieOverview(overview: String?) {
             style = MaterialTheme.typography.bodyMedium,
             color = Color.White,
         )
+    }
+}
+
+@Composable
+fun MovieImagesSection(images: List<MovieImage>?) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+    ) {
+        Text(
+            text = "Images",
+            style = MaterialTheme.typography.headlineSmall,
+            color = Color.White
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        if (images.isNullOrEmpty()) {
+            Text(
+                text = "No images available",
+                color = Color.White
+            )
+        } else {
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(images) { image ->
+                    AsyncImage(
+                        model = "https://image.tmdb.org/t/p/w500${image.filePath}",
+                        contentDescription = "Movie backdrop",
+                        modifier = Modifier
+                            .size(width = 200.dp, height = 120.dp)
+                            .clip(RoundedCornerShape(8.dp)),
+                        error = painterResource(R.drawable.ic_image_not_found),
+                        fallback = painterResource(R.drawable.ic_image_not_found)
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -360,7 +417,7 @@ fun MovieCastAndCrew(
                 modifier = Modifier.clickable { /* Navigate to full cast screen */ }
             )
         }
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(6.dp))
         LazyRow {
             items(credits.cast.take(10)) { cast ->
                 CastItem(
@@ -397,7 +454,7 @@ fun CastItem(
                 .size(100.dp)
                 .clip(RoundedCornerShape(12.dp)),
             contentScale = ContentScale.Crop,
-            error  = painterResource(R.drawable.ic_no_image_person),
+            error = painterResource(R.drawable.ic_no_image_person),
             fallback = painterResource(R.drawable.ic_no_image_person)
         )
         Spacer(modifier = Modifier.height(4.dp))
@@ -454,7 +511,7 @@ fun SimilarMovieItem(movie: Movie, onClick: (Int) -> Unit) {
                 .height(200.dp)
                 .clip(RoundedCornerShape(12.dp)),
             contentScale = ContentScale.Crop,
-            error  = painterResource(R.drawable.ic_image_not_found),
+            error = painterResource(R.drawable.ic_image_not_found),
             fallback = painterResource(R.drawable.ic_image_not_found)
         )
 
