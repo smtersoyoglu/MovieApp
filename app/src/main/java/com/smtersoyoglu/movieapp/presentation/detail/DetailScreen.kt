@@ -23,7 +23,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -71,6 +70,7 @@ fun DetailScreen(
     viewModel: DetailViewModel = hiltViewModel(),
     navController: NavController,
     onBackClick: () -> Unit,
+    onFavoriteClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -162,6 +162,22 @@ fun DetailScreen(
                 modifier = Modifier.size(28.dp),
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Back",
+                tint = MaterialTheme.colorScheme.onSurface
+            )
+        }
+
+        IconButton(
+            onClick = onFavoriteClick,
+            modifier = Modifier
+                .padding(top = 46.dp, end = 16.dp)
+                .align(Alignment.TopEnd)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.8f))
+        ) {
+            Icon(
+                modifier = Modifier.size(28.dp),
+                painter = painterResource(R.drawable.ic_not_favorite),
+                contentDescription = "Favorite",
                 tint = MaterialTheme.colorScheme.onSurface
             )
         }
@@ -279,13 +295,11 @@ fun MovieHeader(
                     onClick = { showVideo = true },
                     modifier = Modifier
                         .padding(top = 8.dp)
-                        .background(Color.White, shape = CircleShape)
                 ) {
                     Icon(
-                        imageVector = Icons.Default.PlayArrow,
+                        painter = painterResource(R.drawable.ic_play),
                         contentDescription = "Play Trailer",
-                        tint = Color.Black,
-                        modifier = Modifier.size(32.dp)
+                        tint = Color.LightGray,
                     )
                 }
             }
