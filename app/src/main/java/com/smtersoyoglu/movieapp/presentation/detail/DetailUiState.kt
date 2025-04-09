@@ -14,5 +14,7 @@ data class DetailUiState(
     val similarMovies: List<Movie> = emptyList(),
     val movieImages: MovieImages? = null,
     val error: String? = null,
-    val selectedTab: Int = 0
+    val selectedTab: Int = 0,
+    val isFavorite: Boolean = false,
+    val message: String? = null
 )

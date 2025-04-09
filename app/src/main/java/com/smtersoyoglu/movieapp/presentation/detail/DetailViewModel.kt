@@ -5,11 +5,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.smtersoyoglu.movieapp.common.Resource
+import com.smtersoyoglu.movieapp.domain.model.FavoriteMovie
+import com.smtersoyoglu.movieapp.domain.usecase.AddFavoriteUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.GetMovieCreditsUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.GetMovieDetailsUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.GetMovieImagesUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.GetMovieVideosUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.GetSimilarMoviesUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.IsFavoriteUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.RemoveFavoriteUseCase
 import com.smtersoyoglu.movieapp.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +30,9 @@ class DetailViewModel @Inject constructor(
     private val getMovieVideosUseCase: GetMovieVideosUseCase,
     private val getSimilarMoviesUseCase: GetSimilarMoviesUseCase,
     private val getMovieImagesUseCase: GetMovieImagesUseCase,
+    private val addFavoriteUseCase: AddFavoriteUseCase,
+    private val removeFavoriteUseCase: RemoveFavoriteUseCase,
+    private val isFavoriteUseCase: IsFavoriteUseCase,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -40,6 +47,7 @@ class DetailViewModel @Inject constructor(
         getMovieVideos(args.movieId)
         getSimilarMovies(args.movieId)
         getMovieImages(args.movieId)
+        checkFavoriteStatus(args.movieId)
     }
 
     private fun getMovieDetails(movieId: Int) {
@@ -116,6 +124,29 @@ class DetailViewModel @Inject constructor(
 
     fun selectTab(tabIndex: Int) {
         _uiState.update { it.copy(selectedTab = tabIndex) }
+    }
+
+    private fun checkFavoriteStatus(movieId: Int) {
+        viewModelScope.launch {
+            val isFavorite = isFavoriteUseCase(movieId)
+            updateState { copy(isFavorite = isFavorite) }
+        }
+    }
+
+    fun toggleFavorite(favoriteMovie: FavoriteMovie) {
+        viewModelScope.launch {
+            if (_uiState.value.isFavorite) {
+                removeFavoriteUseCase(favoriteMovie)
+                updateState { copy(isFavorite = false, message = "Removed from favorites") }
+            } else {
+                addFavoriteUseCase(favoriteMovie)
+                updateState { copy(isFavorite = true, message = "Added to favorites") }
+            }
+        }
+    }
+
+    fun clearMessage() {
+        updateState { copy(message = null) }
     }
 
     private fun updateState(block: DetailUiState.() -> DetailUiState) {
