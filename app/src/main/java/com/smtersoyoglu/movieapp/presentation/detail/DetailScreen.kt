@@ -27,10 +27,13 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -56,6 +59,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.smtersoyoglu.movieapp.R
+import com.smtersoyoglu.movieapp.domain.model.FavoriteMovie
 import com.smtersoyoglu.movieapp.domain.model.Movie
 import com.smtersoyoglu.movieapp.domain.model.MovieCredits
 import com.smtersoyoglu.movieapp.domain.model.MovieDetails
@@ -64,15 +68,24 @@ import com.smtersoyoglu.movieapp.domain.model.MovieVideo
 import com.smtersoyoglu.movieapp.navigation.Screen
 import com.smtersoyoglu.movieapp.presentation.components.ErrorScreen
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
+import kotlinx.coroutines.delay
 
 @Composable
 fun DetailScreen(
     viewModel: DetailViewModel = hiltViewModel(),
     navController: NavController,
     onBackClick: () -> Unit,
-    onFavoriteClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(uiState.message) {
+        uiState.message?.let { message ->
+            snackbarHostState.showSnackbar(message = message)
+            delay(2000)
+            viewModel.clearMessage()
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -146,6 +159,34 @@ fun DetailScreen(
                             )
                         }
                     }
+
+                    IconButton(
+                        onClick = {
+                            val favoriteMovie = FavoriteMovie(
+                                id = movieDetails.id,
+                                title = movieDetails.title,
+                                posterPath = movieDetails.posterPath
+                            )
+                            viewModel.toggleFavorite(favoriteMovie)
+                        },
+                        modifier = Modifier
+                            .padding(top = 46.dp, end = 16.dp)
+                            .align(Alignment.TopEnd)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.8f))
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(28.dp),
+                            painter = if (uiState.isFavorite) painterResource(R.drawable.ic_not_favorite) else painterResource(R.drawable.ic_favorite),
+                            contentDescription = "Favorite",
+                            tint = if (uiState.isFavorite) Color.Red else MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+
+                    SnackbarHost(
+                        hostState = snackbarHostState,
+                        modifier = Modifier.align(Alignment.BottomCenter)
+                    )
                 }
             }
         }
@@ -162,22 +203,6 @@ fun DetailScreen(
                 modifier = Modifier.size(28.dp),
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Back",
-                tint = MaterialTheme.colorScheme.onSurface
-            )
-        }
-
-        IconButton(
-            onClick = onFavoriteClick,
-            modifier = Modifier
-                .padding(top = 46.dp, end = 16.dp)
-                .align(Alignment.TopEnd)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.8f))
-        ) {
-            Icon(
-                modifier = Modifier.size(28.dp),
-                painter = painterResource(R.drawable.ic_not_favorite),
-                contentDescription = "Favorite",
                 tint = MaterialTheme.colorScheme.onSurface
             )
         }
