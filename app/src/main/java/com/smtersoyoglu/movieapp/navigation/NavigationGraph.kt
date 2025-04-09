@@ -31,7 +31,7 @@ fun NavigationGraph(
         composable<Screen.Detail> {
             DetailScreen(
                 navController = navController,
-                onBackClick = { navController.popBackStack() }
+                onBackClick = { navController.popBackStack() },
             )
         }
 
@@ -49,7 +49,9 @@ fun NavigationGraph(
         }
 
         composable<Screen.Favorite> {
-            FavoriteScreen()
+            FavoriteScreen(
+                navController = navController
+            )
         }
     }
 }
