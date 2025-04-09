@@ -1,6 +1,8 @@
 package com.smtersoyoglu.movieapp.di
 
+import com.smtersoyoglu.movieapp.data.repository.FavoriteRepositoryImpl
 import com.smtersoyoglu.movieapp.data.repository.MovieRepositoryImpl
+import com.smtersoyoglu.movieapp.domain.repository.FavoriteRepository
 import com.smtersoyoglu.movieapp.domain.repository.MovieRepository
 import dagger.Binds
 import dagger.Module
@@ -15,4 +17,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindMovieRepository(repositoryImpl: MovieRepositoryImpl): MovieRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindFavoriteRepository(repositoryImpl: FavoriteRepositoryImpl): FavoriteRepository
 }
