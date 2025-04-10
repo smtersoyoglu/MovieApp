@@ -22,6 +22,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Card
@@ -53,6 +54,7 @@ import coil.compose.AsyncImage
 import com.smtersoyoglu.movieapp.R
 import com.smtersoyoglu.movieapp.domain.model.Movie
 import com.smtersoyoglu.movieapp.navigation.Screen
+import com.smtersoyoglu.movieapp.presentation.components.EmptySearchState
 import com.smtersoyoglu.movieapp.presentation.components.ErrorScreen
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
 
@@ -120,19 +122,11 @@ fun SearchScreen(
                 ErrorScreen(message = "Bir hata oluştu: ${uiState.error}")
             }
             searchQuery.isNotBlank() && uiState.movies.isEmpty() -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "Sonuç bulunamadı",
-                        color = MaterialTheme.colorScheme.primaryContainer
-                    )
-                }
+                EmptySearchState(query = searchQuery)
             }
             else -> {
                 LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
+                    columns = GridCells.Fixed(3),
                     horizontalArrangement = Arrangement.spacedBy(24.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.padding(top = 12.dp)
@@ -189,12 +183,12 @@ fun MovieGridItem(movie: Movie, onMovieClick: (Int) -> Unit) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_rating),
+                        imageVector = Icons.Default.Star,
                         contentDescription = "IMDb Rating",
                         tint = Color.Yellow,
                         modifier = Modifier.size(16.dp)
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
+                    Spacer(modifier = Modifier.width(2.dp))
                     Text(
                         text = "%.1f".format(movie.voteAverage),
                         color = Color.White,
