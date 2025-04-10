@@ -67,6 +67,7 @@ import com.smtersoyoglu.movieapp.domain.model.MovieImage
 import com.smtersoyoglu.movieapp.domain.model.MovieVideo
 import com.smtersoyoglu.movieapp.navigation.Screen
 import com.smtersoyoglu.movieapp.presentation.components.ErrorScreen
+import com.smtersoyoglu.movieapp.presentation.components.ImageDialog
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
 import kotlinx.coroutines.delay
 
@@ -78,6 +79,8 @@ fun DetailScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
+    var selectedImageUrl by remember { mutableStateOf<String?>(null) }
+
 
     LaunchedEffect(uiState.message) {
         uiState.message?.let { message ->
@@ -135,7 +138,12 @@ fun DetailScreen(
                         item {
                             when (uiState.selectedTab) {
                                 0 -> MovieOverview(overview = movieDetails.overview)
-                                1 -> MovieImagesSection(images = uiState.movieImages?.backdrops)
+                                1 -> MovieImagesSection(
+                                    images = uiState.movieImages?.backdrops,
+                                    onImageClick = { imageUrl ->
+                                        selectedImageUrl = imageUrl
+                                    }
+                                )
                             }
                         }
 
@@ -170,14 +178,17 @@ fun DetailScreen(
                             viewModel.toggleFavorite(favoriteMovie)
                         },
                         modifier = Modifier
-                            .padding(top = 46.dp, end = 16.dp)
+                            .padding(top = 36.dp, end = 16.dp)
                             .align(Alignment.TopEnd)
                             .clip(CircleShape)
+                            .size(46.dp)
                             .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.8f))
                     ) {
                         Icon(
-                            modifier = Modifier.size(28.dp),
-                            painter = if (uiState.isFavorite) painterResource(R.drawable.ic_not_favorite) else painterResource(R.drawable.ic_favorite),
+                            modifier = Modifier.size(24.dp),
+                            painter = if (uiState.isFavorite) painterResource(R.drawable.ic_not_favorite) else painterResource(
+                                R.drawable.ic_favorite
+                            ),
                             contentDescription = "Favorite",
                             tint = if (uiState.isFavorite) Color.Red else MaterialTheme.colorScheme.onSurface
                         )
@@ -187,20 +198,23 @@ fun DetailScreen(
                         hostState = snackbarHostState,
                         modifier = Modifier.align(Alignment.BottomCenter)
                     )
+                    selectedImageUrl?.let { url ->
+                        ImageDialog(imageUrl = url, onDismiss = { selectedImageUrl = null })
+                    }
                 }
             }
         }
-
         IconButton(
             onClick = onBackClick,
             modifier = Modifier
-                .padding(top = 46.dp, start = 16.dp)
+                .padding(top = 36.dp, start = 16.dp)
                 .align(Alignment.TopStart)
                 .clip(CircleShape)
+                .size(46.dp)
                 .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.8f))
         ) {
             Icon(
-                modifier = Modifier.size(28.dp),
+                modifier = Modifier.size(24.dp),
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Back",
                 tint = MaterialTheme.colorScheme.onSurface
@@ -248,13 +262,12 @@ fun MovieHeader(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
-                .padding(16.dp),
+                .padding(bottom = 4.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = movieDetails.title,
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.headlineLarge,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
@@ -262,13 +275,13 @@ fun MovieHeader(
             if (!movieDetails.tagline.isNullOrBlank()) {
                 Text(
                     text = movieDetails.tagline,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyLarge,
                     color = Color.White.copy(alpha = 0.7f),
                     textAlign = TextAlign.Center
                 )
             }
             Row(
-                modifier = Modifier.padding(top = 8.dp),
+                modifier = Modifier.padding(top = 10.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
                 val year =
@@ -278,9 +291,10 @@ fun MovieHeader(
                     contentDescription = "Release Date",
                     tint = Color.White
                 )
+                Spacer(modifier = Modifier.width(2.dp))
                 Text(
                     text = year,
-                    color = Color.White.copy(alpha = 0.6f),
+                    color = Color.White.copy(alpha = 0.7f),
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Spacer(modifier = Modifier.width(12.dp))
@@ -289,25 +303,29 @@ fun MovieHeader(
                     contentDescription = "Runtime",
                     tint = Color.White
                 )
+                Spacer(modifier = Modifier.width(2.dp))
                 Text(
                     text = movieDetails.runtime?.let { "${it / 60}h ${it % 60}m" } ?: "N/A",
-                    color = Color.White.copy(alpha = 0.6f),
+                    color = Color.White.copy(alpha = 0.7f),
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Icon(
                     imageVector = Icons.Default.Star,
                     contentDescription = "Rating",
-                    tint = Color.Yellow
+                    tint = Color.Yellow,
+                    modifier = Modifier.size(18.dp)
+
                 )
+                Spacer(modifier = Modifier.width(2.dp))
                 Text(
                     text = "%.1f".format(movieDetails.voteAverage),
-                    color = Color.White,
+                    color = Color.White.copy(alpha = 0.7f),
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
             FlowRow(
-                modifier = Modifier.padding(top = 8.dp),
+                modifier = Modifier.padding(top = 10.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
@@ -319,7 +337,7 @@ fun MovieHeader(
                 IconButton(
                     onClick = { showVideo = true },
                     modifier = Modifier
-                        .padding(top = 8.dp)
+                        .padding(top = 4.dp)
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_play),
@@ -342,10 +360,7 @@ fun MovieHeader(
                                 }
                             })
                         }
-                    },
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 100.dp)
+                    }
                 )
             }
         }
@@ -393,7 +408,10 @@ fun MovieOverview(overview: String?) {
 }
 
 @Composable
-fun MovieImagesSection(images: List<MovieImage>?) {
+fun MovieImagesSection(
+    images: List<MovieImage>?,
+    onImageClick: (String) -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -420,7 +438,8 @@ fun MovieImagesSection(images: List<MovieImage>?) {
                         contentDescription = "Movie backdrop",
                         modifier = Modifier
                             .size(width = 200.dp, height = 120.dp)
-                            .clip(RoundedCornerShape(8.dp)),
+                            .clip(RoundedCornerShape(8.dp))
+                            .clickable { onImageClick(image.filePath) },
                         error = painterResource(R.drawable.ic_image_not_found),
                         fallback = painterResource(R.drawable.ic_image_not_found)
                     )

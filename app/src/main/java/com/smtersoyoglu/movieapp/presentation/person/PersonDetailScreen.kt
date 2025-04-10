@@ -28,6 +28,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -54,6 +57,7 @@ import com.smtersoyoglu.movieapp.navigation.Screen
 import com.smtersoyoglu.movieapp.presentation.components.EmptyScreen
 import com.smtersoyoglu.movieapp.presentation.components.ExternalLinkIconButton
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
+import com.smtersoyoglu.movieapp.presentation.components.PersonImageDialog
 
 @Composable
 fun PersonDetailScreen(
@@ -62,6 +66,7 @@ fun PersonDetailScreen(
     onBackClick: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    var selectedPersonImageUrl by remember { mutableStateOf<String?>(null) }
 
     Box(
         modifier = Modifier
@@ -97,7 +102,11 @@ fun PersonDetailScreen(
                         }
                         item {
                             uiState.personImages.takeIf { it.isNotEmpty() }?.let { images ->
-                                PersonImagesSection(images = images)
+                                PersonImagesSection(
+                                    images = images,
+                                    onImageClick = { imageUrl ->
+                                        selectedPersonImageUrl = imageUrl
+                                    })
                             }
                         }
                         item {
@@ -111,7 +120,10 @@ fun PersonDetailScreen(
                                 )
                             }
                         }
-                      }
+                    }
+                    selectedPersonImageUrl?.let { url ->
+                        PersonImageDialog(imageUrl = url, onDismiss = { selectedPersonImageUrl = null })
+                    }
                 }
             }
         }
@@ -137,7 +149,7 @@ fun PersonDetailScreen(
 fun PersonHeader(
     person: PersonDetails,
     externalIds: PersonExternalIds?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
@@ -177,7 +189,7 @@ fun PersonHeader(
                     .size(150.dp)
                     .clip(CircleShape),
                 contentScale = ContentScale.Crop,
-                error  = painterResource(R.drawable.ic_no_image_person),
+                error = painterResource(R.drawable.ic_no_image_person),
                 fallback = painterResource(R.drawable.ic_no_image_person)
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -236,7 +248,11 @@ fun PersonHeader(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Gender: ${when (person.gender) { 1 -> "Female"; 2 -> "Male"; else -> "Unknown" }}",
+                    text = "Gender: ${
+                        when (person.gender) {
+                            1 -> "Female"; 2 -> "Male"; else -> "Unknown"
+                        }
+                    }",
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.White.copy(alpha = 0.6f)
                 )
@@ -275,7 +291,7 @@ fun PersonHeader(
 fun PersonBiography(
     biography: String?,
     isExpanded: Boolean,
-    onToggleExpand: () -> Unit
+    onToggleExpand: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -310,7 +326,10 @@ fun PersonBiography(
 }
 
 @Composable
-fun PersonImagesSection(images: List<PersonImage>) {
+fun PersonImagesSection(
+    images: List<PersonImage>,
+    onImageClick: (String) -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -331,7 +350,8 @@ fun PersonImagesSection(images: List<PersonImage>) {
                     contentDescription = "Person Image",
                     modifier = Modifier
                         .size(150.dp)
-                        .clip(RoundedCornerShape(8.dp)),
+                        .clip(RoundedCornerShape(8.dp))
+                        .clickable { onImageClick(image.filePath) },
                     contentScale = ContentScale.Crop
                 )
             }
@@ -343,7 +363,7 @@ fun PersonImagesSection(images: List<PersonImage>) {
 fun PersonMoviesSection(
     title: String,
     movies: List<PersonMovieCast>,
-    onMovieClick: (Int) -> Unit
+    onMovieClick: (Int) -> Unit,
 ) {
     Column(modifier = Modifier.padding(vertical = 8.dp)) {
         Text(
@@ -367,7 +387,7 @@ fun PersonMoviesSection(
 @Composable
 fun PersonMovieItem(
     movie: PersonMovieCast,
-    onClick: (Int) -> Unit
+    onClick: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -382,7 +402,7 @@ fun PersonMovieItem(
                 .height(200.dp)
                 .clip(RoundedCornerShape(12.dp)),
             contentScale = ContentScale.Crop,
-            error  = painterResource(R.drawable.ic_image_not_found),
+            error = painterResource(R.drawable.ic_image_not_found),
             fallback = painterResource(R.drawable.ic_image_not_found)
         )
         Spacer(modifier = Modifier.height(8.dp))
