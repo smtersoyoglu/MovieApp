@@ -59,6 +59,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.smtersoyoglu.movieapp.R
+import com.smtersoyoglu.movieapp.data.mapper.toGenreString
 import com.smtersoyoglu.movieapp.domain.model.FavoriteMovie
 import com.smtersoyoglu.movieapp.domain.model.Movie
 import com.smtersoyoglu.movieapp.domain.model.MovieCredits
@@ -173,7 +174,13 @@ fun DetailScreen(
                             val favoriteMovie = FavoriteMovie(
                                 id = movieDetails.id,
                                 title = movieDetails.title,
-                                posterPath = movieDetails.posterPath
+                                posterPath = movieDetails.posterPath,
+                                overview = movieDetails.overview,
+                                releaseDate = movieDetails.releaseDate,
+                                runtime = movieDetails.runtime,
+                                voteAverage = movieDetails.voteAverage,
+                                genres = movieDetails.genres.toGenreString(),
+                                addedDate = System.currentTimeMillis()
                             )
                             viewModel.toggleFavorite(favoriteMovie)
                         },
