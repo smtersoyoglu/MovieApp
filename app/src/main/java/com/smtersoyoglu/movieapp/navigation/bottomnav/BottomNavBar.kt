@@ -31,17 +31,19 @@ fun BottomNavBar(navController: NavController) {
         BottomNavItem(
             route = Screen.Home,
             title = "Movies",
-            icon = R.drawable.ic_movie
+            icon = R.drawable.ic_not_movie,
+            selectedIcon = R.drawable.ic_movie
         ),
         BottomNavItem(
             route = Screen.Search,
             title = "Search",
-            icon = R.drawable.ic_search
+            icon = R.drawable.ic_movie_search
         ),
         BottomNavItem(
             route = Screen.Favorite,
             title = "Favorite",
-            icon = R.drawable.ic_favorite
+            icon = R.drawable.ic_not_favorite,
+            selectedIcon = R.drawable.ic_favorite
         )
     )
 
@@ -53,12 +55,17 @@ fun BottomNavBar(navController: NavController) {
         bottomNavItems.forEach { item ->
             val selected = currentDestination == Screen.getRoute(item.route)
             NavigationBarItem(
+
                 icon = {
                     val scale by animateFloatAsState(if (selected) 1.2f else 1.0f)
+                    val iconRes = if (selected && item.selectedIcon != null) item.selectedIcon else item.icon
+
                     Icon(
-                        painter = painterResource(id = item.icon),
+                        painter = painterResource(id = iconRes),
                         contentDescription = item.title,
-                        modifier = Modifier.scale(scale)
+                        modifier = Modifier.scale(scale),
+                        tint = if (selected) Color.Unspecified else Color.Gray,
+
                     )
                 },
                 label = {
@@ -80,8 +87,8 @@ fun BottomNavBar(navController: NavController) {
                     }
                 },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = Color.Black,
-                    selectedTextColor = Color.Black,
+                    selectedIconColor = Color.Red,
+                    selectedTextColor = Color.White,
                     unselectedIconColor = Color.Gray,
                     unselectedTextColor = Color.Gray,
                     indicatorColor = Color(0xFFB5C3CE)

@@ -6,4 +6,5 @@ data class BottomNavItem(
     val route: Screen,
     val title: String,
     val icon: Int,
+    val selectedIcon: Int? = null
 )
