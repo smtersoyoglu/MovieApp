@@ -7,5 +7,11 @@ import androidx.room.PrimaryKey
 data class FavoriteMovieEntity(
     @PrimaryKey val id: Int,
     val title: String,
-    val posterPath: String?
+    val posterPath: String?,
+    val overview: String?,
+    val releaseDate: String,
+    val voteAverage: Double,
+    val runtime: Int?,
+    val genres: String?,
+    val addedDate: Long = System.currentTimeMillis()
 )
