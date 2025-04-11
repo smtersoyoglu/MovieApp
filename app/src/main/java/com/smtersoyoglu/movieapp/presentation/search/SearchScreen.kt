@@ -48,6 +48,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -74,10 +75,10 @@ fun SearchScreen(
             .padding(horizontal = 16.dp)
     ) {
         TopAppBar(
-            title = { Text( text = "Movie Search", color = MaterialTheme.colorScheme.onPrimary) },
+            title = { Text( text = "Movie Search", color = Color.White) },
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = Color.Black,
-                titleContentColor = MaterialTheme.colorScheme.onPrimary
+                titleContentColor = Color.White
             )
         )
 
@@ -88,7 +89,7 @@ fun SearchScreen(
                 viewModel.updateSearchQuery(newQuery)
             },
             label = { Text("Search Movie", color = Color.White) },
-            textStyle = TextStyle(color = Color.White),
+            textStyle = TextStyle(color = Color.White, fontSize = 16.sp),
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Color.White) },
             shape = RoundedCornerShape(32.dp),
             modifier = Modifier.fillMaxWidth()
@@ -100,14 +101,18 @@ fun SearchScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(uiState.genres) { genre ->
+                    val isSelected = uiState.selectedGenreId == genre.id
                     AssistChip(
                         onClick = { viewModel.getMoviesByGenre(genre.id) },
-                        label = { Text(genre.name) },
+                        label = {
+                            Text(
+                                text = genre.name,
+                                color = if (isSelected) Color.Black else Color.White
+                            )
+                        },
                         colors = AssistChipDefaults.assistChipColors(
-                            containerColor = if (uiState.selectedGenreId == genre.id)
-                                MaterialTheme.colorScheme.primary
-                            else
-                                MaterialTheme.colorScheme.surfaceVariant
+                            containerColor = if (isSelected) Color.White else Color.Transparent,
+                            labelColor = if (isSelected) Color.Black else Color.White
                         )
                     )
                 }
