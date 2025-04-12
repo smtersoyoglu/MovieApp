@@ -483,15 +483,24 @@ fun MovieCastAndCrew(
             )
         }
         Spacer(modifier = Modifier.height(6.dp))
-        LazyRow {
-            items(credits.cast.take(10)) { cast ->
-                CastItem(
-                    name = cast.name,
-                    character = cast.character,
-                    profilePath = cast.profilePath,
-                    personId = cast.id,
-                    onCastClick = onCastClick
-                )
+        if (credits.cast.isEmpty()) {
+            Text(
+                text = "No cast information available",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray,
+                modifier = Modifier.padding(horizontal = 4.dp, vertical = 16.dp)
+            )
+        } else {
+            LazyRow {
+                items(credits.cast.take(10)) { cast ->
+                    CastItem(
+                        name = cast.name,
+                        character = cast.character,
+                        profilePath = cast.profilePath,
+                        personId = cast.id,
+                        onCastClick = onCastClick
+                    )
+                }
             }
         }
     }
@@ -549,13 +558,21 @@ fun SimilarMoviesSection(movies: List<Movie>, onMovieClick: (Int) -> Unit) {
             color = Color.White,
             modifier = Modifier.padding(horizontal = 8.dp)
         )
-
-        LazyRow(
-            contentPadding = PaddingValues(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            items(movies) { movie ->
-                SimilarMovieItem(movie, onMovieClick)
+        if (movies.isEmpty()) {
+            Text(
+                text = "No similar movies found",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray,
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp)
+            )
+        } else {
+            LazyRow(
+                contentPadding = PaddingValues(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(movies) { movie ->
+                    SimilarMovieItem(movie, onMovieClick)
+                }
             }
         }
     }
