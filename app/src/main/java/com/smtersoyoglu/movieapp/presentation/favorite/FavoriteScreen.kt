@@ -53,7 +53,7 @@ import com.smtersoyoglu.movieapp.R
 import com.smtersoyoglu.movieapp.common.formatDate
 import com.smtersoyoglu.movieapp.domain.model.FavoriteMovie
 import com.smtersoyoglu.movieapp.navigation.Screen
-import com.smtersoyoglu.movieapp.presentation.components.EmptyScreen
+import com.smtersoyoglu.movieapp.presentation.components.EmptyFavoriteScreen
 import com.smtersoyoglu.movieapp.presentation.components.ErrorScreen
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
 import kotlinx.coroutines.delay
@@ -106,10 +106,7 @@ fun FavoriteScreen(
                 }
 
                 uiState.favorites.isEmpty() -> {
-                    EmptyScreen(
-                        message = "No favorites yet",
-                        modifier = Modifier.align(Alignment.Center)
-                    )
+                    EmptyFavoriteScreen()
                 }
 
                 else -> {
