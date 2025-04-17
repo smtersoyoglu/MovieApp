@@ -8,7 +8,9 @@ import androidx.navigation.compose.composable
 import com.smtersoyoglu.movieapp.presentation.detail.DetailScreen
 import com.smtersoyoglu.movieapp.presentation.favorite.FavoriteScreen
 import com.smtersoyoglu.movieapp.presentation.home.HomeScreen
+import com.smtersoyoglu.movieapp.presentation.login.LoginScreen
 import com.smtersoyoglu.movieapp.presentation.person.PersonDetailScreen
+import com.smtersoyoglu.movieapp.presentation.register.RegisterScreen
 import com.smtersoyoglu.movieapp.presentation.search.SearchScreen
 
 @Composable
@@ -22,6 +24,21 @@ fun NavigationGraph(
         navController = navController,
         startDestination = startDestination,
     ) {
+
+        composable<Screen.Login> {
+            LoginScreen(
+                onSignInSuccess = { navController.navigate(Screen.Home) },
+                onNavigateToSignUp = { navController.navigate(Screen.Register) },
+            )
+        }
+
+        composable<Screen.Register> {
+            RegisterScreen(
+                onSignUpSuccess = { navController.navigate(Screen.Login) },
+                onNavigateToSignIn = { navController.popBackStack() }
+            )
+        }
+
         composable<Screen.Home> {
             HomeScreen(
                 navController = navController
