@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +32,8 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -115,23 +118,41 @@ fun DetailScreen(
                                 movieDetails = movieDetails,
                                 videos = uiState.movieVideos?.videos,
                             )
+
+
                         }
 
                         item {
                             TabRow(
                                 selectedTabIndex = uiState.selectedTab,
                                 containerColor = Color.Black,
-                                contentColor = Color.White
+                                contentColor = Color.White,
+                                indicator = { tabPositions ->
+                                    TabRowDefaults.SecondaryIndicator(
+                                        modifier = Modifier.tabIndicatorOffset(tabPositions[uiState.selectedTab]),
+                                        color = Color(0xFFDC143C)
+                                    )
+                                }
                             ) {
                                 Tab(
                                     selected = uiState.selectedTab == 0,
                                     onClick = { viewModel.selectTab(0) },
-                                    text = { Text("Overview") }
+                                    text = {
+                                        Text(
+                                            text = "Overview",
+                                            color = if (uiState.selectedTab == 0) Color(0xFFDC143C) else Color.White
+                                        )
+                                    }
                                 )
                                 Tab(
                                     selected = uiState.selectedTab == 1,
                                     onClick = { viewModel.selectTab(1) },
-                                    text = { Text("Images") }
+                                    text = {
+                                        Text(
+                                            text = "Images",
+                                            color = if (uiState.selectedTab == 1) Color(0xFFDC143C) else Color.White
+                                        )
+                                    }
                                 )
                             }
                         }
@@ -146,6 +167,13 @@ fun DetailScreen(
                                     }
                                 )
                             }
+                            HorizontalDivider(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 8.dp),
+                                thickness = 0.5.dp,
+                                color = Color(0xFF800000)
+                            )
                         }
 
                         item {
@@ -157,6 +185,13 @@ fun DetailScreen(
                                     }
                                 )
                             }
+                            HorizontalDivider(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 8.dp),
+                                thickness = 1.dp,
+                                color = Color(0xFF800000)
+                            )
                         }
 
                         item {
@@ -367,7 +402,11 @@ fun MovieHeader(
                                 }
                             })
                         }
-                    }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 140.dp)
+                        .height(250.dp)
                 )
             }
         }

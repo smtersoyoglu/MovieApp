@@ -1,6 +1,8 @@
 package com.smtersoyoglu.movieapp.presentation.search
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -113,6 +115,10 @@ fun SearchScreen(
                         colors = AssistChipDefaults.assistChipColors(
                             containerColor = if (isSelected) Color.White else Color.Transparent,
                             labelColor = if (isSelected) Color.Black else Color.White
+                        ),
+                        border = BorderStroke(
+                            width = 0.5.dp,
+                            color = if (isSelected) Color.White else Color(0xFF800000) // Çerçeve rengi
                         )
                     )
                 }

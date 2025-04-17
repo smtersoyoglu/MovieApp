@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -82,9 +83,6 @@ fun HomeScreen(
                     item {
                         FeaturedMovieCard(
                             movies = uiState.trendingMovieList,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(450.dp),
                             onMovieClicked = { movieId ->
                                 navController.navigate(Screen.Detail(movieId))
                             }
@@ -176,7 +174,17 @@ fun FeaturedMovieCard(
                         .build(),
                     contentDescription = movie.title,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(450.dp)
+                )
+
+                HorizontalDivider(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter),
+                    thickness = 0.5.dp,
+                    color = Color(0xFF800000)
                 )
 
                 Box(
@@ -303,7 +311,7 @@ fun MovieSection(
         Spacer(modifier = Modifier.height(8.dp))
 
         LazyRow(
-            contentPadding = PaddingValues(horizontal = 16.dp),
+            contentPadding = PaddingValues(horizontal = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(movies) { movie ->
@@ -343,7 +351,7 @@ fun MovieItem(
                         .fillMaxWidth()
                         .height(200.dp)
                         .clip(RoundedCornerShape(12.dp)),
-                    error  = painterResource(R.drawable.ic_image_not_found),
+                    error = painterResource(R.drawable.ic_image_not_found),
                     fallback = painterResource(R.drawable.ic_image_not_found)
                 )
             }
@@ -358,6 +366,13 @@ fun MovieItem(
                 modifier = Modifier
                     .padding(8.dp)
                     .fillMaxWidth()
+            )
+
+            HorizontalDivider(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                thickness = 0.5.dp,
+                color = Color(0xFF800000)
             )
         }
     }

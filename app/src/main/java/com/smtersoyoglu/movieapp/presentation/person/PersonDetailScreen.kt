@@ -1,6 +1,7 @@
 package com.smtersoyoglu.movieapp.presentation.person
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,6 +22,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -55,6 +57,7 @@ import com.smtersoyoglu.movieapp.domain.model.PersonImage
 import com.smtersoyoglu.movieapp.domain.model.PersonMovieCast
 import com.smtersoyoglu.movieapp.navigation.Screen
 import com.smtersoyoglu.movieapp.presentation.components.EmptyScreen
+import com.smtersoyoglu.movieapp.presentation.components.ErrorScreen
 import com.smtersoyoglu.movieapp.presentation.components.ExternalLinkIconButton
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
 import com.smtersoyoglu.movieapp.presentation.components.PersonImageDialog
@@ -79,7 +82,7 @@ fun PersonDetailScreen(
             }
 
             uiState.error != null -> {
-                EmptyScreen(message = uiState.error ?: "Bilinmeyen bir hata oluştu")
+                ErrorScreen(message = uiState.error ?: "Bilinmeyen bir hata oluştu")
             }
 
             else -> {
@@ -92,6 +95,8 @@ fun PersonDetailScreen(
                                 person = personDetails,
                                 externalIds = uiState.personExternalIds,
                             )
+
+
                         }
                         item {
                             PersonBiography(
@@ -164,6 +169,15 @@ fun PersonHeader(
                 .blur(5.dp),
             contentScale = ContentScale.Crop
         )
+
+        HorizontalDivider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter),
+            thickness = 0.5.dp,
+            color = Color(0xFF800000)
+        )
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -187,6 +201,7 @@ fun PersonHeader(
                 contentDescription = person.name,
                 modifier = Modifier
                     .size(150.dp)
+                    .border(1.dp, Color(0xFF800000), CircleShape)
                     .clip(CircleShape),
                 contentScale = ContentScale.Crop,
                 error = painterResource(R.drawable.ic_no_image_person),
@@ -316,13 +331,22 @@ fun PersonBiography(
             Text(
                 text = if (isExpanded) "Show Less" else "Show More",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.primary,
+                color =Color(0xFFDC143C),
                 modifier = Modifier
                     .padding(top = 4.dp)
                     .clickable { onToggleExpand() }
             )
         }
+
     }
+    HorizontalDivider(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 4.dp),
+        thickness = 0.5.dp,
+        color = Color(0xFF800000)
+    )
+
 }
 
 @Composable
@@ -345,15 +369,29 @@ fun PersonImagesSection(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(images.sortedByDescending { it.voteAverage }) { image ->
-                AsyncImage(
-                    model = "https://image.tmdb.org/t/p/w500${image.filePath}",
-                    contentDescription = "Person Image",
-                    modifier = Modifier
-                        .size(150.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .clickable { onImageClick(image.filePath) },
-                    contentScale = ContentScale.Crop
-                )
+                Column(
+                    modifier = Modifier.width(150.dp)
+                ) {
+                    AsyncImage(
+                        model = "https://image.tmdb.org/t/p/w500${image.filePath}",
+                        contentDescription = "Person Image",
+                        modifier = Modifier
+                            .size(150.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .clickable { onImageClick(image.filePath) },
+                        contentScale = ContentScale.Crop,
+                        error = painterResource(R.drawable.ic_no_image_person),
+                        fallback = painterResource(R.drawable.ic_no_image_person)
+                    )
+                    Spacer(modifier = Modifier.height(6.dp))
+                    HorizontalDivider(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 4.dp),
+                        thickness = 1.dp,
+                        color = Color(0xFF800000)
+                    )
+                }
             }
         }
     }
