@@ -1,4 +1,4 @@
-package com.smtersoyoglu.movieapp.ui.theme
+package com.smtersoyoglu.movieapp.presentation.theme
 
 import android.app.Activity
 import android.os.Build

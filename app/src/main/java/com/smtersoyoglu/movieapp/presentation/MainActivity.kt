@@ -16,7 +16,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.smtersoyoglu.movieapp.navigation.NavigationGraph
 import com.smtersoyoglu.movieapp.navigation.Screen
 import com.smtersoyoglu.movieapp.navigation.bottomnav.BottomNavBar
-import com.smtersoyoglu.movieapp.ui.theme.MovieAppTheme
+import com.smtersoyoglu.movieapp.presentation.theme.MovieAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) { innerPadding ->
-                    val startDestination = Screen.Home
+                    val startDestination = Screen.Welcome
                     NavigationGraph(
                         navController = navController,
                         startDestination = startDestination,
