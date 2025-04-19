@@ -36,12 +36,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -50,6 +52,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.smtersoyoglu.movieapp.R
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
+import com.smtersoyoglu.movieapp.presentation.theme.ButtonColor
 
 @Composable
 fun LoginScreen(
@@ -98,14 +101,14 @@ fun LoginScreen(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Popcorn’s Portal to the Cinematic Cosmos",
+                text = stringResource(R.string.login_title),
                 style = MaterialTheme.typography.headlineSmall,
                 color = Color.White,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "Grab your popcorn and step into the movie magic!",
+                text = stringResource(R.string.welcome_subtitle),
                 style = MaterialTheme.typography.bodyLarge,
                 color = Color.White.copy(alpha = 0.7f)
             )
@@ -121,13 +124,13 @@ fun LoginScreen(
                     modifier = Modifier.padding(24.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    var email by remember { mutableStateOf("") }
-                    var password by remember { mutableStateOf("") }
+                    var email by rememberSaveable  { mutableStateOf("") }
+                    var password by rememberSaveable  { mutableStateOf("") }
 
                     OutlinedTextField(
                         value = email,
                         onValueChange = { email = it },
-                        label = { Text("Email") },
+                        label = { Text(stringResource(R.string.email)) },
                         leadingIcon = {
                             Icon(
                                 Icons.Default.Email,
@@ -139,7 +142,7 @@ fun LoginScreen(
                         isError = uiState.error != null && email.isEmpty(),
                         supportingText = {
                             if (uiState.error != null && email.isEmpty()) {
-                                Text("Invalid email", color = Color.Red)
+                                Text(stringResource(R.string.invalid_email), color = Color.Red)
                             }
                         },
                         colors = OutlinedTextFieldDefaults.colors(
@@ -155,7 +158,7 @@ fun LoginScreen(
                     OutlinedTextField(
                         value = password,
                         onValueChange = { password = it },
-                        label = { Text("Password") },
+                        label = { Text(stringResource(R.string.password)) },
                         leadingIcon = {
                             Icon(
                                 Icons.Default.Lock,
@@ -168,7 +171,7 @@ fun LoginScreen(
                         isError = uiState.error != null && password.length < 6,
                         supportingText = {
                             if (uiState.error != null && password.length < 6) {
-                                Text("Password must be at least 6 characters", color = Color.Red)
+                                Text(stringResource(R.string.error_password_min_length), color = Color.Red)
                             }
                         },
                         colors = OutlinedTextFieldDefaults.colors(
@@ -187,14 +190,14 @@ fun LoginScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(48.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFC107)),
+                        colors = ButtonDefaults.buttonColors(containerColor = ButtonColor),
                         shape = RoundedCornerShape(8.dp)
                     ) {
                         if (uiState.isLoading) {
                             LoadingBar()
                         } else {
                             Text(
-                                text = "Sign In",
+                                text = stringResource(R.string.sign_in),
                                 color = Color.Black,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 18.sp
@@ -219,7 +222,7 @@ fun LoginScreen(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "Sign In with Google",
+                                text = stringResource(R.string.sign_in_with_google),
                                 color = Color.White,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp
@@ -235,14 +238,14 @@ fun LoginScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Don't have an account? ",
+                    text = stringResource(R.string.don_t_have_an_account),
                     color = Color.White.copy(alpha = 0.7f),
                     fontSize = 15.sp
                 )
                 TextButton(onClick = onNavigateToSignUp) {
                     Text(
-                        text = "Sign Up",
-                        color = Color(0xFFFFC107),
+                        text = stringResource(R.string.sign_up),
+                        color = ButtonColor,
                         fontSize = 15.sp
                     )
                 }

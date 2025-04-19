@@ -34,12 +34,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -48,6 +50,7 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.smtersoyoglu.movieapp.R
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
+import com.smtersoyoglu.movieapp.presentation.theme.ButtonColor
 
 @Composable
 fun RegisterScreen(
@@ -108,15 +111,15 @@ fun RegisterScreen(
                         modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 48.dp, bottom = 24.dp),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        var name by remember { mutableStateOf("") }
-                        var email by remember { mutableStateOf("") }
-                        var password by remember { mutableStateOf("") }
-                        var confirmPassword by remember { mutableStateOf("") }
+                        var name by rememberSaveable  { mutableStateOf("") }
+                        var email by rememberSaveable  { mutableStateOf("") }
+                        var password by rememberSaveable  { mutableStateOf("") }
+                        var confirmPassword by rememberSaveable  { mutableStateOf("") }
 
                         OutlinedTextField(
                             value = name,
                             onValueChange = { name = it },
-                            label = { Text("Full Name") },
+                            label = { Text(stringResource(R.string.full_name)) },
                             leadingIcon = {
                                 Icon(
                                     Icons.Default.Person,
@@ -138,7 +141,7 @@ fun RegisterScreen(
                         OutlinedTextField(
                             value = email,
                             onValueChange = { email = it },
-                            label = { Text("Email") },
+                            label = { Text(stringResource(R.string.email)) },
                             leadingIcon = {
                                 Icon(
                                     Icons.Default.Email,
@@ -150,7 +153,7 @@ fun RegisterScreen(
                             isError = uiState.error?.contains("email") == true,
                             supportingText = {
                                 if (uiState.error?.contains("email") == true) {
-                                    Text("Invalid email format", color = Color.Red)
+                                    Text(stringResource(R.string.invalid_email_format), color = Color.Red)
                                 }
                             },
                             colors = OutlinedTextFieldDefaults.colors(
@@ -166,7 +169,7 @@ fun RegisterScreen(
                         OutlinedTextField(
                             value = password,
                             onValueChange = { password = it },
-                            label = { Text("Password") },
+                            label = { Text(stringResource(R.string.password)) },
                             leadingIcon = {
                                 Icon(
                                     Icons.Default.Lock,
@@ -179,7 +182,7 @@ fun RegisterScreen(
                             isError = uiState.error?.contains("password") == true,
                             supportingText = {
                                 if (uiState.error?.contains("password") == true) {
-                                    Text("Password must be at least 6 characters", color = Color.Red)
+                                    Text(stringResource(R.string.error_password_min_length), color = Color.Red)
                                 }
                             },
                             colors = OutlinedTextFieldDefaults.colors(
@@ -195,7 +198,7 @@ fun RegisterScreen(
                         OutlinedTextField(
                             value = confirmPassword,
                             onValueChange = { confirmPassword = it },
-                            label = { Text("Confirm Password") },
+                            label = { Text(stringResource(R.string.confirm_password)) },
                             leadingIcon = {
                                 Icon(
                                     Icons.Default.Lock,
@@ -208,7 +211,7 @@ fun RegisterScreen(
                             isError = password != confirmPassword && confirmPassword.isNotEmpty(),
                             supportingText = {
                                 if (password != confirmPassword && confirmPassword.isNotEmpty()) {
-                                    Text("Passwords do not match", color = Color.Red)
+                                    Text(stringResource(R.string.passwords_do_not_match), color = Color.Red)
                                 }
                             },
                             colors = OutlinedTextFieldDefaults.colors(
@@ -227,14 +230,14 @@ fun RegisterScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(48.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFC107)),
+                            colors = ButtonDefaults.buttonColors(containerColor = ButtonColor),
                             shape = RoundedCornerShape(8.dp)
                         ) {
                             if (uiState.isLoading) {
                                 LoadingBar()
                             } else {
                                 Text(
-                                    text = "Sign Up",
+                                    text = stringResource(R.string.sign_up),
                                     color = Color.Black,
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 18.sp
@@ -251,14 +254,14 @@ fun RegisterScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Already have an account? ",
+                    text = stringResource(R.string.already_have_an_account),
                     color = Color.White.copy(alpha = 0.7f),
                     fontSize = 15.sp
                 )
                 TextButton(onClick = onNavigateToSignIn) {
                     Text(
-                        text = "Sign In",
-                        color = Color(0xFFFFC107),
+                        text = stringResource(R.string.sign_in),
+                        color = ButtonColor,
                         fontSize = 15.sp
                     )
                 }
