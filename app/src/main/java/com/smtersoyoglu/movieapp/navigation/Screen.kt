@@ -28,6 +28,9 @@ sealed interface Screen {
     @Serializable
     data object Favorite : Screen
 
+    @Serializable
+    data object Profile : Screen
+
     companion object {
         fun getRoute(screen: Screen): String {
             return screen::class.qualifiedName.orEmpty()

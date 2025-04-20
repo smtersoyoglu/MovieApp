@@ -44,6 +44,12 @@ fun BottomNavBar(navController: NavController) {
             title = "Favorite",
             icon = R.drawable.ic_not_favorite,
             selectedIcon = R.drawable.ic_favorite
+        ),
+        BottomNavItem(
+            route = Screen.Profile,
+            title = "Profile",
+            icon = R.drawable.ic_not_profile,
+            selectedIcon = R.drawable.ic_profile
         )
     )
 
