@@ -1,6 +1,7 @@
 package com.smtersoyoglu.movieapp.presentation.detail
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -49,6 +50,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -73,6 +75,8 @@ import com.smtersoyoglu.movieapp.navigation.Screen
 import com.smtersoyoglu.movieapp.presentation.components.ErrorScreen
 import com.smtersoyoglu.movieapp.presentation.components.ImageDialog
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
+import com.smtersoyoglu.movieapp.presentation.theme.HorizontalDividerColor
+import com.smtersoyoglu.movieapp.presentation.theme.TabRowColor
 import kotlinx.coroutines.delay
 
 @Composable
@@ -105,7 +109,7 @@ fun DetailScreen(
             }
 
             uiState.error != null -> {
-                ErrorScreen(message = uiState.error ?: "Bilinmeyen bir hata oluştu")
+                ErrorScreen(message = uiState.error ?: stringResource(R.string.error_message))
             }
 
             else -> {
@@ -118,19 +122,24 @@ fun DetailScreen(
                                 movieDetails = movieDetails,
                                 videos = uiState.movieVideos?.videos,
                             )
-
-
+                            HorizontalDivider(
+                                modifier = Modifier.fillMaxWidth(),
+                                thickness = 0.5.dp,
+                                color = HorizontalDividerColor
+                            )
                         }
 
                         item {
                             TabRow(
                                 selectedTabIndex = uiState.selectedTab,
-                                containerColor = Color.Black,
+                                containerColor = Color.Transparent,
                                 contentColor = Color.White,
                                 indicator = { tabPositions ->
                                     TabRowDefaults.SecondaryIndicator(
-                                        modifier = Modifier.tabIndicatorOffset(tabPositions[uiState.selectedTab]),
-                                        color = Color(0xFFDC143C)
+                                        modifier = Modifier
+                                            .tabIndicatorOffset(tabPositions[uiState.selectedTab])
+                                            .height(1.5.dp),
+                                        color = TabRowColor
                                     )
                                 }
                             ) {
@@ -139,8 +148,8 @@ fun DetailScreen(
                                     onClick = { viewModel.selectTab(0) },
                                     text = {
                                         Text(
-                                            text = "Overview",
-                                            color = if (uiState.selectedTab == 0) Color(0xFFDC143C) else Color.White
+                                            text = stringResource(R.string.overview),
+                                            color = if (uiState.selectedTab == 0) TabRowColor else Color.White
                                         )
                                     }
                                 )
@@ -149,8 +158,8 @@ fun DetailScreen(
                                     onClick = { viewModel.selectTab(1) },
                                     text = {
                                         Text(
-                                            text = "Images",
-                                            color = if (uiState.selectedTab == 1) Color(0xFFDC143C) else Color.White
+                                            text = stringResource(R.string.images),
+                                            color = if (uiState.selectedTab == 1) TabRowColor else Color.White
                                         )
                                     }
                                 )
@@ -172,7 +181,7 @@ fun DetailScreen(
                                     .fillMaxWidth()
                                     .padding(top = 8.dp),
                                 thickness = 0.5.dp,
-                                color = Color(0xFF800000)
+                                color = HorizontalDividerColor
                             )
                         }
 
@@ -189,8 +198,8 @@ fun DetailScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(top = 8.dp),
-                                thickness = 1.dp,
-                                color = Color(0xFF800000)
+                                thickness = 0.5.dp,
+                                color = HorizontalDividerColor
                             )
                         }
 
@@ -417,6 +426,11 @@ fun MovieHeader(
 fun GenreChip(genre: String) {
     Box(
         modifier = Modifier
+            .border(
+                width = 0.5.dp,
+                color = HorizontalDividerColor,
+                shape = RoundedCornerShape(16.dp)
+            )
             .background(
                 color = Color.White.copy(alpha = 0.2f),
                 shape = RoundedCornerShape(16.dp)
@@ -440,13 +454,13 @@ fun MovieOverview(overview: String?) {
 
     ) {
         Text(
-            text = "Overview",
+            text = stringResource(R.string.overview),
             style = MaterialTheme.typography.headlineSmall,
             color = Color.White
         )
         Spacer(modifier = Modifier.height(6.dp))
         Text(
-            text = overview ?: "No overview available",
+            text = overview ?: stringResource(R.string.no_overview_available),
             style = MaterialTheme.typography.bodyMedium,
             color = Color.White,
         )
@@ -464,14 +478,14 @@ fun MovieImagesSection(
             .padding(8.dp)
     ) {
         Text(
-            text = "Images",
+            text = stringResource(R.string.images),
             style = MaterialTheme.typography.headlineSmall,
             color = Color.White
         )
         Spacer(modifier = Modifier.height(6.dp))
         if (images.isNullOrEmpty()) {
             Text(
-                text = "No images available",
+                text = stringResource(R.string.no_images_available),
                 color = Color.White
             )
         } else {
@@ -510,12 +524,12 @@ fun MovieCastAndCrew(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Cast",
+                text = stringResource(R.string.cast),
                 style = MaterialTheme.typography.headlineSmall,
                 color = Color.White
             )
             Text(
-                text = "See All",
+                text = stringResource(R.string.see_all),
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.LightGray,
                 modifier = Modifier.clickable { /* Navigate to full cast screen */ }
@@ -524,7 +538,7 @@ fun MovieCastAndCrew(
         Spacer(modifier = Modifier.height(6.dp))
         if (credits.cast.isEmpty()) {
             Text(
-                text = "No cast information available",
+                text = stringResource(R.string.no_cast_information_available),
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Gray,
                 modifier = Modifier.padding(horizontal = 4.dp, vertical = 16.dp)
@@ -592,14 +606,14 @@ fun CastItem(
 fun SimilarMoviesSection(movies: List<Movie>, onMovieClick: (Int) -> Unit) {
     Column(modifier = Modifier.padding(vertical = 8.dp)) {
         Text(
-            text = "Similar Movies",
+            text = stringResource(R.string.similar_movies),
             style = MaterialTheme.typography.headlineSmall,
             color = Color.White,
             modifier = Modifier.padding(horizontal = 8.dp)
         )
         if (movies.isEmpty()) {
             Text(
-                text = "No similar movies found",
+                text = stringResource(R.string.no_similar_movies_found),
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Gray,
                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp)

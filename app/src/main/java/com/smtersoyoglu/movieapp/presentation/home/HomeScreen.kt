@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -51,7 +52,9 @@ import com.smtersoyoglu.movieapp.common.formatDate
 import com.smtersoyoglu.movieapp.domain.model.Movie
 import com.smtersoyoglu.movieapp.navigation.Screen
 import com.smtersoyoglu.movieapp.presentation.components.EmptyScreen
+import com.smtersoyoglu.movieapp.presentation.components.ErrorScreen
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
+import com.smtersoyoglu.movieapp.presentation.theme.HorizontalDividerColor
 import kotlinx.coroutines.delay
 
 @Composable
@@ -72,7 +75,9 @@ fun HomeScreen(
             }
 
             !uiState.error.isNullOrBlank() -> {
-                EmptyScreen(message = uiState.error ?: "Bilinmeyen bir hata oluştu")
+                ErrorScreen(
+                    message = uiState.error ?: stringResource(R.string.error_message)
+                )
             }
 
             else -> {
@@ -91,7 +96,7 @@ fun HomeScreen(
 
                     item {
                         MovieSection(
-                            title = "Now Playing",
+                            title = stringResource(R.string.now_playing),
                             movies = uiState.nowPlayingMovieList,
                             onMovieClicked = { movieId ->
                                 navController.navigate(Screen.Detail(movieId))
@@ -101,7 +106,7 @@ fun HomeScreen(
 
                     item {
                         MovieSection(
-                            title = "Popular",
+                            title = stringResource(R.string.popular),
                             movies = uiState.popularMovieList,
                             onMovieClicked = { movieId ->
                                 navController.navigate(Screen.Detail(movieId))
@@ -111,7 +116,7 @@ fun HomeScreen(
 
                     item {
                         MovieSection(
-                            title = "Top Rated",
+                            title = stringResource(R.string.top_rated),
                             movies = uiState.topRatedMovieList,
                             onMovieClicked = { movieId ->
                                 navController.navigate(Screen.Detail(movieId))
@@ -121,7 +126,7 @@ fun HomeScreen(
 
                     item {
                         MovieSection(
-                            title = "Upcoming",
+                            title = stringResource(R.string.upcoming),
                             movies = uiState.upcomingMovieList,
                             onMovieClicked = { movieId ->
                                 navController.navigate(Screen.Detail(movieId))
@@ -141,7 +146,7 @@ fun FeaturedMovieCard(
     onMovieClicked: (Int) -> Unit,
 ) {
     if (movies.isEmpty()) {
-        EmptyScreen(message = "Trend filmler yüklenemedi.")
+        EmptyScreen(message = stringResource(R.string.trending_empty_message))
         return
     }
 
@@ -184,7 +189,7 @@ fun FeaturedMovieCard(
                         .fillMaxWidth()
                         .align(Alignment.BottomCenter),
                     thickness = 0.5.dp,
-                    color = Color(0xFF800000)
+                    color = HorizontalDividerColor
                 )
 
                 Box(
@@ -203,7 +208,7 @@ fun FeaturedMovieCard(
                 )
 
                 Text(
-                    text = "Trending this week",
+                    text = stringResource(R.string.trending_this_week),
                     color = Color.White,
                     style = MaterialTheme.typography.labelLarge.copy(fontSize = 24.sp),
                     modifier = Modifier
@@ -369,10 +374,9 @@ fun MovieItem(
             )
 
             HorizontalDivider(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 thickness = 0.5.dp,
-                color = Color(0xFF800000)
+                color = HorizontalDividerColor
             )
         }
     }

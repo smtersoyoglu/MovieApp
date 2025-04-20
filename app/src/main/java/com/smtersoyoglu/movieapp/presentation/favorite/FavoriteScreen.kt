@@ -1,6 +1,7 @@
 package com.smtersoyoglu.movieapp.presentation.favorite
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -43,6 +44,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -56,6 +58,7 @@ import com.smtersoyoglu.movieapp.navigation.Screen
 import com.smtersoyoglu.movieapp.presentation.components.EmptyFavoriteScreen
 import com.smtersoyoglu.movieapp.presentation.components.ErrorScreen
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
+import com.smtersoyoglu.movieapp.presentation.theme.HorizontalDividerColor
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,7 +81,7 @@ fun FavoriteScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Favorites") },
+                title = { Text(stringResource(R.string.favorites)) },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.Black,
                     titleContentColor = Color.White
@@ -100,7 +103,7 @@ fun FavoriteScreen(
 
                 uiState.error != null -> {
                     ErrorScreen(
-                        message = uiState.error ?: "An unknown error occurred",
+                        message = uiState.error ?: stringResource(R.string.error_message),
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
@@ -185,11 +188,16 @@ fun FavoriteItem(
                                     style = MaterialTheme.typography.bodySmall,
                                     color = Color.White.copy(alpha = 0.9f),
                                     modifier = Modifier
+                                        .border(
+                                            width = 0.5.dp,
+                                            color = HorizontalDividerColor,
+                                            shape = RoundedCornerShape(4.dp)
+                                        )
                                         .background(
                                             color = Color.White.copy(alpha = 0.1f),
                                             shape = RoundedCornerShape(4.dp)
                                         )
-                                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                                        .padding(horizontal = 8.dp, vertical = 4.dp),
                                 )
                             }
                         }
