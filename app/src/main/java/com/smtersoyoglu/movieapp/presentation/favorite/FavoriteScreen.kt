@@ -49,12 +49,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.smtersoyoglu.movieapp.R
 import com.smtersoyoglu.movieapp.common.formatDate
 import com.smtersoyoglu.movieapp.domain.model.FavoriteMovie
-import com.smtersoyoglu.movieapp.navigation.Screen
 import com.smtersoyoglu.movieapp.presentation.components.EmptyFavoriteScreen
 import com.smtersoyoglu.movieapp.presentation.components.ErrorScreen
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
@@ -65,7 +63,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun FavoriteScreen(
     viewModel: FavoriteViewModel = hiltViewModel(),
-    navController: NavController,
+    navigateToDetail: (Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -120,7 +118,7 @@ fun FavoriteScreen(
                         items(uiState.favorites) { favorite ->
                             FavoriteItem(
                                 favorite = favorite,
-                                onMovieClick = { navController.navigate(Screen.Detail(favorite.id)) },
+                                onMovieClick = navigateToDetail,
                                 onRemoveClick = { viewModel.removeFavorite(favorite) }
                             )
                         }
@@ -135,12 +133,12 @@ fun FavoriteScreen(
 @Composable
 fun FavoriteItem(
     favorite: FavoriteMovie,
-    onMovieClick: () -> Unit,
+    onMovieClick: (Int) -> Unit,
     onRemoveClick: () -> Unit,
 ) {
     Card(
         modifier = Modifier
-            .clickable { onMovieClick() },
+            .clickable { onMovieClick(favorite.id) },
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.Black.copy(alpha = 0.8f))

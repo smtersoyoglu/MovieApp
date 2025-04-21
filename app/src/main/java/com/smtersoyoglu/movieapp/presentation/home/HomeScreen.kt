@@ -44,13 +44,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.smtersoyoglu.movieapp.R
 import com.smtersoyoglu.movieapp.common.formatDate
 import com.smtersoyoglu.movieapp.domain.model.Movie
-import com.smtersoyoglu.movieapp.navigation.Screen
 import com.smtersoyoglu.movieapp.presentation.components.EmptyScreen
 import com.smtersoyoglu.movieapp.presentation.components.ErrorScreen
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
@@ -60,7 +58,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
-    navController: NavController,
+    navigateToMovieDetail: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -88,9 +86,7 @@ fun HomeScreen(
                     item {
                         FeaturedMovieCard(
                             movies = uiState.trendingMovieList,
-                            onMovieClicked = { movieId ->
-                                navController.navigate(Screen.Detail(movieId))
-                            }
+                            onMovieClicked = navigateToMovieDetail
                         )
                     }
 
@@ -98,9 +94,7 @@ fun HomeScreen(
                         MovieSection(
                             title = stringResource(R.string.now_playing),
                             movies = uiState.nowPlayingMovieList,
-                            onMovieClicked = { movieId ->
-                                navController.navigate(Screen.Detail(movieId))
-                            }
+                            onMovieClicked = navigateToMovieDetail
                         )
                     }
 
@@ -108,9 +102,7 @@ fun HomeScreen(
                         MovieSection(
                             title = stringResource(R.string.popular),
                             movies = uiState.popularMovieList,
-                            onMovieClicked = { movieId ->
-                                navController.navigate(Screen.Detail(movieId))
-                            }
+                            onMovieClicked = navigateToMovieDetail
                         )
                     }
 
@@ -118,9 +110,7 @@ fun HomeScreen(
                         MovieSection(
                             title = stringResource(R.string.top_rated),
                             movies = uiState.topRatedMovieList,
-                            onMovieClicked = { movieId ->
-                                navController.navigate(Screen.Detail(movieId))
-                            }
+                            onMovieClicked = navigateToMovieDetail
                         )
                     }
 
@@ -128,9 +118,7 @@ fun HomeScreen(
                         MovieSection(
                             title = stringResource(R.string.upcoming),
                             movies = uiState.upcomingMovieList,
-                            onMovieClicked = { movieId ->
-                                navController.navigate(Screen.Detail(movieId))
-                            }
+                            onMovieClicked = navigateToMovieDetail
                         )
                     }
                 }
@@ -141,8 +129,8 @@ fun HomeScreen(
 
 @Composable
 fun FeaturedMovieCard(
-    movies: List<Movie>,
     modifier: Modifier = Modifier,
+    movies: List<Movie>,
     onMovieClicked: (Int) -> Unit,
 ) {
     if (movies.isEmpty()) {

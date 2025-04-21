@@ -47,25 +47,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.smtersoyoglu.movieapp.R
 import com.smtersoyoglu.movieapp.domain.model.Movie
-import com.smtersoyoglu.movieapp.navigation.Screen
 import com.smtersoyoglu.movieapp.presentation.components.EmptySearchState
 import com.smtersoyoglu.movieapp.presentation.components.ErrorScreen
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
+import com.smtersoyoglu.movieapp.presentation.theme.HorizontalDividerColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     viewModel: SearchScreenViewModel = hiltViewModel(),
-    navController: NavController,
+    navigateToDetail: (Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var searchQuery by rememberSaveable { mutableStateOf("") }
@@ -77,7 +77,7 @@ fun SearchScreen(
             .padding(horizontal = 16.dp)
     ) {
         TopAppBar(
-            title = { Text( text = "Movie Search", color = Color.White) },
+            title = { Text(text = stringResource(R.string.search_title), color = Color.White) },
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = Color.Black,
                 titleContentColor = Color.White
@@ -90,9 +90,15 @@ fun SearchScreen(
                 searchQuery = newQuery
                 viewModel.updateSearchQuery(newQuery)
             },
-            label = { Text("Search Movie", color = Color.White) },
+            label = { Text(stringResource(R.string.search_movies), color = Color.White) },
             textStyle = TextStyle(color = Color.White, fontSize = 16.sp),
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Color.White) },
+            leadingIcon = {
+                Icon(
+                    Icons.Default.Search,
+                    contentDescription = null,
+                    tint = Color.White
+                )
+            },
             shape = RoundedCornerShape(32.dp),
             modifier = Modifier.fillMaxWidth()
         )
@@ -118,7 +124,7 @@ fun SearchScreen(
                         ),
                         border = BorderStroke(
                             width = 0.5.dp,
-                            color = if (isSelected) Color.White else Color(0xFF800000) // Çerçeve rengi
+                            color = if (isSelected) Color.White else HorizontalDividerColor
                         )
                     )
                 }
@@ -129,12 +135,15 @@ fun SearchScreen(
             uiState.isLoading -> {
                 LoadingBar()
             }
+
             uiState.error != null -> {
-                ErrorScreen(message = "Bir hata oluştu: ${uiState.error}")
+                ErrorScreen(message = stringResource(R.string.error_message, uiState.error ?: ""))
             }
+
             searchQuery.isNotBlank() && uiState.movies.isEmpty() -> {
                 EmptySearchState(query = searchQuery)
             }
+
             else -> {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(3),
@@ -143,9 +152,10 @@ fun SearchScreen(
                     modifier = Modifier.padding(top = 12.dp)
                 ) {
                     items(uiState.movies) { movie ->
-                        MovieGridItem(movie = movie) { movieId ->
-                            navController.navigate(Screen.Detail(movieId))
-                        }
+                        MovieGridItem(
+                            movie = movie,
+                            onMovieClick = navigateToDetail
+                        )
                     }
                 }
             }
@@ -170,7 +180,7 @@ fun MovieGridItem(movie: Movie, onMovieClick: (Int) -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(2 / 3f),
-                error  = painterResource(R.drawable.ic_image_not_found),
+                error = painterResource(R.drawable.ic_image_not_found),
                 fallback = painterResource(R.drawable.ic_image_not_found)
             )
             Row(

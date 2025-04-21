@@ -1,4 +1,9 @@
 <resources>
+    <!-- BottomNavBar -->
+    <string name="movies">Movies</string>
+    <string name="search">Search</string>
+    <string name="favorite">Favorite</string>
+    <string name="profile">Profile</string>
 
     <!-- Components -->
     <string name="error_no_internet">No Internet Connection</string>
@@ -47,4 +52,23 @@
     <!-- Favorite Screen  -->
     <string name="favorites">Favorites</string>
 
+    <!-- Person Detail Screen  -->
+    <string name="movies_acted_in">Movies Acted In</string>
+    <string name="born">Born: %1$s</string>
+    <string name="died">Died: %1$s</string>
+    <string name="from">From: %1$s</string>
+    <string name="popularity">Popularity: %1$s</string>
+    <string name="gender">Gender: %1$s</string>
+    <string name="female">Female</string>
+    <string name="male">Male</string>
+    <string name="unknown">Unknown</string>
+    <string name="biography">Biography</string>
+    <string name="no_biography_available">No biography available</string>
+    <string name="show_less">Show Less</string>
+    <string name="show_more">Show More</string>
+    <string name="photos">Photos</string>
+
+    <!-- Search Screen  -->
+    <string name="search_title">Search</string>
+    <string name="search_movies">Search Movies</string>
 </resources>

@@ -41,12 +41,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.smtersoyoglu.movieapp.R
 import com.smtersoyoglu.movieapp.common.SocialMediaLinks
@@ -55,18 +55,17 @@ import com.smtersoyoglu.movieapp.domain.model.PersonDetails
 import com.smtersoyoglu.movieapp.domain.model.PersonExternalIds
 import com.smtersoyoglu.movieapp.domain.model.PersonImage
 import com.smtersoyoglu.movieapp.domain.model.PersonMovieCast
-import com.smtersoyoglu.movieapp.navigation.Screen
-import com.smtersoyoglu.movieapp.presentation.components.EmptyScreen
 import com.smtersoyoglu.movieapp.presentation.components.ErrorScreen
 import com.smtersoyoglu.movieapp.presentation.components.ExternalLinkIconButton
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
 import com.smtersoyoglu.movieapp.presentation.components.PersonImageDialog
+import com.smtersoyoglu.movieapp.presentation.theme.HorizontalDividerColor
 
 @Composable
 fun PersonDetailScreen(
     viewModel: PersonDetailViewModel = hiltViewModel(),
-    navController: NavController,
-    onBackClick: () -> Unit,
+    navigateBack: () -> Unit,
+    navigateToMovieDetail: (Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var selectedPersonImageUrl by remember { mutableStateOf<String?>(null) }
@@ -82,7 +81,7 @@ fun PersonDetailScreen(
             }
 
             uiState.error != null -> {
-                ErrorScreen(message = uiState.error ?: "Bilinmeyen bir hata oluştu")
+                ErrorScreen(message = uiState.error ?: stringResource(R.string.error_message))
             }
 
             else -> {
@@ -117,23 +116,23 @@ fun PersonDetailScreen(
                         item {
                             uiState.personMovieCredits?.let { credits ->
                                 PersonMoviesSection(
-                                    title = "Movies Acted In",
+                                    title = stringResource(R.string.movies_acted_in),
                                     movies = credits.cast.filter { it.character?.isNotEmpty() == true },
-                                    onMovieClick = { movieId ->
-                                        navController.navigate(Screen.Detail(movieId))
-                                    }
+                                    onMovieClick = navigateToMovieDetail
                                 )
                             }
                         }
                     }
                     selectedPersonImageUrl?.let { url ->
-                        PersonImageDialog(imageUrl = url, onDismiss = { selectedPersonImageUrl = null })
+                        PersonImageDialog(
+                            imageUrl = url,
+                            onDismiss = { selectedPersonImageUrl = null })
                     }
                 }
             }
         }
         IconButton(
-            onClick = onBackClick,
+            onClick = navigateBack,
             modifier = Modifier
                 .padding(top = 46.dp, start = 16.dp)
                 .align(Alignment.TopStart)
@@ -175,7 +174,7 @@ fun PersonHeader(
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter),
             thickness = 0.5.dp,
-            color = Color(0xFF800000)
+            color = HorizontalDividerColor
         )
 
         Box(
@@ -201,7 +200,7 @@ fun PersonHeader(
                 contentDescription = person.name,
                 modifier = Modifier
                     .size(150.dp)
-                    .border(1.dp, Color(0xFF800000), CircleShape)
+                    .border(1.dp, HorizontalDividerColor, CircleShape)
                     .clip(CircleShape),
                 contentScale = ContentScale.Crop,
                 error = painterResource(R.drawable.ic_no_image_person),
@@ -229,7 +228,7 @@ fun PersonHeader(
             ) {
                 person.birthday?.let {
                     Text(
-                        text = "Born: ${it.formatDate()}",
+                        text = stringResource(R.string.born, it.formatDate()),
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.White.copy(alpha = 0.6f)
                     )
@@ -237,7 +236,7 @@ fun PersonHeader(
                 person.deathday?.let {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Died: ${it.formatDate()}",
+                        text = stringResource(R.string.died, it.formatDate()),
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.White.copy(alpha = 0.6f)
                     )
@@ -245,7 +244,7 @@ fun PersonHeader(
             }
             person.placeOfBirth?.let {
                 Text(
-                    text = "From: $it",
+                    text = stringResource(R.string.from, it),
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.White.copy(alpha = 0.6f),
                     textAlign = TextAlign.Center
@@ -257,17 +256,17 @@ fun PersonHeader(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Popularity: ${"%.1f".format(person.popularity)}",
+                    text = stringResource(R.string.popularity, "%.1f".format(person.popularity)),
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.White.copy(alpha = 0.6f)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Gender: ${
-                        when (person.gender) {
-                            1 -> "Female"; 2 -> "Male"; else -> "Unknown"
+                    text = stringResource(
+                        R.string.gender, when (person.gender) {
+                            1 -> stringResource(R.string.female); 2 -> stringResource(R.string.male);else -> stringResource(R.string.unknown)
                         }
-                    }",
+                    ),
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.White.copy(alpha = 0.6f)
                 )
@@ -314,13 +313,13 @@ fun PersonBiography(
             .padding(8.dp)
     ) {
         Text(
-            text = "Biography",
+            text = stringResource(R.string.biography),
             style = MaterialTheme.typography.headlineSmall,
             color = Color.White
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = biography ?: "No biography available",
+            text = biography ?: stringResource(R.string.no_biography_available),
             style = MaterialTheme.typography.bodyMedium,
             color = Color.White,
             maxLines = if (isExpanded) Int.MAX_VALUE else 5,
@@ -329,9 +328,9 @@ fun PersonBiography(
         )
         if (biography != null && biography.length > 200) {
             Text(
-                text = if (isExpanded) "Show Less" else "Show More",
+                text = if (isExpanded) stringResource(R.string.show_less) else stringResource(R.string.show_more),
                 style = MaterialTheme.typography.bodySmall,
-                color =Color(0xFFDC143C),
+                color = Color(0xFFDC143C),
                 modifier = Modifier
                     .padding(top = 4.dp)
                     .clickable { onToggleExpand() }
@@ -344,7 +343,7 @@ fun PersonBiography(
             .fillMaxWidth()
             .padding(top = 4.dp),
         thickness = 0.5.dp,
-        color = Color(0xFF800000)
+        color = HorizontalDividerColor
     )
 
 }
@@ -360,7 +359,7 @@ fun PersonImagesSection(
             .padding(8.dp)
     ) {
         Text(
-            text = "Photos",
+            text = stringResource(R.string.photos),
             style = MaterialTheme.typography.headlineSmall,
             color = Color.White
         )
@@ -389,7 +388,7 @@ fun PersonImagesSection(
                             .fillMaxWidth()
                             .padding(horizontal = 4.dp),
                         thickness = 1.dp,
-                        color = Color(0xFF800000)
+                        color = HorizontalDividerColor
                     )
                 }
             }
@@ -416,7 +415,7 @@ fun PersonMoviesSection(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(movies) { movie ->
-                PersonMovieItem(movie = movie, onClick = onMovieClick)
+                PersonMovieItem(movie = movie, onMovieClick = onMovieClick)
             }
         }
     }
@@ -425,12 +424,12 @@ fun PersonMoviesSection(
 @Composable
 fun PersonMovieItem(
     movie: PersonMovieCast,
-    onClick: (Int) -> Unit,
+    onMovieClick: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
             .width(140.dp)
-            .clickable { onClick(movie.id) }
+            .clickable { onMovieClick(movie.id) }
     ) {
         AsyncImage(
             model = "https://image.tmdb.org/t/p/w500${movie.posterPath}",

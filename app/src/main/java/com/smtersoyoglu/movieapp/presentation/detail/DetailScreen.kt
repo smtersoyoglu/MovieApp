@@ -82,8 +82,9 @@ import kotlinx.coroutines.delay
 @Composable
 fun DetailScreen(
     viewModel: DetailViewModel = hiltViewModel(),
-    navController: NavController,
-    onBackClick: () -> Unit,
+    navigateBack: () -> Unit,
+    navigateToMovieDetail: (Int) -> Unit,
+    navigateToPersonDetail: (Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -189,9 +190,7 @@ fun DetailScreen(
                             uiState.movieCredits?.let { credits ->
                                 MovieCastAndCrew(
                                     credits = credits,
-                                    onCastClick = { personId ->
-                                        navController.navigate(Screen.Person(personId))
-                                    }
+                                    onCastClick = navigateToPersonDetail
                                 )
                             }
                             HorizontalDivider(
@@ -206,9 +205,7 @@ fun DetailScreen(
                         item {
                             SimilarMoviesSection(
                                 movies = uiState.similarMovies,
-                                onMovieClick = { movieId ->
-                                    navController.navigate(Screen.Detail(movieId))
-                                }
+                                onMovieClick = navigateToMovieDetail
                             )
                         }
                     }
@@ -256,7 +253,7 @@ fun DetailScreen(
             }
         }
         IconButton(
-            onClick = onBackClick,
+            onClick = navigateBack,
             modifier = Modifier
                 .padding(top = 36.dp, start = 16.dp)
                 .align(Alignment.TopStart)
