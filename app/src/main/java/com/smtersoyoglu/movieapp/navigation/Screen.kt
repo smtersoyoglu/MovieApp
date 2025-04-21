@@ -38,7 +38,7 @@ sealed interface Screen {
 
         fun shouldShowBottomBar(currentRoute: String?): Boolean {
             return when (currentRoute) {
-                getRoute(Home), getRoute(Search), getRoute(Favorite) -> true
+                getRoute(Home), getRoute(Search), getRoute(Favorite) , getRoute(Profile) -> true
 
                 else -> false
             }

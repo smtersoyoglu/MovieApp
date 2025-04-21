@@ -10,13 +10,16 @@ import com.smtersoyoglu.movieapp.navigation.Screen.Login
 import com.smtersoyoglu.movieapp.navigation.Screen.Register
 import com.smtersoyoglu.movieapp.navigation.Screen.Home
 import com.smtersoyoglu.movieapp.navigation.Screen.Detail
+import com.smtersoyoglu.movieapp.navigation.Screen.Person
 import com.smtersoyoglu.movieapp.navigation.Screen.Search
 import com.smtersoyoglu.movieapp.navigation.Screen.Favorite
+import com.smtersoyoglu.movieapp.navigation.Screen.Profile
 import com.smtersoyoglu.movieapp.presentation.detail.DetailScreen
 import com.smtersoyoglu.movieapp.presentation.favorite.FavoriteScreen
 import com.smtersoyoglu.movieapp.presentation.home.HomeScreen
 import com.smtersoyoglu.movieapp.presentation.login.LoginScreen
 import com.smtersoyoglu.movieapp.presentation.person.PersonDetailScreen
+import com.smtersoyoglu.movieapp.presentation.profile.ProfileScreen
 import com.smtersoyoglu.movieapp.presentation.register.RegisterScreen
 import com.smtersoyoglu.movieapp.presentation.search.SearchScreen
 import com.smtersoyoglu.movieapp.presentation.welcome.WelcomeScreen
@@ -56,32 +59,51 @@ fun NavigationGraph(
 
         composable<Home> {
             HomeScreen(
-                navController = navController
+                navigateToMovieDetail = { movieId ->
+                    navController.navigate(Detail(movieId))
+                }
             )
         }
 
         composable<Detail> {
             DetailScreen(
-                navController = navController,
-                onBackClick = { navController.popBackStack() },
+                navigateBack = { navController.popBackStack() },
+                navigateToMovieDetail = { movieId ->
+                    navController.navigate(Detail(movieId))
+                },
+                navigateToPersonDetail = { personId ->
+                    navController.navigate(Person(personId))
+                }
             )
         }
 
-        composable<Screen.Person> {
+        composable<Person> {
             PersonDetailScreen(
-                navController = navController,
-                onBackClick = { navController.popBackStack() }
+                navigateBack = { navController.popBackStack() },
+                navigateToMovieDetail = { movieId ->
+                    navController.navigate(Detail(movieId))
+                }
             )
         }
 
         composable<Search> {
             SearchScreen(
-                navController = navController
+                navigateToDetail = { movieId ->
+                    navController.navigate(Detail(movieId))
+                }
             )
         }
 
         composable<Favorite> {
             FavoriteScreen(
+                navigateToDetail = { favorite ->
+                    navController.navigate(Detail(favorite))
+                }
+            )
+        }
+
+        composable<Profile> {
+            ProfileScreen(
                 navController = navController
             )
         }
