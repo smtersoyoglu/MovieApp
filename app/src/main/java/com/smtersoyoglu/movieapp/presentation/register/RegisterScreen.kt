@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -32,10 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -51,21 +49,27 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.smtersoyoglu.movieapp.R
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar
 import com.smtersoyoglu.movieapp.presentation.theme.ButtonColor
+import kotlinx.coroutines.delay
 
 @Composable
 fun RegisterScreen(
     viewModel: RegisterViewModel = hiltViewModel(),
-    onSignUpSuccess: () -> Unit,
-    onNavigateToSignIn: () -> Unit
+    onNavigateToSignIn: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
+
     LaunchedEffect(uiState.error) {
         uiState.error?.let { snackbarHostState.showSnackbar(it) }
     }
+
+    val successMsg = stringResource(R.string.register_success)
     LaunchedEffect(uiState.isRegistered) {
-        if (uiState.isRegistered) onSignUpSuccess()
+        if (uiState.isRegistered) {
+            snackbarHostState.showSnackbar(successMsg)
+            delay(2000)
+        }
     }
 
     Box(
@@ -83,10 +87,9 @@ fun RegisterScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.height(66.dp))
-
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -98,27 +101,29 @@ fun RegisterScreen(
                     contentDescription = "Movies Logo",
                     modifier = Modifier
                         .zIndex(1f)
+                        .size(300.dp)
                 )
                 Card(
                     modifier = Modifier
-                        .padding(top = 205.dp)
+                        .padding(top = 208.dp)
                         .fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
                     colors = CardDefaults.cardColors(containerColor = Color(0xFF1C2526).copy(alpha = 0.9f))
                 ) {
                     Column(
-                        modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 48.dp, bottom = 24.dp),
+                        modifier = Modifier.padding(
+                            start = 24.dp,
+                            end = 24.dp,
+                            top = 48.dp,
+                            bottom = 24.dp
+                        ),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        var name by rememberSaveable  { mutableStateOf("") }
-                        var email by rememberSaveable  { mutableStateOf("") }
-                        var password by rememberSaveable  { mutableStateOf("") }
-                        var confirmPassword by rememberSaveable  { mutableStateOf("") }
 
                         OutlinedTextField(
-                            value = name,
-                            onValueChange = { name = it },
+                            value = uiState.fullName,
+                            onValueChange = { viewModel.onFullNameChanged(it) },
                             label = { Text(stringResource(R.string.full_name)) },
                             leadingIcon = {
                                 Icon(
@@ -132,15 +137,15 @@ fun RegisterScreen(
                                 focusedTextColor = Color.White,
                                 unfocusedTextColor = Color.White,
                                 focusedLabelColor = Color(0xFFFFC107),
-                                unfocusedLabelColor = Color.White.copy(alpha = 0.7f),
+                                unfocusedLabelColor = Color.White,
                                 focusedBorderColor = Color(0xFFFFC107),
-                                unfocusedBorderColor = Color.Gray
+                                unfocusedBorderColor = Color.White
                             )
                         )
 
                         OutlinedTextField(
-                            value = email,
-                            onValueChange = { email = it },
+                            value = uiState.email,
+                            onValueChange = { viewModel.onEmailChanged(it) },
                             label = { Text(stringResource(R.string.email)) },
                             leadingIcon = {
                                 Icon(
@@ -153,22 +158,25 @@ fun RegisterScreen(
                             isError = uiState.error?.contains("email") == true,
                             supportingText = {
                                 if (uiState.error?.contains("email") == true) {
-                                    Text(stringResource(R.string.invalid_email_format), color = Color.Red)
+                                    Text(
+                                        stringResource(R.string.invalid_email_format),
+                                        color = Color.Red
+                                    )
                                 }
                             },
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedTextColor = Color.White,
                                 unfocusedTextColor = Color.White,
                                 focusedLabelColor = Color(0xFFFFC107),
-                                unfocusedLabelColor = Color.White.copy(alpha = 0.7f),
+                                unfocusedLabelColor = Color.White,
                                 focusedBorderColor = Color(0xFFFFC107),
-                                unfocusedBorderColor = Color.Gray
+                                unfocusedBorderColor = Color.White
                             )
                         )
 
                         OutlinedTextField(
-                            value = password,
-                            onValueChange = { password = it },
+                            value = uiState.password,
+                            onValueChange = { viewModel.onPasswordChanged(it) },
                             label = { Text(stringResource(R.string.password)) },
                             leadingIcon = {
                                 Icon(
@@ -182,22 +190,25 @@ fun RegisterScreen(
                             isError = uiState.error?.contains("password") == true,
                             supportingText = {
                                 if (uiState.error?.contains("password") == true) {
-                                    Text(stringResource(R.string.error_password_min_length), color = Color.Red)
+                                    Text(
+                                        stringResource(R.string.error_password_min_length),
+                                        color = Color.Red
+                                    )
                                 }
                             },
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedTextColor = Color.White,
                                 unfocusedTextColor = Color.White,
                                 focusedLabelColor = Color(0xFFFFC107),
-                                unfocusedLabelColor = Color.White.copy(alpha = 0.7f),
+                                unfocusedLabelColor = Color.White,
                                 focusedBorderColor = Color(0xFFFFC107),
                                 unfocusedBorderColor = Color.Gray
                             )
                         )
 
                         OutlinedTextField(
-                            value = confirmPassword,
-                            onValueChange = { confirmPassword = it },
+                            value = uiState.confirmPassword,
+                            onValueChange = { viewModel.onConfirmPasswordChanged(it) },
                             label = { Text(stringResource(R.string.confirm_password)) },
                             leadingIcon = {
                                 Icon(
@@ -208,28 +219,31 @@ fun RegisterScreen(
                             },
                             visualTransformation = PasswordVisualTransformation(),
                             modifier = Modifier.fillMaxWidth(),
-                            isError = password != confirmPassword && confirmPassword.isNotEmpty(),
+                            isError = uiState.password != uiState.confirmPassword && uiState.confirmPassword.isNotEmpty(),
                             supportingText = {
-                                if (password != confirmPassword && confirmPassword.isNotEmpty()) {
-                                    Text(stringResource(R.string.passwords_do_not_match), color = Color.Red)
+                                if (uiState.password != uiState.confirmPassword && uiState.confirmPassword.isNotEmpty()) {
+                                    Text(
+                                        stringResource(R.string.passwords_do_not_match),
+                                        color = Color.Red
+                                    )
                                 }
                             },
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedTextColor = Color.White,
                                 unfocusedTextColor = Color.White,
                                 focusedLabelColor = Color(0xFFFFC107),
-                                unfocusedLabelColor = Color.White.copy(alpha = 0.7f),
+                                unfocusedLabelColor = Color.White,
                                 focusedBorderColor = Color(0xFFFFC107),
-                                unfocusedBorderColor = Color.Gray
+                                unfocusedBorderColor = Color.White
                             )
                         )
 
                         Button(
-                            onClick = { viewModel.register(email, password, confirmPassword) },
+                            onClick = { viewModel.register() },
                             enabled = !uiState.isLoading,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(48.dp),
+                                .height(52.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = ButtonColor),
                             shape = RoundedCornerShape(8.dp)
                         ) {
