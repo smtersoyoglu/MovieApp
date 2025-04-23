@@ -34,10 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -98,8 +95,9 @@ fun LoginScreen(
                 painter = painterResource(id = R.drawable.ic_movie_login),
                 contentDescription = "Movies Logo",
                 tint = Color.Unspecified,
+                modifier = Modifier.size(240.dp)
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = stringResource(R.string.login_title),
                 style = MaterialTheme.typography.headlineSmall,
@@ -110,9 +108,10 @@ fun LoginScreen(
             Text(
                 text = stringResource(R.string.welcome_subtitle),
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color.White.copy(alpha = 0.7f)
+                color = Color.White.copy(alpha = 0.7f),
+                textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.height(28.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -124,12 +123,11 @@ fun LoginScreen(
                     modifier = Modifier.padding(24.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    var email by rememberSaveable  { mutableStateOf("") }
-                    var password by rememberSaveable  { mutableStateOf("") }
+
 
                     OutlinedTextField(
-                        value = email,
-                        onValueChange = { email = it },
+                        value = uiState.email,
+                        onValueChange = { viewModel.onEmailChanged(it) },
                         label = { Text(stringResource(R.string.email)) },
                         leadingIcon = {
                             Icon(
@@ -139,9 +137,9 @@ fun LoginScreen(
                             )
                         },
                         modifier = Modifier.fillMaxWidth(),
-                        isError = uiState.error != null && email.isEmpty(),
+                        isError = uiState.error != null && uiState.email.isEmpty(),
                         supportingText = {
-                            if (uiState.error != null && email.isEmpty()) {
+                            if (uiState.error != null && uiState.email.isEmpty()) {
                                 Text(stringResource(R.string.invalid_email), color = Color.Red)
                             }
                         },
@@ -149,15 +147,15 @@ fun LoginScreen(
                             focusedTextColor = Color.White,
                             unfocusedTextColor = Color.White,
                             focusedLabelColor = Color(0xFFFFC107),
-                            unfocusedLabelColor = Color.White.copy(alpha = 0.7f),
+                            unfocusedLabelColor = Color.White,
                             focusedBorderColor = Color(0xFFFFC107),
                             unfocusedBorderColor = Color.Gray
                         )
                     )
 
                     OutlinedTextField(
-                        value = password,
-                        onValueChange = { password = it },
+                        value = uiState.password,
+                        onValueChange = { viewModel.onPasswordChanged(it) },
                         label = { Text(stringResource(R.string.password)) },
                         leadingIcon = {
                             Icon(
@@ -168,9 +166,9 @@ fun LoginScreen(
                         },
                         visualTransformation = PasswordVisualTransformation(),
                         modifier = Modifier.fillMaxWidth(),
-                        isError = uiState.error != null && password.length < 6,
+                        isError = uiState.error != null && uiState.password.length < 6,
                         supportingText = {
-                            if (uiState.error != null && password.length < 6) {
+                            if (uiState.error != null && uiState.password.length < 6) {
                                 Text(stringResource(R.string.error_password_min_length), color = Color.Red)
                             }
                         },
@@ -178,18 +176,18 @@ fun LoginScreen(
                             focusedTextColor = Color.White,
                             unfocusedTextColor = Color.White,
                             focusedLabelColor = Color(0xFFFFC107),
-                            unfocusedLabelColor = Color.White.copy(alpha = 0.7f),
+                            unfocusedLabelColor = Color.White,
                             focusedBorderColor = Color(0xFFFFC107),
                             unfocusedBorderColor = Color.Gray
                         )
                     )
 
                     Button(
-                        onClick = { viewModel.signIn(email, password) },
+                        onClick = { viewModel.signIn() },
                         enabled = !uiState.isLoading,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(48.dp),
+                            .height(52.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = ButtonColor),
                         shape = RoundedCornerShape(8.dp)
                     ) {
@@ -209,7 +207,7 @@ fun LoginScreen(
                         onClick = { /* Google ile giris sonradan eklenecek */ },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(48.dp),
+                            .height(52.dp),
                         border = BorderStroke(1.dp, Color.White),
                         colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)
                     ) {
@@ -232,7 +230,7 @@ fun LoginScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
