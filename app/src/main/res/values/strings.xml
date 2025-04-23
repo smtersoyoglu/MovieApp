@@ -29,6 +29,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="passwords_do_not_match">Passwords do not match</string>
     <string name="already_have_an_account">"Already have an account? "</string>
+    <string name="register_success">Registration successful! You now have an account. Please sign in.</string>
 
     <!-- Home Screen  -->
     <string name="trending_this_week">Trending this week</string>
@@ -71,4 +72,14 @@
     <!-- Search Screen  -->
     <string name="search_title">Search</string>
     <string name="search_movies">Search Movies</string>
+
+    <!-- Profile Screen  -->
+    <string name="about">About</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_out_confirmation">Are you sure you want to sign out?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="language">Language</string>
+
+
 </resources>
