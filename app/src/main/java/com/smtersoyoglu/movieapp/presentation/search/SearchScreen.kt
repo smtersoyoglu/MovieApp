@@ -74,7 +74,7 @@ fun SearchScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 12.dp)
     ) {
         TopAppBar(
             title = { Text(text = stringResource(R.string.search_title), color = Color.White) },
@@ -147,7 +147,7 @@ fun SearchScreen(
             else -> {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(3),
-                    horizontalArrangement = Arrangement.spacedBy(24.dp),
+                    horizontalArrangement = Arrangement.spacedBy(21.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.padding(top = 12.dp)
                 ) {
@@ -179,7 +179,8 @@ fun MovieGridItem(movie: Movie, onMovieClick: (Int) -> Unit) {
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(2 / 3f),
+                    .aspectRatio(2 / 3f)
+                    .border(1.dp, Color(0xFFFFC107).copy(alpha = 0.2f), RoundedCornerShape(12.dp)),
                 error = painterResource(R.drawable.ic_image_not_found),
                 fallback = painterResource(R.drawable.ic_image_not_found)
             )

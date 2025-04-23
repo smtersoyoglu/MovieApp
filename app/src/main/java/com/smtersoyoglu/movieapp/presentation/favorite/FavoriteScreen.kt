@@ -147,7 +147,7 @@ fun FavoriteItem(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
+                    .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 8.dp),
                 verticalAlignment = Alignment.Top
             ) {
                 AsyncImage(
@@ -157,7 +157,12 @@ fun FavoriteItem(
                     modifier = Modifier
                         .width(110.dp)
                         .height(160.dp)
-                        .clip(RoundedCornerShape(8.dp)),
+                        .clip(RoundedCornerShape(8.dp))
+                        .border(
+                            1.dp,
+                            Color(0xFFFFC107).copy(alpha = 0.2f),
+                            RoundedCornerShape(8.dp)
+                        ),
                     error = painterResource(R.drawable.ic_image_not_found),
                     fallback = painterResource(R.drawable.ic_image_not_found)
                 )

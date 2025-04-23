@@ -496,6 +496,11 @@ fun MovieImagesSection(
                         modifier = Modifier
                             .size(width = 200.dp, height = 120.dp)
                             .clip(RoundedCornerShape(8.dp))
+                            .border(
+                                1.dp,
+                                Color(0xFFFFC107).copy(alpha = 0.2f),
+                                RoundedCornerShape(8.dp)
+                            )
                             .clickable { onImageClick(image.filePath) },
                         error = painterResource(R.drawable.ic_image_not_found),
                         fallback = painterResource(R.drawable.ic_image_not_found)
@@ -576,7 +581,12 @@ fun CastItem(
             contentDescription = name,
             modifier = Modifier
                 .size(100.dp)
-                .clip(RoundedCornerShape(12.dp)),
+                .clip(RoundedCornerShape(12.dp))
+                .border(
+                    1.dp,
+                    Color(0xFFFFC107).copy(alpha = 0.2f),
+                    RoundedCornerShape(12.dp)
+                ),
             contentScale = ContentScale.Crop,
             error = painterResource(R.drawable.ic_no_image_person),
             fallback = painterResource(R.drawable.ic_no_image_person)
@@ -641,7 +651,12 @@ fun SimilarMovieItem(movie: Movie, onClick: (Int) -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp)
-                .clip(RoundedCornerShape(12.dp)),
+                .clip(RoundedCornerShape(12.dp))
+                .border(
+                    1.dp,
+                    Color(0xFFFFC107).copy(alpha = 0.2f),
+                    RoundedCornerShape(12.dp)
+                ),
             contentScale = ContentScale.Crop,
             error = painterResource(R.drawable.ic_image_not_found),
             fallback = painterResource(R.drawable.ic_image_not_found)

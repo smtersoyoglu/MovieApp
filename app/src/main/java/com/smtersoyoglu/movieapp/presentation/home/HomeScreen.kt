@@ -1,6 +1,7 @@
 package com.smtersoyoglu.movieapp.presentation.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -58,7 +59,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
-    navigateToMovieDetail: (Int) -> Unit
+    navigateToMovieDetail: (Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -169,7 +170,9 @@ fun FeaturedMovieCard(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(450.dp)
+                        .height(450.dp),
+                    error = painterResource(R.drawable.ic_image_not_found),
+                    fallback = painterResource(R.drawable.ic_image_not_found)
                 )
 
                 HorizontalDivider(
@@ -254,7 +257,7 @@ fun FeaturedMovieCard(
                         overflow = TextOverflow.Ellipsis
                     )
 
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(21.dp))
                 }
             }
         }
@@ -266,11 +269,14 @@ fun FeaturedMovieCard(
             horizontalArrangement = Arrangement.Center
         ) {
             repeat(movies.size) { index ->
-                val color =
-                    if (pagerState.currentPage == index) Color.White else Color.Gray.copy(alpha = 0.5f)
+                val color = if (pagerState.currentPage == index) {
+                    Color(0xFFFFC107)
+                } else {
+                    Color.White.copy(alpha = 0.5f)
+                }
                 Box(
                     modifier = Modifier
-                        .size(8.dp)
+                        .size(10.dp)
                         .padding(2.dp)
                         .clip(CircleShape)
                         .background(color)
@@ -343,7 +349,12 @@ fun MovieItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(200.dp)
-                        .clip(RoundedCornerShape(12.dp)),
+                        .clip(RoundedCornerShape(12.dp))
+                        .border(
+                            1.dp,
+                            Color(0xFFFFC107).copy(alpha = 0.2f),
+                            RoundedCornerShape(12.dp)
+                        ),
                     error = painterResource(R.drawable.ic_image_not_found),
                     fallback = painterResource(R.drawable.ic_image_not_found)
                 )

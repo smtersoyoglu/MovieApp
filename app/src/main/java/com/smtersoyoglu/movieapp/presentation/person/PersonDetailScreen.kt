@@ -377,6 +377,11 @@ fun PersonImagesSection(
                         modifier = Modifier
                             .size(150.dp)
                             .clip(RoundedCornerShape(8.dp))
+                            .border(
+                                1.dp,
+                                Color(0xFFFFC107).copy(alpha = 0.2f),
+                                RoundedCornerShape(8.dp)
+                            )
                             .clickable { onImageClick(image.filePath) },
                         contentScale = ContentScale.Crop,
                         error = painterResource(R.drawable.ic_no_image_person),
@@ -437,7 +442,12 @@ fun PersonMovieItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp)
-                .clip(RoundedCornerShape(12.dp)),
+                .clip(RoundedCornerShape(12.dp))
+                .border(
+                    1.dp,
+                    Color(0xFFFFC107).copy(alpha = 0.2f),
+                    RoundedCornerShape(12.dp)
+                ),
             contentScale = ContentScale.Crop,
             error = painterResource(R.drawable.ic_image_not_found),
             fallback = painterResource(R.drawable.ic_image_not_found)
