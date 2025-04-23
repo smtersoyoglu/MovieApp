@@ -38,6 +38,7 @@ fun NavigationGraph(
 
         composable<Welcome> {
             WelcomeScreen(
+                onNavigateToHome = { navController.navigate(Home) },
                 onNavigateToSignIn = { navController.navigate(Login) },
                 onNavigateToSignUp = { navController.navigate(Register) },
             )
@@ -52,8 +53,7 @@ fun NavigationGraph(
 
         composable<Register> {
             RegisterScreen(
-                onSignUpSuccess = { navController.navigate(Login) },
-                onNavigateToSignIn = { navController.popBackStack() }
+                onNavigateToSignIn = { navController.navigate(Login) }
             )
         }
 
@@ -104,7 +104,7 @@ fun NavigationGraph(
 
         composable<Profile> {
             ProfileScreen(
-                navController = navController
+                onSignOut = { navController.navigate(Login) }
             )
         }
     }

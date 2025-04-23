@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
@@ -30,24 +31,24 @@ fun BottomNavBar(navController: NavController) {
     val bottomNavItems = listOf(
         BottomNavItem(
             route = Screen.Home,
-            title = "Movies",
+            title = stringResource(R.string.movies),
             icon = R.drawable.ic_not_movie,
             selectedIcon = R.drawable.ic_movie
         ),
         BottomNavItem(
             route = Screen.Search,
-            title = "Search",
+            title = stringResource(R.string.search),
             icon = R.drawable.ic_movie_search
         ),
         BottomNavItem(
             route = Screen.Favorite,
-            title = "Favorite",
+            title = stringResource(R.string.favorite),
             icon = R.drawable.ic_not_favorite,
             selectedIcon = R.drawable.ic_favorite
         ),
         BottomNavItem(
             route = Screen.Profile,
-            title = "Profile",
+            title = stringResource(R.string.profile),
             icon = R.drawable.ic_not_profile,
             selectedIcon = R.drawable.ic_profile
         )
