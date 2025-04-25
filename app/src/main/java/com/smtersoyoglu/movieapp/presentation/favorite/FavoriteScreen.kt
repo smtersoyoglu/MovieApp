@@ -48,6 +48,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.smtersoyoglu.movieapp.R
@@ -79,7 +80,7 @@ fun FavoriteScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.favorites)) },
+                title = { Text(stringResource(R.string.favorites), style = MaterialTheme.typography.titleLarge, color = Color.White) },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.Black,
                     titleContentColor = Color.White
@@ -173,9 +174,7 @@ fun FavoriteItem(
                 ) {
                     Text(
                         text = favorite.title,
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontWeight = FontWeight.Bold
-                        ),
+                        style = MaterialTheme.typography.titleMedium,
                         color = Color.White,
                         overflow = TextOverflow.Ellipsis,
                     )
@@ -188,7 +187,7 @@ fun FavoriteItem(
                             genres.split(", ").forEach { genre ->
                                 Text(
                                     text = genre,
-                                    style = MaterialTheme.typography.bodySmall,
+                                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 13.sp),
                                     color = Color.White.copy(alpha = 0.9f),
                                     modifier = Modifier
                                         .border(

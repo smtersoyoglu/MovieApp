@@ -55,6 +55,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -315,9 +316,8 @@ fun MovieHeader(
         ) {
             Text(
                 text = movieDetails.title,
-                style = MaterialTheme.typography.headlineLarge,
+                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 28.sp),
                 color = Color.White,
-                fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
             if (!movieDetails.tagline.isNullOrBlank()) {
@@ -343,7 +343,7 @@ fun MovieHeader(
                 Text(
                     text = year,
                     color = Color.White.copy(alpha = 0.7f),
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 15.sp)
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Icon(
@@ -355,7 +355,7 @@ fun MovieHeader(
                 Text(
                     text = movieDetails.runtime?.let { "${it / 60}h ${it % 60}m" } ?: "N/A",
                     color = Color.White.copy(alpha = 0.7f),
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 15.sp)
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Icon(
@@ -369,7 +369,7 @@ fun MovieHeader(
                 Text(
                     text = "%.1f".format(movieDetails.voteAverage),
                     color = Color.White.copy(alpha = 0.7f),
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 15.sp)
                 )
             }
             FlowRow(
@@ -437,7 +437,7 @@ fun GenreChip(genre: String) {
         Text(
             text = genre,
             color = Color.White,
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 15.sp)
         )
     }
 }
@@ -483,7 +483,8 @@ fun MovieImagesSection(
         if (images.isNullOrEmpty()) {
             Text(
                 text = stringResource(R.string.no_images_available),
-                color = Color.White
+                color = Color.White,
+                style = MaterialTheme.typography.bodyMedium,
             )
         } else {
             LazyRow(
@@ -527,7 +528,7 @@ fun MovieCastAndCrew(
         ) {
             Text(
                 text = stringResource(R.string.cast),
-                style = MaterialTheme.typography.headlineSmall,
+                style = MaterialTheme.typography.titleLarge.copy(fontSize = 18.sp),
                 color = Color.White
             )
             Text(
@@ -594,14 +595,14 @@ fun CastItem(
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = name,
-            style = MaterialTheme.typography.labelSmall,
+            style = MaterialTheme.typography.labelSmall.copy(fontSize = 12.sp),
             color = Color.White,
             maxLines = 1,
             textAlign = TextAlign.Center
         )
         Text(
             text = character,
-            style = MaterialTheme.typography.labelSmall,
+            style = MaterialTheme.typography.labelSmall.copy(fontSize = 12.sp),
             maxLines = 1,
             color = Color.White.copy(alpha = 0.6f),
             textAlign = TextAlign.Center
@@ -614,7 +615,7 @@ fun SimilarMoviesSection(movies: List<Movie>, onMovieClick: (Int) -> Unit) {
     Column(modifier = Modifier.padding(vertical = 8.dp)) {
         Text(
             text = stringResource(R.string.similar_movies),
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.titleLarge.copy(fontSize = 18.sp),
             color = Color.White,
             modifier = Modifier.padding(horizontal = 8.dp)
         )

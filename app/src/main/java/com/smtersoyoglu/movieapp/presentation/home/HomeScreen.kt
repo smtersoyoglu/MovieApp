@@ -217,7 +217,7 @@ fun FeaturedMovieCard(
                     Text(
                         text = movie.title,
                         color = Color.White,
-                        style = MaterialTheme.typography.headlineMedium.copy(fontSize = 24.sp),
+                        style = MaterialTheme.typography.headlineMedium,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -230,7 +230,7 @@ fun FeaturedMovieCard(
                             Text(
                                 text = it.formatDate(),
                                 color = Color.White.copy(alpha = 0.8f),
-                                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 16.sp)
+                                style = MaterialTheme.typography.bodyMedium,
                             )
                         }
 
@@ -245,7 +245,7 @@ fun FeaturedMovieCard(
                         Text(
                             text = "%.1f".format(movie.voteAverage),
                             color = Color.White.copy(alpha = 0.8f),
-                            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 16.sp)
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
 
@@ -301,10 +301,8 @@ fun MovieSection(
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.titleLarge.copy(
-                color = Color.White,
-                fontSize = 20.sp
-            ),
+            style = MaterialTheme.typography.titleLarge,
+            color = Color.White,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -361,10 +359,8 @@ fun MovieItem(
             }
             Text(
                 text = movie.title,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = Color.White,
-                    fontSize = 16.sp
-                ),
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.White,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier

@@ -79,7 +79,13 @@ fun SearchScreen(
             .padding(horizontal = 12.dp)
     ) {
         TopAppBar(
-            title = { Text(text = stringResource(R.string.search_title), color = Color.White) },
+            title = {
+                Text(
+                    text = stringResource(R.string.search_title),
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color.White
+                )
+            },
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = Color.Black,
                 titleContentColor = Color.White
@@ -92,7 +98,13 @@ fun SearchScreen(
                 searchQuery = newQuery
                 viewModel.updateSearchQuery(newQuery)
             },
-            label = { Text(stringResource(R.string.search_movies), color = Color.White) },
+            label = {
+                Text(
+                    stringResource(R.string.search_movies),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color.White
+                )
+            },
             textStyle = TextStyle(color = Color.White, fontSize = 16.sp),
             leadingIcon = {
                 Icon(
@@ -124,7 +136,8 @@ fun SearchScreen(
                         label = {
                             Text(
                                 text = genre.name,
-                                color = if (isSelected) Color.Black else Color.White
+                                color = if (isSelected) Color.Black else Color.White,
+                                style = MaterialTheme.typography.bodyLarge
                             )
                         },
                         colors = AssistChipDefaults.assistChipColors(

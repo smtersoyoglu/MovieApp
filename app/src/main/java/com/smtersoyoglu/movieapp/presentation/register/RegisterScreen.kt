@@ -23,6 +23,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SnackbarHost
@@ -86,9 +87,8 @@ fun RegisterScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(24.dp),
+                .padding(top = 66.dp, start = 24.dp, end = 24.dp, bottom = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
         ) {
             Box(
                 modifier = Modifier
@@ -124,7 +124,13 @@ fun RegisterScreen(
                         OutlinedTextField(
                             value = uiState.fullName,
                             onValueChange = { viewModel.onFullNameChanged(it) },
-                            label = { Text(stringResource(R.string.full_name)) },
+                            label = {
+                                Text(
+                                    stringResource(R.string.full_name),
+                                    style = MaterialTheme.typography.bodyLarge.copy(fontSize = 15.sp),
+                                    color = Color.White
+                                )
+                            },
                             leadingIcon = {
                                 Icon(
                                     Icons.Default.Person,
@@ -146,7 +152,13 @@ fun RegisterScreen(
                         OutlinedTextField(
                             value = uiState.email,
                             onValueChange = { viewModel.onEmailChanged(it) },
-                            label = { Text(stringResource(R.string.email)) },
+                            label = {
+                                Text(
+                                    stringResource(R.string.email),
+                                    style = MaterialTheme.typography.bodyLarge.copy(fontSize = 15.sp),
+                                    color = Color.White
+                                )
+                            },
                             leadingIcon = {
                                 Icon(
                                     Icons.Default.Email,
@@ -160,6 +172,7 @@ fun RegisterScreen(
                                 if (uiState.error?.contains("email") == true) {
                                     Text(
                                         stringResource(R.string.invalid_email_format),
+                                        style = MaterialTheme.typography.bodyMedium,
                                         color = Color.Red
                                     )
                                 }
@@ -177,7 +190,13 @@ fun RegisterScreen(
                         OutlinedTextField(
                             value = uiState.password,
                             onValueChange = { viewModel.onPasswordChanged(it) },
-                            label = { Text(stringResource(R.string.password)) },
+                            label = {
+                                Text(
+                                    stringResource(R.string.password),
+                                    style = MaterialTheme.typography.bodyLarge.copy(fontSize = 15.sp),
+                                    color = Color.White
+                                )
+                            },
                             leadingIcon = {
                                 Icon(
                                     Icons.Default.Lock,
@@ -192,6 +211,7 @@ fun RegisterScreen(
                                 if (uiState.error?.contains("password") == true) {
                                     Text(
                                         stringResource(R.string.error_password_min_length),
+                                        style = MaterialTheme.typography.bodyMedium,
                                         color = Color.Red
                                     )
                                 }
@@ -224,6 +244,7 @@ fun RegisterScreen(
                                 if (uiState.password != uiState.confirmPassword && uiState.confirmPassword.isNotEmpty()) {
                                     Text(
                                         stringResource(R.string.passwords_do_not_match),
+                                        style = MaterialTheme.typography.bodyMedium,
                                         color = Color.Red
                                     )
                                 }
@@ -252,6 +273,7 @@ fun RegisterScreen(
                             } else {
                                 Text(
                                     text = stringResource(R.string.sign_up),
+                                    style = MaterialTheme.typography.titleMedium,
                                     color = Color.Black,
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 18.sp
@@ -269,14 +291,14 @@ fun RegisterScreen(
             ) {
                 Text(
                     text = stringResource(R.string.already_have_an_account),
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 15.sp),
                     color = Color.White.copy(alpha = 0.7f),
-                    fontSize = 15.sp
                 )
                 TextButton(onClick = onNavigateToSignIn) {
                     Text(
                         text = stringResource(R.string.sign_in),
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 15.sp),
                         color = ButtonColor,
-                        fontSize = 15.sp
                     )
                 }
             }

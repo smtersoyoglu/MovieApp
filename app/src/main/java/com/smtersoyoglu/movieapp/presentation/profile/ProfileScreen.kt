@@ -208,17 +208,26 @@ fun ProfileScreen(
                     text = {
                         Text(
                             stringResource(R.string.sign_out_confirmation),
+                            style = MaterialTheme.typography.bodyLarge,
                             color = Color.White
                         )
                     },
                     confirmButton = {
                         TextButton(onClick = { viewModel.onSignOutConfirmed() }) {
-                            Text(stringResource(R.string.yes), color = Color(0xFFFFC107))
+                            Text(
+                                stringResource(R.string.yes),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Color(0xFFFFC107)
+                            )
                         }
                     },
                     dismissButton = {
                         TextButton(onClick = { viewModel.onSignOutDialogDismissed() }) {
-                            Text(stringResource(R.string.no), color = Color(0xFFFFC107))
+                            Text(
+                                stringResource(R.string.no),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Color(0xFFFFC107)
+                            )
                         }
                     },
                     containerColor = Color(0xFF1C2526),

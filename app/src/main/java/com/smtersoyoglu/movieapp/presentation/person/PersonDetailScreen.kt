@@ -46,6 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.smtersoyoglu.movieapp.R
@@ -329,7 +330,7 @@ fun PersonBiography(
         if (biography != null && biography.length > 200) {
             Text(
                 text = if (isExpanded) stringResource(R.string.show_less) else stringResource(R.string.show_more),
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp),
                 color = Color(0xFFDC143C),
                 modifier = Modifier
                     .padding(top = 4.dp)
@@ -455,7 +456,7 @@ fun PersonMovieItem(
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = movie.title,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 13.sp),
             color = Color.White,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
@@ -463,7 +464,7 @@ fun PersonMovieItem(
         movie.releaseDate?.let {
             Text(
                 text = it.formatDate(),
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 13.sp),
                 color = Color.White.copy(alpha = 0.7f),
                 maxLines = 1,
             )
@@ -471,7 +472,7 @@ fun PersonMovieItem(
         movie.character?.let {
             Text(
                 text = "as $it",
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 13.sp),
                 color = Color.White.copy(alpha = 0.7f),
                 maxLines = 1,
             )

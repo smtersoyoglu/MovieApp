@@ -87,8 +87,7 @@ fun LoginScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(24.dp),
-            verticalArrangement = Arrangement.Center,
+                .padding(top = 82.dp, start = 24.dp, end = 24.dp, bottom = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
@@ -107,7 +106,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = stringResource(R.string.welcome_subtitle),
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.bodyLarge.copy(fontSize = 15.sp),
                 color = Color.White.copy(alpha = 0.7f),
                 textAlign = TextAlign.Center
             )
@@ -128,7 +127,13 @@ fun LoginScreen(
                     OutlinedTextField(
                         value = uiState.email,
                         onValueChange = { viewModel.onEmailChanged(it) },
-                        label = { Text(stringResource(R.string.email)) },
+                        label = {
+                            Text(
+                                stringResource(R.string.email),
+                                style = MaterialTheme.typography.bodyLarge.copy(fontSize = 15.sp),
+                                color = Color.White
+                            )
+                        },
                         leadingIcon = {
                             Icon(
                                 Icons.Default.Email,
@@ -140,7 +145,11 @@ fun LoginScreen(
                         isError = uiState.error != null && uiState.email.isEmpty(),
                         supportingText = {
                             if (uiState.error != null && uiState.email.isEmpty()) {
-                                Text(stringResource(R.string.invalid_email), color = Color.Red)
+                                Text(
+                                    stringResource(R.string.invalid_email),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = Color.Red
+                                )
                             }
                         },
                         colors = OutlinedTextFieldDefaults.colors(
@@ -156,7 +165,13 @@ fun LoginScreen(
                     OutlinedTextField(
                         value = uiState.password,
                         onValueChange = { viewModel.onPasswordChanged(it) },
-                        label = { Text(stringResource(R.string.password)) },
+                        label = {
+                            Text(
+                                stringResource(R.string.password),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Color.White
+                            )
+                        },
                         leadingIcon = {
                             Icon(
                                 Icons.Default.Lock,
@@ -169,7 +184,11 @@ fun LoginScreen(
                         isError = uiState.error != null && uiState.password.length < 6,
                         supportingText = {
                             if (uiState.error != null && uiState.password.length < 6) {
-                                Text(stringResource(R.string.error_password_min_length), color = Color.Red)
+                                Text(
+                                    stringResource(R.string.error_password_min_length),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = Color.Red
+                                )
                             }
                         },
                         colors = OutlinedTextFieldDefaults.colors(
@@ -187,7 +206,7 @@ fun LoginScreen(
                         enabled = !uiState.isLoading,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(52.dp),
+                            .height(48.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = ButtonColor),
                         shape = RoundedCornerShape(8.dp)
                     ) {
@@ -196,9 +215,8 @@ fun LoginScreen(
                         } else {
                             Text(
                                 text = stringResource(R.string.sign_in),
+                                style = MaterialTheme.typography.titleMedium,
                                 color = Color.Black,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 18.sp
                             )
                         }
                     }
@@ -207,7 +225,7 @@ fun LoginScreen(
                         onClick = { /* Google ile giris sonradan eklenecek */ },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(52.dp),
+                            .height(49.dp),
                         border = BorderStroke(1.dp, Color.White),
                         colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)
                     ) {
@@ -221,9 +239,8 @@ fun LoginScreen(
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = stringResource(R.string.sign_in_with_google),
+                                style = MaterialTheme.typography.titleMedium,
                                 color = Color.White,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp
                             )
                         }
                     }
@@ -237,14 +254,14 @@ fun LoginScreen(
             ) {
                 Text(
                     text = stringResource(R.string.don_t_have_an_account),
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 15.sp),
                     color = Color.White.copy(alpha = 0.7f),
-                    fontSize = 15.sp
                 )
                 TextButton(onClick = onNavigateToSignUp) {
                     Text(
                         text = stringResource(R.string.sign_up),
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 15.sp),
                         color = ButtonColor,
-                        fontSize = 15.sp
                     )
                 }
             }
