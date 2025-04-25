@@ -100,5 +100,9 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
 
+    // google fonts
+    implementation(libs.androidx.ui.text.google.fonts)
+
+
 }
 
