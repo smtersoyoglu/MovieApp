@@ -87,7 +87,8 @@ fun RegisterScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 66.dp, start = 24.dp, end = 24.dp, bottom = 24.dp),
+                .padding(21.dp),
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Box(
@@ -115,7 +116,7 @@ fun RegisterScreen(
                         modifier = Modifier.padding(
                             start = 24.dp,
                             end = 24.dp,
-                            top = 48.dp,
+                            top = 46.dp,
                             bottom = 24.dp
                         ),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -222,7 +223,7 @@ fun RegisterScreen(
                                 focusedLabelColor = Color(0xFFFFC107),
                                 unfocusedLabelColor = Color.White,
                                 focusedBorderColor = Color(0xFFFFC107),
-                                unfocusedBorderColor = Color.Gray
+                                unfocusedBorderColor = Color.White
                             )
                         )
 
@@ -264,7 +265,7 @@ fun RegisterScreen(
                             enabled = !uiState.isLoading,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(52.dp),
+                                .height(48.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = ButtonColor),
                             shape = RoundedCornerShape(8.dp)
                         ) {
@@ -284,7 +285,7 @@ fun RegisterScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically

@@ -87,7 +87,8 @@ fun LoginScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 82.dp, start = 24.dp, end = 24.dp, bottom = 24.dp),
+                .padding(21.dp),
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
@@ -168,7 +169,7 @@ fun LoginScreen(
                         label = {
                             Text(
                                 stringResource(R.string.password),
-                                style = MaterialTheme.typography.bodyLarge,
+                                style = MaterialTheme.typography.bodyLarge.copy(fontSize = 15.sp),
                                 color = Color.White
                             )
                         },
@@ -225,7 +226,7 @@ fun LoginScreen(
                         onClick = { /* Google ile giris sonradan eklenecek */ },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(49.dp),
+                            .height(47.dp),
                         border = BorderStroke(1.dp, Color.White),
                         colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)
                     ) {

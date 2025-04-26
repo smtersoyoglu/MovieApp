@@ -6,10 +6,10 @@
     <string name="profile">Profile</string>
 
     <!-- Components -->
-    <string name="error_no_internet">No Internet Connection</string>
-    <string name="error_load_failed">Failed to load content. Please try again.</string>
-    <string name="error_unknown">An unknown error occurred.</string>
-    <string name="error_message">An unknown error occurred</string>
+    <string name="error_no_internet">Oops! No internet connection. Let’s get you online for more movie magic!</string>
+    <string name="error_load_failed">Uh-oh! We couldn’t load the movies. Check your connection and try again!</string>
+    <string name="error_unknown">Something went wrong behind the scenes. We’ll fix it faster than a movie plot twist!</string>
+    <string name="error_message">An unexpected error occurred. Let’s try again!</string>
 
     <!-- Welcome Screen / Login Screen / Register Screen -->
     <string name="app_name">MovieApp</string>
@@ -21,13 +21,13 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="error_password_min_length">Password must be at least 6 characters</string>
-    <string name="invalid_email">Invalid email</string>
+    <string name="invalid_email">Please enter a valid email address (e.g., example@domain.com)</string>
     <string name="sign_in_with_google">Sign In with Google</string>
     <string name="don_t_have_an_account">"Don't have an account? "</string>
     <string name="full_name">Full Name</string>
     <string name="invalid_email_format">Invalid email format</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="passwords_do_not_match">Passwords do not match</string>
+    <string name="passwords_do_not_match">Passwords don’t match. Please ensure both fields are the same</string>
     <string name="already_have_an_account">"Already have an account? "</string>
     <string name="register_success">Registration successful! You now have an account. Please sign in.</string>
 
@@ -80,6 +80,11 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="language">Language</string>
-
+    <string name="about_text">
+        Welcome to MovieApp, your ultimate cinematic companion! Discover, search, and favorite movies with ease,
+        powered by TMDB’s vast database. Whether you’re a film enthusiast or just looking for your next watch,
+        MovieApp brings the magic of movies to your fingertips. Grab your popcorn and dive into the adventure!
+    </string>
+    <string name="ok">OK</string>
 
 </resources>

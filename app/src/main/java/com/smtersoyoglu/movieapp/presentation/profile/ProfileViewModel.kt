@@ -50,10 +50,18 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    fun onAboutClicked() {
+        updateUiState { copy(showAboutDialog = true) }
+    }
+
+    fun onAboutDialogDismissed() {
+        updateUiState { copy(showAboutDialog = false) }
+    }
+
+
     fun onSignOutDialogDismissed() {
         updateUiState { copy(showSignOutDialog = false) }
     }
-
 
     private fun updateUiState(block: ProfileUiState.() -> ProfileUiState) {
         _uiState.update(block)

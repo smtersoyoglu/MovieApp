@@ -42,6 +42,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.smtersoyoglu.movieapp.R
@@ -75,7 +76,7 @@ fun ProfileScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(21.dp)
-                    .offset(y = 100.dp),
+                    .offset(y = 80.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Image(
@@ -84,7 +85,7 @@ fun ProfileScreen(
                     modifier = Modifier.size(270.dp)
                 )
 
-                Spacer(modifier = Modifier.height(36.dp))
+                Spacer(modifier = Modifier.height(28.dp))
 
                 Card(
                     modifier = Modifier
@@ -160,7 +161,7 @@ fun ProfileScreen(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable { /*  */ },
+                                .clickable { viewModel.onAboutClicked() },
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
@@ -203,8 +204,19 @@ fun ProfileScreen(
 
             if (uiState.showSignOutDialog) {
                 AlertDialog(
+                    modifier = Modifier.border(
+                        1.dp,
+                        Color(0xFFFFC107).copy(alpha = 0.2f),
+                        RoundedCornerShape(16.dp)
+                    ),
                     onDismissRequest = { viewModel.onSignOutDialogDismissed() },
-                    title = { Text(stringResource(R.string.sign_out), color = Color.White) },
+                    title = {
+                        Text(
+                            stringResource(R.string.sign_out),
+                            style = MaterialTheme.typography.titleLarge,
+                            color = Color.White
+                        )
+                    },
                     text = {
                         Text(
                             stringResource(R.string.sign_out_confirmation),
@@ -230,6 +242,62 @@ fun ProfileScreen(
                             )
                         }
                     },
+                    containerColor = Color(0xFF1C2526),
+                    shape = RoundedCornerShape(16.dp)
+                )
+            }
+
+            if (uiState.showAboutDialog) {
+                AlertDialog(
+                    onDismissRequest = { viewModel.onAboutDialogDismissed() },
+                    modifier = Modifier.border(
+                        1.dp,
+                        Color(0xFFFFC107).copy(alpha = 0.2f),
+                        RoundedCornerShape(16.dp)
+                    ),
+                    title = {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Info,
+                                contentDescription = "About Icon",
+                                tint = Color(0xFFFFC107),
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = stringResource(R.string.about),
+                                style = MaterialTheme.typography.titleLarge,
+                                color = Color.White,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    },
+                    text = {
+                        Text(
+                            text = stringResource(R.string.about_text),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.White,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        )
+                    },
+                    confirmButton = {
+                        TextButton(onClick = { viewModel.onAboutDialogDismissed() }) {
+                            Text(
+                                text = stringResource(R.string.ok),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Color(0xFFFFC107)
+                            )
+                        }
+                    },
+                    dismissButton = null,
                     containerColor = Color(0xFF1C2526),
                     shape = RoundedCornerShape(16.dp)
                 )
