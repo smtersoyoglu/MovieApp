@@ -57,7 +57,7 @@ fun WelcomeScreen(
                 .background(Color.Black)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.welcome_screen),
+                painter = painterResource(id = R.drawable.ic_welcome),
                 contentDescription = "Welcome Image",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop,
@@ -76,7 +76,7 @@ fun WelcomeScreen(
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Spacer(modifier = Modifier.height(48.dp))
+            Spacer(modifier = Modifier.height(52.dp))
 
             Text(
                 text = stringResource(R.string.welcome_title),
@@ -85,7 +85,7 @@ fun WelcomeScreen(
                 textAlign = TextAlign.Center,
             )
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(4.dp))
 
             Text(
                 text = stringResource(R.string.welcome_subtitle),
@@ -97,10 +97,10 @@ fun WelcomeScreen(
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.weight(1f))
 
             Row(
-                modifier = Modifier.padding(bottom = 54.dp),
+                modifier = Modifier.padding(bottom = 55.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Button(

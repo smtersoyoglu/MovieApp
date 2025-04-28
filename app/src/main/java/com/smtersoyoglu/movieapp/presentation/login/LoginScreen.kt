@@ -41,7 +41,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -95,7 +94,7 @@ fun LoginScreen(
                 painter = painterResource(id = R.drawable.ic_movie_login),
                 contentDescription = "Movies Logo",
                 tint = Color.Unspecified,
-                modifier = Modifier.size(240.dp)
+                modifier = Modifier.size(250.dp)
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
