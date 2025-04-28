@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- BottomNavBar -->
+    <string name="movies">Filmler</string>
+    <string name="search">Ara</string>
+    <string name="favorite">Favoriler</string>
+    <string name="profile">Profil</string>
+
+    <!-- Components -->
+    <string name="error_no_internet">Hata! İnternet bağlantısı yok. Daha fazla film keyfi için çevrimiçi olun!</string>
+    <string name="error_load_failed">Filmler yüklenemedi. Lütfen bağlantınızı kontrol edip tekrar deneyin!</string>
+    <string name="error_unknown">Bir şeyler ters gitti. Film sürprizlerinden daha hızlı düzelteceğiz!</string>
+    <string name="error_message">Beklenmeyen bir hata oluştu. Tekrar deneyelim!</string>
+
+    <!-- Welcome Screen / Login Screen / Register Screen -->
+    <string name="app_name">MovieApp</string>
+    <string name="welcome_title">Popcorn\'un Sinematik Macerasına Hoş Geldiniz!</string>
+    <string name="welcome_subtitle">Patlamış mısırınızı alın ve film büyüsüne dalın!</string>
+    <string name="sign_in">Giriş Yap</string>
+    <string name="sign_up">Kayıt Ol</string>
+    <string name="login_title">Popcorn\'un Sinematik Kozmosa Açılan Portalı</string>
+    <string name="email">E-posta</string>
+    <string name="password">Şifre</string>
+    <string name="error_password_min_length">Şifre en az 6 karakter olmalıdır</string>
+    <string name="invalid_email">Lütfen geçerli bir e-posta adresi girin (örn. example@domain.com)</string>
+    <string name="sign_in_with_google">Google ile Giriş Yap</string>
+    <string name="don_t_have_an_account">Hesabınız yok mu? </string>
+    <string name="full_name">Ad Soyad</string>
+    <string name="invalid_email_format">Geçersiz e-posta formatı</string>
+    <string name="confirm_password">Şifreyi Onayla</string>
+    <string name="passwords_do_not_match">Şifreler uyuşmuyor. Lütfen iki alanın da aynı olduğundan emin olun</string>
+    <string name="already_have_an_account">Zaten hesabınız var mı? </string>
+    <string name="register_success">Kayıt başarılı! Artık bir hesabınız var. Lütfen giriş yapın.</string>
+
+    <!-- Home Screen -->
+    <string name="trending_this_week">Bu Haftanın Popülerleri</string>
+    <string name="now_playing">Vizyondakiler</string>
+    <string name="popular">Popüler</string>
+    <string name="top_rated">En Çok Oy Alanlar</string>
+    <string name="upcoming">Yakında</string>
+    <string name="trending_empty_message">Trend filmler yüklenemedi.</string>
+
+    <!-- Detail Screen -->
+    <string name="overview">Genel Bakış</string>
+    <string name="images">Görseller</string>
+    <string name="no_overview_available">Özet bilgisi mevcut değil</string>
+    <string name="no_images_available">Görsel bulunamadı</string>
+    <string name="cast">Oyuncular</string>
+    <string name="see_all">Tümünü Gör</string>
+    <string name="no_cast_information_available">Oyuncu bilgisi bulunamadı</string>
+    <string name="similar_movies">Benzer Filmler</string>
+    <string name="no_similar_movies_found">Benzer film bulunamadı</string>
+
+    <!-- Favorite Screen -->
+    <string name="favorites">Favoriler</string>
+
+    <!-- Person Detail Screen -->
+    <string name="movies_acted_in">Rol Aldığı Filmler</string>
+    <string name="born">Doğum: %1$s</string>
+    <string name="died">Ölüm: %1$s</string>
+    <string name="from">Nereli: %1$s</string>
+    <string name="popularity">Popülerlik: %1$s</string>
+    <string name="gender">Cinsiyet: %1$s</string>
+    <string name="female">Kadın</string>
+    <string name="male">Erkek</string>
+    <string name="unknown">Bilinmiyor</string>
+    <string name="biography">Biyografi</string>
+    <string name="no_biography_available">Biyografi bilgisi yok</string>
+    <string name="show_less">Daha Az Göster</string>
+    <string name="show_more">Daha Fazla Göster</string>
+    <string name="photos">Fotoğraflar</string>
+
+    <!-- Search Screen -->
+    <string name="search_title">Ara</string>
+    <string name="search_movies">Filmleri Ara</string>
+
+    <!-- Profile Screen -->
+    <string name="about">Hakkında</string>
+    <string name="sign_out">Çıkış Yap</string>
+    <string name="sign_out_confirmation">Çıkış yapmak istediğinize emin misiniz?</string>
+    <string name="yes">Evet</string>
+    <string name="no">Hayır</string>
+    <string name="language">Dil</string>
+    <string name="about_text">
+        MovieApp’e hoş geldiniz, nihai sinema ortağınız! TMDB’nin geniş veritabanı ile filmleri keşfedin, arayın ve favorilerinize ekleyin.
+        İster bir film meraklısı olun ister sıradaki izlenecek filmi arıyor olun, MovieApp film sihrini parmaklarınızın ucuna getiriyor.
+        Patlamış mısırınızı alın ve maceraya atılın!</string>
+    <string name="ok">Tamam</string>
+</resources>
