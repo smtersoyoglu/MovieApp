@@ -319,25 +319,33 @@ fun PersonBiography(
             color = Color.White
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = biography ?: stringResource(R.string.no_biography_available),
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color.White,
-            maxLines = if (isExpanded) Int.MAX_VALUE else 5,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.clickable { onToggleExpand() }
-        )
-        if (biography != null && biography.length > 200) {
-            Text(
-                text = if (isExpanded) stringResource(R.string.show_less) else stringResource(R.string.show_more),
-                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp),
-                color = Color(0xFFDC143C),
-                modifier = Modifier
-                    .padding(top = 4.dp)
-                    .clickable { onToggleExpand() }
-            )
-        }
 
+        if (biography.isNullOrBlank()) {
+            Text(
+                text = stringResource(R.string.no_biography_available),
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray
+            )
+        } else {
+            Text(
+                text = biography,
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.White,
+                maxLines = if (isExpanded) Int.MAX_VALUE else 5,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.clickable { onToggleExpand() }
+            )
+            if (biography.length > 200) {
+                Text(
+                    text = if (isExpanded) stringResource(R.string.show_less) else stringResource(R.string.show_more),
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp),
+                    color = Color(0xFFDC143C),
+                    modifier = Modifier
+                        .padding(top = 4.dp)
+                        .clickable { onToggleExpand() }
+                )
+            }
+        }
     }
     HorizontalDivider(
         modifier = Modifier
@@ -346,7 +354,6 @@ fun PersonBiography(
         thickness = 0.5.dp,
         color = HorizontalDividerColor
     )
-
 }
 
 @Composable

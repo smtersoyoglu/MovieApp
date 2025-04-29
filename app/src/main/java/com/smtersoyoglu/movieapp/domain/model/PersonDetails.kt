@@ -12,5 +12,5 @@ data class PersonDetails(
     val popularity: Double,
     val profilePath: String?,
     val alsoKnownAs: List<String>,
-    val imdbId: String
+    val imdbId: String?
 )
