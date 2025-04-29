@@ -86,4 +86,10 @@
         İster bir film meraklısı olun ister sıradaki izlenecek filmi arıyor olun, MovieApp film sihrini parmaklarınızın ucuna getiriyor.
         Patlamış mısırınızı alın ve maceraya atılın!</string>
     <string name="ok">Tamam</string>
+
+    <string name="select_language">Dil Seç</string>
+    <string name="language_en">İngilizce</string>
+    <string name="language_tr">Türkçe</string>
+    <string name="cancel">İptal</string>
+
 </resources>

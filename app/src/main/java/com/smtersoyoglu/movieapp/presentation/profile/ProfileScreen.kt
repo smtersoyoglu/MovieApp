@@ -75,8 +75,8 @@ fun ProfileScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(21.dp)
-                    .offset(y = 80.dp),
+                    .padding(21.dp),
+                verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Image(
@@ -175,6 +175,32 @@ fun ProfileScreen(
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = Color.White
                             )
+                        }
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { /* multi language daha sonra eklenicek */ },
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_language),
+                                contentDescription = "Language Icon",
+                                tint = Color(0xFFFFC107)
+                            )
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Column {
+                                Text(
+                                    text = stringResource(R.string.language),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = Color.White.copy(alpha = 0.7f)
+                                )
+                                Text(
+                                    text = stringResource(R.string.language_en),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = Color.White
+                                )
+                            }
                         }
 
                         Row(

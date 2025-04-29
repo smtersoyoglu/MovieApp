@@ -87,4 +87,9 @@
     </string>
     <string name="ok">OK</string>
 
+    <string name="select_language">Select Language</string>
+    <string name="language_en">English</string>
+    <string name="language_tr">Turkish</string>
+    <string name="cancel">Cancel</string>
+
 </resources>
