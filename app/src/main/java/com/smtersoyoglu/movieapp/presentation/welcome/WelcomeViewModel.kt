@@ -25,12 +25,18 @@ class WelcomeViewModel @Inject constructor(
 
     private fun checkUserSignedIn() {
         viewModelScope.launch {
-            val isSignedIn = isUserSignedInUseCase()
-            _uiState.update { it.copy(isUserSignedIn = isSignedIn) }
+            updateUiState { copy(isLoading = true) }
+            try {
+                val isSignedIn = isUserSignedInUseCase()
+                updateUiState { copy(isLoading = false, isUserSignedIn = isSignedIn, error = null) }
+
+            }catch (e: Exception){
+                updateUiState { copy(isLoading = false, isUserSignedIn = false, error = e.message ?: "Unknown Error") }
+            }
         }
     }
-}
 
-data class WelcomeUiState(
-    val isUserSignedIn: Boolean? = null
-)
+    private fun updateUiState(block: WelcomeUiState.() -> WelcomeUiState) {
+        _uiState.update(block)
+    }
+}
