@@ -86,6 +86,7 @@ fun DetailScreen(
     navigateBack: () -> Unit,
     navigateToMovieDetail: (Int) -> Unit,
     navigateToPersonDetail: (Int) -> Unit,
+    navigateToTrailer: (String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -123,6 +124,7 @@ fun DetailScreen(
                             MovieHeader(
                                 movieDetails = movieDetails,
                                 videos = uiState.movieVideos?.videos,
+                                navigateToTrailer = navigateToTrailer
                             )
                             HorizontalDivider(
                                 modifier = Modifier.fillMaxWidth(),
@@ -277,10 +279,9 @@ fun DetailScreen(
 fun MovieHeader(
     movieDetails: MovieDetails,
     videos: List<MovieVideo>?,
+    navigateToTrailer: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var showVideo by remember { mutableStateOf(false) }
-    val lifecycleOwner = LocalLifecycleOwner.current
 
     Box(
         modifier = modifier
@@ -290,8 +291,7 @@ fun MovieHeader(
         AsyncImage(
             model = "https://image.tmdb.org/t/p/original${movieDetails.backdropPath}",
             contentDescription = "Movie Backdrop",
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop,
             error = painterResource(R.drawable.ic_image_not_found),
             fallback = painterResource(R.drawable.ic_image_not_found)
@@ -311,7 +311,7 @@ fun MovieHeader(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 4.dp),
+                .padding(horizontal = 4.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -332,8 +332,7 @@ fun MovieHeader(
                 modifier = Modifier.padding(top = 10.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
-                val year =
-                    movieDetails.releaseDate?.takeIf { it.length >= 4 }?.substring(0, 4) ?: "N/A"
+                val year = movieDetails.releaseDate?.takeIf { it.length >= 4 }?.substring(0, 4) ?: "N/A"
                 Icon(
                     painter = painterResource(R.drawable.ic_calendar),
                     contentDescription = "Release Date",
@@ -363,7 +362,6 @@ fun MovieHeader(
                     contentDescription = "Rating",
                     tint = Color.Yellow,
                     modifier = Modifier.size(18.dp)
-
                 )
                 Spacer(modifier = Modifier.width(2.dp))
                 Text(
@@ -381,39 +379,17 @@ fun MovieHeader(
                     GenreChip(genre.name)
                 }
             }
-            videos?.find { it.type == "Trailer" && it.site == "YouTube" }?.let {
+            videos?.find { it.type == "Trailer" && it.site == "YouTube" }?.let { trailer ->
                 IconButton(
-                    onClick = { showVideo = true },
-                    modifier = Modifier
-                        .padding(top = 4.dp)
+                    onClick = { navigateToTrailer(trailer.key) },
+                    modifier = Modifier.padding(top = 4.dp)
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_play),
                         contentDescription = "Play Trailer",
-                        tint = Color.LightGray,
+                        tint = Color.LightGray
                     )
                 }
-            }
-        }
-        if (showVideo) {
-            videos?.find { it.type == "Trailer" && it.site == "YouTube" }?.let { trailer ->
-                AndroidView(
-                    factory = { ctx ->
-                        YouTubePlayerView(ctx).apply {
-                            lifecycleOwner.lifecycle.addObserver(this)
-                            enableAutomaticInitialization = false
-                            initialize(object : AbstractYouTubePlayerListener() {
-                                override fun onReady(youTubePlayer: YouTubePlayer) {
-                                    youTubePlayer.loadVideo(trailer.key, 0f)
-                                }
-                            })
-                        }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 140.dp)
-                        .height(250.dp)
-                )
             }
         }
     }
@@ -456,11 +432,20 @@ fun MovieOverview(overview: String?) {
             color = Color.White
         )
         Spacer(modifier = Modifier.height(6.dp))
-        Text(
-            text = overview ?: stringResource(R.string.no_overview_available),
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color.White,
-        )
+
+        if (overview.isNullOrEmpty()) {
+            Text(
+                text = stringResource(R.string.no_overview_available),
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray,
+                )
+        } else {
+            Text(
+                text = overview,
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.White,
+            )
+        }
     }
 }
 
@@ -483,7 +468,7 @@ fun MovieImagesSection(
         if (images.isNullOrEmpty()) {
             Text(
                 text = stringResource(R.string.no_images_available),
-                color = Color.White,
+                color = Color.Gray,
                 style = MaterialTheme.typography.bodyMedium,
             )
         } else {
