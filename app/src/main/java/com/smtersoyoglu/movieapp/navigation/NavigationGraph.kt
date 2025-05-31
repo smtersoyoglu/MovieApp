@@ -5,15 +5,18 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.smtersoyoglu.movieapp.navigation.Screen.Welcome
 import com.smtersoyoglu.movieapp.navigation.Screen.Login
 import com.smtersoyoglu.movieapp.navigation.Screen.Register
 import com.smtersoyoglu.movieapp.navigation.Screen.Home
 import com.smtersoyoglu.movieapp.navigation.Screen.Detail
+import com.smtersoyoglu.movieapp.navigation.Screen.Trailer
 import com.smtersoyoglu.movieapp.navigation.Screen.Person
 import com.smtersoyoglu.movieapp.navigation.Screen.Search
 import com.smtersoyoglu.movieapp.navigation.Screen.Favorite
 import com.smtersoyoglu.movieapp.navigation.Screen.Profile
+import com.smtersoyoglu.movieapp.presentation.components.TrailerScreen
 import com.smtersoyoglu.movieapp.presentation.detail.DetailScreen
 import com.smtersoyoglu.movieapp.presentation.favorite.FavoriteScreen
 import com.smtersoyoglu.movieapp.presentation.home.HomeScreen
@@ -67,19 +70,30 @@ fun NavigationGraph(
 
         composable<Detail> {
             DetailScreen(
-                navigateBack = { navController.popBackStack() },
+                navigateBack = { navController.navigateUp() },
                 navigateToMovieDetail = { movieId ->
                     navController.navigate(Detail(movieId))
                 },
                 navigateToPersonDetail = { personId ->
                     navController.navigate(Person(personId))
+                },
+                navigateToTrailer = { videoKey ->
+                    navController.navigate(Trailer(videoKey))
                 }
+            )
+        }
+
+        composable<Trailer> {
+            val videoKey = it.toRoute<Trailer>().videoKey
+            TrailerScreen(
+                videoKey = videoKey,
+                onBack = { navController.navigateUp() }
             )
         }
 
         composable<Person> {
             PersonDetailScreen(
-                navigateBack = { navController.popBackStack() },
+                navigateBack = { navController.navigateUp() },
                 navigateToMovieDetail = { movieId ->
                     navController.navigate(Detail(movieId))
                 }
