@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.smtersoyoglu.movieapp.common.Resource
-import com.smtersoyoglu.movieapp.domain.usecase.GetPersonDetailsUseCase
-import com.smtersoyoglu.movieapp.domain.usecase.GetPersonExternalIdsUseCase
-import com.smtersoyoglu.movieapp.domain.usecase.GetPersonImagesUseCase
-import com.smtersoyoglu.movieapp.domain.usecase.GetPersonMovieCreditsUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.person.GetPersonDetailsUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.person.GetPersonExternalIdsUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.person.GetPersonImagesUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.person.GetPersonMovieCreditsUseCase
 import com.smtersoyoglu.movieapp.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,7 +1,7 @@
-package com.smtersoyoglu.movieapp.domain.usecase
+package com.smtersoyoglu.movieapp.domain.usecase.person
 
 import com.smtersoyoglu.movieapp.common.Resource
-import com.smtersoyoglu.movieapp.domain.model.PersonImage
+import com.smtersoyoglu.movieapp.domain.model.person.PersonImage
 import com.smtersoyoglu.movieapp.domain.repository.MovieRepository
 import javax.inject.Inject
 

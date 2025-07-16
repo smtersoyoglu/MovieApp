@@ -1,4 +1,4 @@
-package com.smtersoyoglu.movieapp.domain.usecase
+package com.smtersoyoglu.movieapp.domain.usecase.profile
 
 import com.smtersoyoglu.movieapp.common.Resource
 import com.smtersoyoglu.movieapp.domain.model.UserProfile

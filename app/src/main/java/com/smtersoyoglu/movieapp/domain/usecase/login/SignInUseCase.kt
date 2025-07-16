@@ -1,4 +1,4 @@
-package com.smtersoyoglu.movieapp.domain.usecase
+package com.smtersoyoglu.movieapp.domain.usecase.login
 
 import com.smtersoyoglu.movieapp.common.Resource
 import com.smtersoyoglu.movieapp.domain.repository.AuthRepository

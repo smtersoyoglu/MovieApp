@@ -3,9 +3,9 @@ package com.smtersoyoglu.movieapp.presentation.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smtersoyoglu.movieapp.common.Resource
-import com.smtersoyoglu.movieapp.domain.usecase.GetGenresUseCase
-import com.smtersoyoglu.movieapp.domain.usecase.GetMoviesByGenreUseCase
-import com.smtersoyoglu.movieapp.domain.usecase.GetSearchMoviesUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.search.GetGenresUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.search.GetMoviesByGenreUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.search.GetSearchMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow

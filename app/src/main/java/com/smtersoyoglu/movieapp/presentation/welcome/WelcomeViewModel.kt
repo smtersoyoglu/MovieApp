@@ -2,7 +2,7 @@ package com.smtersoyoglu.movieapp.presentation.welcome
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smtersoyoglu.movieapp.domain.usecase.IsUserSignedInUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.welcome.IsUserSignedInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

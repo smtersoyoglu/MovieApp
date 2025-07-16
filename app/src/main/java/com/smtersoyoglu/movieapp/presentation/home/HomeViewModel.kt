@@ -3,11 +3,11 @@ package com.smtersoyoglu.movieapp.presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smtersoyoglu.movieapp.common.Resource
-import com.smtersoyoglu.movieapp.domain.usecase.GetNowPlayingMoviesUseCase
-import com.smtersoyoglu.movieapp.domain.usecase.GetPopularMoviesUseCase
-import com.smtersoyoglu.movieapp.domain.usecase.GetTopRatedMoviesUseCase
-import com.smtersoyoglu.movieapp.domain.usecase.GetTrendingMoviesUseCase
-import com.smtersoyoglu.movieapp.domain.usecase.GetUpcomingMoviesUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.home.GetNowPlayingMoviesUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.home.GetPopularMoviesUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.home.GetTopRatedMoviesUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.home.GetTrendingMoviesUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.home.GetUpcomingMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -3,8 +3,7 @@ package com.smtersoyoglu.movieapp.presentation.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smtersoyoglu.movieapp.common.Resource
-import com.smtersoyoglu.movieapp.domain.repository.AuthRepository
-import com.smtersoyoglu.movieapp.domain.usecase.SignInUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.login.SignInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -1,4 +1,4 @@
-package com.smtersoyoglu.movieapp.domain.usecase
+package com.smtersoyoglu.movieapp.domain.usecase.favorite
 
 import com.smtersoyoglu.movieapp.domain.model.FavoriteMovie
 import com.smtersoyoglu.movieapp.domain.repository.FavoriteRepository

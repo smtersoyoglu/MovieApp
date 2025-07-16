@@ -3,8 +3,8 @@ package com.smtersoyoglu.movieapp.presentation.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smtersoyoglu.movieapp.common.Resource
-import com.smtersoyoglu.movieapp.domain.usecase.GetUserProfileUseCase
-import com.smtersoyoglu.movieapp.domain.usecase.SignOutUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.profile.GetUserProfileUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.profile.SignOutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

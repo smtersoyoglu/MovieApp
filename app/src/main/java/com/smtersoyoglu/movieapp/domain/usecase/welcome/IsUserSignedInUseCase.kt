@@ -1,4 +1,4 @@
-package com.smtersoyoglu.movieapp.domain.usecase
+package com.smtersoyoglu.movieapp.domain.usecase.welcome
 
 import com.smtersoyoglu.movieapp.domain.repository.AuthRepository
 import javax.inject.Inject
