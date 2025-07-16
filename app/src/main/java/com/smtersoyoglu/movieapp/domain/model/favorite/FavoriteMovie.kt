@@ -1,4 +1,4 @@
-package com.smtersoyoglu.movieapp.domain.model
+package com.smtersoyoglu.movieapp.domain.model.favorite
 
 data class FavoriteMovie(
     val id: Int,

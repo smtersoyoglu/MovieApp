@@ -1,6 +1,6 @@
 package com.smtersoyoglu.movieapp.presentation.favorite
 
-import com.smtersoyoglu.movieapp.domain.model.FavoriteMovie
+import com.smtersoyoglu.movieapp.domain.model.favorite.FavoriteMovie
 
 data class FavoriteUiState(
     val isLoading: Boolean = false,

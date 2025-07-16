@@ -1,6 +1,6 @@
 package com.smtersoyoglu.movieapp.domain.repository
 
-import com.smtersoyoglu.movieapp.domain.model.FavoriteMovie
+import com.smtersoyoglu.movieapp.domain.model.favorite.FavoriteMovie
 import kotlinx.coroutines.flow.Flow
 
 interface FavoriteRepository {

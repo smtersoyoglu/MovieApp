@@ -2,7 +2,7 @@ package com.smtersoyoglu.movieapp.presentation.favorite
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smtersoyoglu.movieapp.domain.model.FavoriteMovie
+import com.smtersoyoglu.movieapp.domain.model.favorite.FavoriteMovie
 import com.smtersoyoglu.movieapp.domain.usecase.favorite.GetFavoriteMoviesUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.favorite.RemoveFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

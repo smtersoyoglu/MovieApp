@@ -1,6 +1,6 @@
 package com.smtersoyoglu.movieapp.presentation.profile
 
-import com.smtersoyoglu.movieapp.domain.model.UserProfile
+import com.smtersoyoglu.movieapp.domain.model.user.UserProfile
 
 data class ProfileUiState(
     val isLoading: Boolean = false,

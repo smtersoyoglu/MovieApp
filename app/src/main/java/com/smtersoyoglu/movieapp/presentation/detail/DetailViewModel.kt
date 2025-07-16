@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.smtersoyoglu.movieapp.common.Resource
-import com.smtersoyoglu.movieapp.domain.model.FavoriteMovie
+import com.smtersoyoglu.movieapp.domain.model.favorite.FavoriteMovie
 import com.smtersoyoglu.movieapp.domain.usecase.detail.AddFavoriteUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.detail.GetMovieCreditsUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.detail.GetMovieDetailsUseCase

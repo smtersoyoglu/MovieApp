@@ -1,9 +1,9 @@
 package com.smtersoyoglu.movieapp.data.repository
 
-import com.smtersoyoglu.movieapp.data.mapper.toFavoriteMovie
-import com.smtersoyoglu.movieapp.data.mapper.toFavoriteMovieEntity
+import com.smtersoyoglu.movieapp.data.mapper.favorite.toFavoriteMovie
+import com.smtersoyoglu.movieapp.data.mapper.favorite.toFavoriteMovieEntity
 import com.smtersoyoglu.movieapp.data.source.local.FavoriteDao
-import com.smtersoyoglu.movieapp.domain.model.FavoriteMovie
+import com.smtersoyoglu.movieapp.domain.model.favorite.FavoriteMovie
 import com.smtersoyoglu.movieapp.domain.repository.FavoriteRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
