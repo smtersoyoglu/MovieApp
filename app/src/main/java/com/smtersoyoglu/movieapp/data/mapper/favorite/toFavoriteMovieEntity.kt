@@ -1,8 +1,8 @@
-package com.smtersoyoglu.movieapp.data.mapper
+package com.smtersoyoglu.movieapp.data.mapper.favorite
 
 import com.smtersoyoglu.movieapp.data.source.local.entity.FavoriteMovieEntity
-import com.smtersoyoglu.movieapp.domain.model.FavoriteMovie
-import com.smtersoyoglu.movieapp.domain.model.Genre
+import com.smtersoyoglu.movieapp.domain.model.favorite.FavoriteMovie
+import com.smtersoyoglu.movieapp.domain.model.movie.Genre
 
 fun FavoriteMovie.toFavoriteMovieEntity(): FavoriteMovieEntity = FavoriteMovieEntity(
     id = id,

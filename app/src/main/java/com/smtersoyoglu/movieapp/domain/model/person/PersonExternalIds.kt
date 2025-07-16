@@ -1,4 +1,4 @@
-package com.smtersoyoglu.movieapp.domain.model
+package com.smtersoyoglu.movieapp.domain.model.person
 
 data class PersonExternalIds(
     val imdbId: String?,

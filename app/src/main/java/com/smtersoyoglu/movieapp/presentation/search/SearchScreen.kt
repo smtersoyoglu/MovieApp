@@ -35,7 +35,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -57,7 +56,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.smtersoyoglu.movieapp.R
-import com.smtersoyoglu.movieapp.domain.model.Movie
+import com.smtersoyoglu.movieapp.domain.model.movie.Movie
 import com.smtersoyoglu.movieapp.presentation.components.EmptySearchState
 import com.smtersoyoglu.movieapp.presentation.components.ErrorScreen
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar

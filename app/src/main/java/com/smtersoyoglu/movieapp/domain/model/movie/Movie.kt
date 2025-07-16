@@ -1,4 +1,4 @@
-package com.smtersoyoglu.movieapp.domain.model
+package com.smtersoyoglu.movieapp.domain.model.movie
 
 data class Movie(
     val id: Int,

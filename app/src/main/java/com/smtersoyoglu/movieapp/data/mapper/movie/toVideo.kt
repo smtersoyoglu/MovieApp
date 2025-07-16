@@ -1,9 +1,9 @@
-package com.smtersoyoglu.movieapp.data.mapper
+package com.smtersoyoglu.movieapp.data.mapper.movie
 
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieVideoDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieVideosResponseDto
-import com.smtersoyoglu.movieapp.domain.model.MovieVideo
-import com.smtersoyoglu.movieapp.domain.model.MovieVideos
+import com.smtersoyoglu.movieapp.domain.model.movie.MovieVideo
+import com.smtersoyoglu.movieapp.domain.model.movie.MovieVideos
 
 fun MovieVideosResponseDto.toMovieVideos(): MovieVideos {
     return MovieVideos(id, results.map { it.toVideo() })

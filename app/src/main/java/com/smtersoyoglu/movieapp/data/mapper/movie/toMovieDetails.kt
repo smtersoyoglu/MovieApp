@@ -1,4 +1,4 @@
-package com.smtersoyoglu.movieapp.data.mapper
+package com.smtersoyoglu.movieapp.data.mapper.movie
 
 import com.smtersoyoglu.movieapp.data.source.remote.dto.GenreDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.GenreResponseDto
@@ -6,11 +6,11 @@ import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieDetailsDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.ProductionCompanyDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.ProductionCountryDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.SpokenLanguageDto
-import com.smtersoyoglu.movieapp.domain.model.Genre
-import com.smtersoyoglu.movieapp.domain.model.MovieDetails
-import com.smtersoyoglu.movieapp.domain.model.ProductionCompany
-import com.smtersoyoglu.movieapp.domain.model.ProductionCountry
-import com.smtersoyoglu.movieapp.domain.model.SpokenLanguage
+import com.smtersoyoglu.movieapp.domain.model.movie.Genre
+import com.smtersoyoglu.movieapp.domain.model.movie.MovieDetails
+import com.smtersoyoglu.movieapp.domain.model.movie.ProductionCompany
+import com.smtersoyoglu.movieapp.domain.model.movie.ProductionCountry
+import com.smtersoyoglu.movieapp.domain.model.movie.SpokenLanguage
 
 fun MovieDetailsDto.toMovieDetails(): MovieDetails {
     return MovieDetails(

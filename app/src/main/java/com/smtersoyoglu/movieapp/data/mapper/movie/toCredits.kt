@@ -1,11 +1,11 @@
-package com.smtersoyoglu.movieapp.data.mapper
+package com.smtersoyoglu.movieapp.data.mapper.movie
 
 import com.smtersoyoglu.movieapp.data.source.remote.dto.CastDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.CrewDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieCreditsDto
-import com.smtersoyoglu.movieapp.domain.model.Cast
-import com.smtersoyoglu.movieapp.domain.model.Crew
-import com.smtersoyoglu.movieapp.domain.model.MovieCredits
+import com.smtersoyoglu.movieapp.domain.model.movie.Cast
+import com.smtersoyoglu.movieapp.domain.model.movie.Crew
+import com.smtersoyoglu.movieapp.domain.model.movie.MovieCredits
 
 fun MovieCreditsDto.toCredits(): MovieCredits {
     return MovieCredits(

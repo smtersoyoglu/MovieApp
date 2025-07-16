@@ -1,4 +1,4 @@
-package com.smtersoyoglu.movieapp.domain.model
+package com.smtersoyoglu.movieapp.domain.model.person
 
 data class PersonImage(
     val filePath: String,

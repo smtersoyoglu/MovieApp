@@ -49,7 +49,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.smtersoyoglu.movieapp.R
 import com.smtersoyoglu.movieapp.common.formatDate
-import com.smtersoyoglu.movieapp.domain.model.Movie
+import com.smtersoyoglu.movieapp.domain.model.movie.Movie
 import com.smtersoyoglu.movieapp.presentation.components.EmptyScreen
 import com.smtersoyoglu.movieapp.presentation.components.ErrorScreen
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar

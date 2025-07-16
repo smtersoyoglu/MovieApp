@@ -1,7 +1,7 @@
-package com.smtersoyoglu.movieapp.data.mapper
+package com.smtersoyoglu.movieapp.data.mapper.movie
 
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieDto
-import com.smtersoyoglu.movieapp.domain.model.Movie
+import com.smtersoyoglu.movieapp.domain.model.movie.Movie
 
 fun MovieDto.toMovie(): Movie {
     return Movie(

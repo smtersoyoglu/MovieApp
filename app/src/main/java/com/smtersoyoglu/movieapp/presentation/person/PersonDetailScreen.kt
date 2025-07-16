@@ -52,10 +52,10 @@ import coil.compose.AsyncImage
 import com.smtersoyoglu.movieapp.R
 import com.smtersoyoglu.movieapp.common.SocialMediaLinks
 import com.smtersoyoglu.movieapp.common.formatDate
-import com.smtersoyoglu.movieapp.domain.model.PersonDetails
-import com.smtersoyoglu.movieapp.domain.model.PersonExternalIds
-import com.smtersoyoglu.movieapp.domain.model.PersonImage
-import com.smtersoyoglu.movieapp.domain.model.PersonMovieCast
+import com.smtersoyoglu.movieapp.domain.model.person.PersonDetails
+import com.smtersoyoglu.movieapp.domain.model.person.PersonExternalIds
+import com.smtersoyoglu.movieapp.domain.model.person.PersonImage
+import com.smtersoyoglu.movieapp.domain.model.person.PersonMovieCast
 import com.smtersoyoglu.movieapp.presentation.components.ErrorScreen
 import com.smtersoyoglu.movieapp.presentation.components.ExternalLinkIconButton
 import com.smtersoyoglu.movieapp.presentation.components.LoadingBar

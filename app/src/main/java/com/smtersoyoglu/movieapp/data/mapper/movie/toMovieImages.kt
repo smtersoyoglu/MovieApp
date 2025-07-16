@@ -1,9 +1,9 @@
-package com.smtersoyoglu.movieapp.data.mapper
+package com.smtersoyoglu.movieapp.data.mapper.movie
 
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieImageDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieImagesDto
-import com.smtersoyoglu.movieapp.domain.model.MovieImage
-import com.smtersoyoglu.movieapp.domain.model.MovieImages
+import com.smtersoyoglu.movieapp.domain.model.movie.MovieImage
+import com.smtersoyoglu.movieapp.domain.model.movie.MovieImages
 
 fun MovieImagesDto.toMovieImages(): MovieImages {
     return MovieImages(

@@ -1,10 +1,10 @@
 package com.smtersoyoglu.movieapp.presentation.detail
 
-import com.smtersoyoglu.movieapp.domain.model.Movie
-import com.smtersoyoglu.movieapp.domain.model.MovieCredits
-import com.smtersoyoglu.movieapp.domain.model.MovieDetails
-import com.smtersoyoglu.movieapp.domain.model.MovieImages
-import com.smtersoyoglu.movieapp.domain.model.MovieVideos
+import com.smtersoyoglu.movieapp.domain.model.movie.Movie
+import com.smtersoyoglu.movieapp.domain.model.movie.MovieCredits
+import com.smtersoyoglu.movieapp.domain.model.movie.MovieDetails
+import com.smtersoyoglu.movieapp.domain.model.movie.MovieImages
+import com.smtersoyoglu.movieapp.domain.model.movie.MovieVideos
 
 data class DetailUiState(
     val isLoading: Boolean = false,

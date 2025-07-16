@@ -1,9 +1,9 @@
-package com.smtersoyoglu.movieapp.data.mapper
+package com.smtersoyoglu.movieapp.data.mapper.person
 
 import com.smtersoyoglu.movieapp.data.source.remote.dto.CastDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieCreditsDto
-import com.smtersoyoglu.movieapp.domain.model.PersonMovieCast
-import com.smtersoyoglu.movieapp.domain.model.PersonMovieCredits
+import com.smtersoyoglu.movieapp.domain.model.person.PersonMovieCast
+import com.smtersoyoglu.movieapp.domain.model.person.PersonMovieCredits
 
 fun MovieCreditsDto.toPersonMovieCredits(): PersonMovieCredits {
     return PersonMovieCredits(

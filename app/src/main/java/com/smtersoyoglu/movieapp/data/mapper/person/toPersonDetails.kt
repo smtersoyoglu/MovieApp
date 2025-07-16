@@ -1,7 +1,7 @@
-package com.smtersoyoglu.movieapp.data.mapper
+package com.smtersoyoglu.movieapp.data.mapper.person
 
 import com.smtersoyoglu.movieapp.data.source.remote.dto.PersonDetailsDto
-import com.smtersoyoglu.movieapp.domain.model.PersonDetails
+import com.smtersoyoglu.movieapp.domain.model.person.PersonDetails
 
 fun PersonDetailsDto.toPersonDetails(): PersonDetails {
     return PersonDetails(

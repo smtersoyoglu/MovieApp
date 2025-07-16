@@ -1,7 +1,7 @@
 package com.smtersoyoglu.movieapp.presentation.search
 
-import com.smtersoyoglu.movieapp.domain.model.Genre
-import com.smtersoyoglu.movieapp.domain.model.Movie
+import com.smtersoyoglu.movieapp.domain.model.movie.Genre
+import com.smtersoyoglu.movieapp.domain.model.movie.Movie
 
 data class SearchUiState(
     val isLoading: Boolean = false,

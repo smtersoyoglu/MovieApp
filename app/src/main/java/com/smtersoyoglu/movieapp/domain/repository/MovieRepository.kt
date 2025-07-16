@@ -1,16 +1,16 @@
 package com.smtersoyoglu.movieapp.domain.repository
 
 import com.smtersoyoglu.movieapp.common.Resource
-import com.smtersoyoglu.movieapp.domain.model.Genre
-import com.smtersoyoglu.movieapp.domain.model.Movie
-import com.smtersoyoglu.movieapp.domain.model.MovieCredits
-import com.smtersoyoglu.movieapp.domain.model.MovieDetails
-import com.smtersoyoglu.movieapp.domain.model.MovieImages
-import com.smtersoyoglu.movieapp.domain.model.MovieVideos
-import com.smtersoyoglu.movieapp.domain.model.PersonDetails
-import com.smtersoyoglu.movieapp.domain.model.PersonExternalIds
-import com.smtersoyoglu.movieapp.domain.model.PersonImage
-import com.smtersoyoglu.movieapp.domain.model.PersonMovieCredits
+import com.smtersoyoglu.movieapp.domain.model.movie.Genre
+import com.smtersoyoglu.movieapp.domain.model.movie.Movie
+import com.smtersoyoglu.movieapp.domain.model.movie.MovieCredits
+import com.smtersoyoglu.movieapp.domain.model.movie.MovieDetails
+import com.smtersoyoglu.movieapp.domain.model.movie.MovieImages
+import com.smtersoyoglu.movieapp.domain.model.movie.MovieVideos
+import com.smtersoyoglu.movieapp.domain.model.person.PersonDetails
+import com.smtersoyoglu.movieapp.domain.model.person.PersonExternalIds
+import com.smtersoyoglu.movieapp.domain.model.person.PersonImage
+import com.smtersoyoglu.movieapp.domain.model.person.PersonMovieCredits
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {

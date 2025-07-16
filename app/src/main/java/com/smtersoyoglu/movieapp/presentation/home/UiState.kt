@@ -1,6 +1,6 @@
 package com.smtersoyoglu.movieapp.presentation.home
 
-import com.smtersoyoglu.movieapp.domain.model.Movie
+import com.smtersoyoglu.movieapp.domain.model.movie.Movie
 
 data class UiState(
     val isLoading: Boolean = false,
