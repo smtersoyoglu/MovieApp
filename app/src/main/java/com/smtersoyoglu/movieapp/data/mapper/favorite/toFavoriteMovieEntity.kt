@@ -3,8 +3,9 @@ package com.smtersoyoglu.movieapp.data.mapper.favorite
 import com.smtersoyoglu.movieapp.data.source.local.entity.FavoriteMovieEntity
 import com.smtersoyoglu.movieapp.domain.model.favorite.FavoriteMovie
 import com.smtersoyoglu.movieapp.domain.model.movie.Genre
+import com.smtersoyoglu.movieapp.domain.model.movie.MovieDetails
 
-fun FavoriteMovie.toFavoriteMovieEntity(): FavoriteMovieEntity = FavoriteMovieEntity(
+fun FavoriteMovie.toFavoriteEntity(): FavoriteMovieEntity = FavoriteMovieEntity(
     id = id,
     title = title,
     posterPath = posterPath,
@@ -16,7 +17,7 @@ fun FavoriteMovie.toFavoriteMovieEntity(): FavoriteMovieEntity = FavoriteMovieEn
     addedDate = addedDate
 )
 
-fun FavoriteMovieEntity.toFavoriteMovie(): FavoriteMovie = FavoriteMovie(
+fun FavoriteMovieEntity.toFavoriteDomain(): FavoriteMovie = FavoriteMovie(
     id = id,
     title = title,
     posterPath = posterPath,
@@ -26,6 +27,18 @@ fun FavoriteMovieEntity.toFavoriteMovie(): FavoriteMovie = FavoriteMovie(
     voteAverage = voteAverage,
     genres = genres,
     addedDate = addedDate
+)
+
+fun MovieDetails.toFavoriteMovie(): FavoriteMovie = FavoriteMovie(
+    id = id,
+    title = title,
+    posterPath = posterPath,
+    overview = overview,
+    releaseDate = releaseDate,
+    runtime = runtime,
+    voteAverage = voteAverage,
+    genres = genres.toGenreString(),
+    addedDate = System.currentTimeMillis()
 )
 
 fun List<Genre>.toGenreString(): String? {

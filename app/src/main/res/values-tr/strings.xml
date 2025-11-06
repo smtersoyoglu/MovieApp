@@ -42,12 +42,19 @@
 
     <!-- Detail Screen -->
     <string name="overview">Genel Bakış</string>
+    <string name="watch_providers">İzleme Seçenekleri</string>
     <string name="images">Görseller</string>
-    <string name="no_overview_available">Özet bilgisi mevcut değil</string>
+    <string name="where_to_watch">Nerede İzlenebilir</string>
+    <string name="subscription">Abonelik</string>
+    <string name="rent">Kiralama</string>
+    <string name="buy">Satın Alma</string>
+    <string name="free">Ücretsiz</string>
+    <string name="no_overview_available">Genel bakış mevcut değil</string>
     <string name="no_images_available">Görsel bulunamadı</string>
+    <string name="no_watch_providers_available">Bu film için izleme seçeneği bulunamadı</string>
     <string name="cast">Oyuncular</string>
     <string name="see_all">Tümünü Gör</string>
-    <string name="no_cast_information_available">Oyuncu bilgisi bulunamadı</string>
+    <string name="no_cast_information_available">Oyuncu bilgisi mevcut değil</string>
     <string name="similar_movies">Benzer Filmler</string>
     <string name="no_similar_movies_found">Benzer film bulunamadı</string>
 
@@ -73,6 +80,7 @@
     <!-- Search Screen -->
     <string name="search_title">Ara</string>
     <string name="search_movies">Filmleri Ara</string>
+    <string name="error_loading_more">Daha fazlasını yüklerken hata oluştu</string>
 
     <!-- Profile Screen -->
     <string name="about">Hakkında</string>

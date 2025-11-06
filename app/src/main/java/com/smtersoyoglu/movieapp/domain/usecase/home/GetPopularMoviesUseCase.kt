@@ -1,5 +1,6 @@
 package com.smtersoyoglu.movieapp.domain.usecase.home
 
+import androidx.paging.PagingData
 import com.smtersoyoglu.movieapp.common.Resource
 import com.smtersoyoglu.movieapp.domain.model.movie.Movie
 import com.smtersoyoglu.movieapp.domain.repository.MovieRepository
@@ -11,10 +12,9 @@ class GetPopularMoviesUseCase @Inject constructor(
 ) {
     operator fun invoke(
         language: String = "en-US",
-        page: Int = 1,
         region: String? = null,
-    ): Flow<Resource<List<Movie>>> {
-        return movieRepository.getPopularMovies(language, page, region)
+    ): Flow<PagingData<Movie>> {
+        return movieRepository.getPopularMovies(language, region)
     }
 
 }

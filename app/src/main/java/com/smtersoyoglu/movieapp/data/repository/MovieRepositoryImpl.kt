@@ -1,5 +1,9 @@
 package com.smtersoyoglu.movieapp.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.smtersoyoglu.movieapp.common.Constants.PAGE_SIZE
 import com.smtersoyoglu.movieapp.common.Resource
 import com.smtersoyoglu.movieapp.data.mapper.movie.toCredits
 import com.smtersoyoglu.movieapp.data.mapper.movie.toGenreList
@@ -7,10 +11,13 @@ import com.smtersoyoglu.movieapp.data.mapper.movie.toMovie
 import com.smtersoyoglu.movieapp.data.mapper.movie.toMovieDetails
 import com.smtersoyoglu.movieapp.data.mapper.movie.toMovieImages
 import com.smtersoyoglu.movieapp.data.mapper.movie.toMovieVideos
+import com.smtersoyoglu.movieapp.data.mapper.movie.toMovieWatchProviders
 import com.smtersoyoglu.movieapp.data.mapper.person.toPersonDetails
 import com.smtersoyoglu.movieapp.data.mapper.person.toPersonExternalIds
 import com.smtersoyoglu.movieapp.data.mapper.person.toPersonImages
 import com.smtersoyoglu.movieapp.data.mapper.person.toPersonMovieCredits
+import com.smtersoyoglu.movieapp.data.source.paging.MoviePagingSource
+import com.smtersoyoglu.movieapp.data.source.paging.SearchPagingSource
 import com.smtersoyoglu.movieapp.data.source.remote.MovieService
 import com.smtersoyoglu.movieapp.domain.model.movie.Genre
 import com.smtersoyoglu.movieapp.domain.model.movie.Movie
@@ -18,6 +25,7 @@ import com.smtersoyoglu.movieapp.domain.model.movie.MovieCredits
 import com.smtersoyoglu.movieapp.domain.model.movie.MovieDetails
 import com.smtersoyoglu.movieapp.domain.model.movie.MovieImages
 import com.smtersoyoglu.movieapp.domain.model.movie.MovieVideos
+import com.smtersoyoglu.movieapp.domain.model.movie.MovieWatchProviders
 import com.smtersoyoglu.movieapp.domain.model.person.PersonDetails
 import com.smtersoyoglu.movieapp.domain.model.person.PersonExternalIds
 import com.smtersoyoglu.movieapp.domain.model.person.PersonImage
@@ -46,58 +54,71 @@ class MovieRepositoryImpl @Inject constructor(
 
     override fun getNowPlayingMovies(
         language: String,
-        page: Int,
         region: String?,
-    ): Flow<Resource<List<Movie>>> = flow {
-        try {
-            val response = movieService.getNowPlayingMovies(language, page, region)
-            val movies = response.results.map { it.toMovie() }
-            emit(Resource.Success(movies))
-        } catch (e: Exception) {
-            emit(Resource.Error(e.message ?: "An error occurred while fetching now playing movies"))
-        }
+    ): Flow<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(pageSize = PAGE_SIZE, enablePlaceholders = false, prefetchDistance = 3),
+            pagingSourceFactory = {
+                MoviePagingSource(
+                    movieService = movieService,
+                    movieType = MoviePagingSource.MovieType.NOW_PLAYING,
+                    language = language,
+                    region = region
+                )
+            }
+        ).flow
     }
 
     override fun getPopularMovies(
         language: String,
-        page: Int,
         region: String?,
-    ): Flow<Resource<List<Movie>>> = flow {
-        try {
-            val response = movieService.getPopularMovies(language, page, region)
-            val movies = response.results.map { it.toMovie() }
-            emit(Resource.Success(movies))
-        } catch (e: Exception) {
-            emit(Resource.Error(e.message ?: "An error occurred while fetching popular movies"))
-        }
+    ): Flow<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(pageSize = 20, enablePlaceholders = false, prefetchDistance = 3),
+            pagingSourceFactory = {
+                MoviePagingSource(
+                    movieService = movieService,
+                    movieType = MoviePagingSource.MovieType.POPULAR,
+                    language = language,
+                    region = region
+                )
+            }
+        ).flow
     }
 
     override fun getTopRatedMovies(
         language: String,
-        page: Int,
         region: String?,
-    ): Flow<Resource<List<Movie>>> = flow {
-        try {
-            val response = movieService.getTopRatedMovies(language, page, region)
-            val movies = response.results.map { it.toMovie() }
-            emit(Resource.Success(movies))
-        } catch (e: Exception) {
-            emit(Resource.Error(e.message ?: "An error occurred while fetching top rated movies"))
-        }
+    ): Flow<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(pageSize = 20, enablePlaceholders = false, prefetchDistance = 3),
+            pagingSourceFactory = {
+                MoviePagingSource(
+                    movieService = movieService,
+                    movieType = MoviePagingSource.MovieType.TOP_RATED,
+                    language = language,
+                    region = region
+                )
+            }
+        ).flow
     }
+
 
     override fun getUpcomingMovies(
         language: String,
-        page: Int,
-        region: String?,
-    ): Flow<Resource<List<Movie>>> = flow {
-        try {
-            val response = movieService.getUpcomingMovies(language, page, region)
-            val movies = response.results.map { it.toMovie() }
-            emit(Resource.Success(movies))
-        } catch (e: Exception) {
-            emit(Resource.Error(e.message ?: "An error occurred while fetching upcoming movies"))
-        }
+        region: String?
+    ): Flow<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(pageSize = 20, enablePlaceholders = false, prefetchDistance = 3),
+            pagingSourceFactory = {
+                MoviePagingSource(
+                    movieService = movieService,
+                    movieType = MoviePagingSource.MovieType.UPCOMING,
+                    language = language,
+                    region = region
+                )
+            }
+        ).flow
     }
 
     override suspend fun getMovieDetails(
@@ -134,6 +155,15 @@ class MovieRepositoryImpl @Inject constructor(
             Resource.Success(response.toMovieVideos())
         } catch (e: Exception) {
             Resource.Error(e.message ?: "An error occurred while fetching movie videos")
+        }
+    }
+
+    override suspend fun getMovieWatchProviders(movieId: Int): Resource<MovieWatchProviders> {
+        return try {
+            val response = movieService.getMovieWatchProviders(movieId)
+            Resource.Success(response.toMovieWatchProviders())
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "An error occurred while fetching movie watch providers")
         }
     }
 
@@ -206,19 +236,22 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getSearchMovies(
+    override fun getSearchMovies(
         query: String,
-        page: Int,
         includeAdult: Boolean,
-        language: String,
-    ): Resource<List<Movie>> {
-        return try {
-            val response = movieService.searchMovies(query, page, includeAdult, language)
-            val movies = response.results.map { it.toMovie() }
-            Resource.Success(movies)
-        } catch (e: Exception) {
-            Resource.Error(e.message ?: "An error occurred while searching movies")
-        }
+        language: String
+    ): Flow<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(pageSize = PAGE_SIZE, enablePlaceholders = false, prefetchDistance = 3),
+            pagingSourceFactory = {
+                SearchPagingSource(
+                    movieService = movieService,
+                    query = query,
+                    language = language,
+                    includeAdult = includeAdult
+                )
+            }
+        ).flow
     }
 
     override suspend fun getGenres(language: String): Resource<List<Genre>> {

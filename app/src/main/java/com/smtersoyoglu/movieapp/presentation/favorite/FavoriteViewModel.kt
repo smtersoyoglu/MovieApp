@@ -2,7 +2,6 @@ package com.smtersoyoglu.movieapp.presentation.favorite
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smtersoyoglu.movieapp.domain.model.favorite.FavoriteMovie
 import com.smtersoyoglu.movieapp.domain.usecase.favorite.GetFavoriteMoviesUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.favorite.RemoveFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,10 +38,10 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    fun removeFavorite(favoriteMovie: FavoriteMovie) {
+    fun removeFavorite(movieId: Int) {
         viewModelScope.launch {
             try {
-                removeFavoriteUseCase(favoriteMovie)
+                removeFavoriteUseCase(movieId)
                 updateState { copy(message = "Movie removed from favorites") }
             } catch (e: Exception) {
                 updateState { copy(error = "Error removing favorite: ${e.message}") }

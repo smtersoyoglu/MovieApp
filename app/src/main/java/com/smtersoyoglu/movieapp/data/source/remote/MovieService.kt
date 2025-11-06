@@ -6,6 +6,7 @@ import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieDetailsDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieImagesDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieResponseDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieVideosResponseDto
+import com.smtersoyoglu.movieapp.data.source.remote.dto.MovieWatchProvidersDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.PersonDetailsDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.PersonExternalIdsDto
 import com.smtersoyoglu.movieapp.data.source.remote.dto.PersonImagesDto
@@ -72,6 +73,11 @@ interface MovieService {
         @Path("movie_id") movieId: Int,
         @Query("language") language: String = "en-US"
     ) : MovieVideosResponseDto
+
+    @GET("movie/{movie_id}/watch/providers")
+    suspend fun getMovieWatchProviders(
+        @Path("movie_id") movieId: Int
+    ): MovieWatchProvidersDto
 
     @GET("movie/{movie_id}/similar")
     suspend fun getSimilarMovies(

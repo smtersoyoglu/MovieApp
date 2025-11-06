@@ -5,15 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.smtersoyoglu.movieapp.common.Resource
-import com.smtersoyoglu.movieapp.domain.model.favorite.FavoriteMovie
-import com.smtersoyoglu.movieapp.domain.usecase.detail.AddFavoriteUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.detail.GetMovieCreditsUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.detail.GetMovieDetailsUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.detail.GetMovieImagesUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.detail.GetMovieVideosUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.detail.GetMovieWatchProvidersUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.detail.GetSimilarMoviesUseCase
 import com.smtersoyoglu.movieapp.domain.usecase.detail.IsFavoriteUseCase
-import com.smtersoyoglu.movieapp.domain.usecase.favorite.RemoveFavoriteUseCase
+import com.smtersoyoglu.movieapp.domain.usecase.favorite.ToggleFavoriteUseCase
 import com.smtersoyoglu.movieapp.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,9 +29,9 @@ class DetailViewModel @Inject constructor(
     private val getMovieVideosUseCase: GetMovieVideosUseCase,
     private val getSimilarMoviesUseCase: GetSimilarMoviesUseCase,
     private val getMovieImagesUseCase: GetMovieImagesUseCase,
-    private val addFavoriteUseCase: AddFavoriteUseCase,
-    private val removeFavoriteUseCase: RemoveFavoriteUseCase,
+    private val getMovieWatchProvidersUseCase: GetMovieWatchProvidersUseCase,
     private val isFavoriteUseCase: IsFavoriteUseCase,
+    private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -45,6 +44,7 @@ class DetailViewModel @Inject constructor(
         getMovieDetails(args.movieId)
         getMovieCredits(args.movieId)
         getMovieVideos(args.movieId)
+        getMovieWatchProviders(args.movieId)
         getSimilarMovies(args.movieId)
         getMovieImages(args.movieId)
         checkFavoriteStatus(args.movieId)
@@ -94,6 +94,20 @@ class DetailViewModel @Inject constructor(
 
     }
 
+    private fun getMovieWatchProviders(movieId: Int) {
+        viewModelScope.launch {
+            updateState { copy(isLoading = true) }
+            when (val result = getMovieWatchProvidersUseCase(movieId)) {
+                is Resource.Success -> {
+                    updateState { copy(isLoading = false, movieWatchProviders = result.data, error = null) }
+                }
+                is Resource.Error -> {
+                    updateState { copy(isLoading = false, error = result.message) }
+                }
+            }
+        }
+    }
+
     private fun getSimilarMovies(movieId: Int) {
         viewModelScope.launch {
             updateState { copy(isLoading = true) }
@@ -128,19 +142,27 @@ class DetailViewModel @Inject constructor(
 
     private fun checkFavoriteStatus(movieId: Int) {
         viewModelScope.launch {
-            val isFavorite = isFavoriteUseCase(movieId)
-            updateState { copy(isFavorite = isFavorite) }
+            isFavoriteUseCase(movieId).collect { isFavorite ->
+                updateState { copy(isFavorite = isFavorite) }
+            }
         }
     }
 
-    fun toggleFavorite(favoriteMovie: FavoriteMovie) {
+    fun toggleFavorite() {
+        val details = uiState.value.movieDetails ?: return
         viewModelScope.launch {
-            if (_uiState.value.isFavorite) {
-                removeFavoriteUseCase(favoriteMovie)
-                updateState { copy(isFavorite = false, message = "Removed from favorites") }
-            } else {
-                addFavoriteUseCase(favoriteMovie)
-                updateState { copy(isFavorite = true, message = "Added to favorites") }
+            when (val result = toggleFavoriteUseCase(details)) {
+                is Resource.Success -> {
+                    updateState {
+                        copy(
+                            isFavorite = result.data ?: false,
+                            message = if (result.data == true) "Added to favorites" else "Removed from favorites"
+                        )
+                    }
+                }
+                is Resource.Error -> {
+                    updateState { copy(error = result.message) }
+                }
             }
         }
     }

@@ -2,16 +2,22 @@ package com.smtersoyoglu.movieapp.common
 
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.Locale
+import java.util.*
 
-fun String?.formatDate(fromFormat: String = "yyyy-MM-dd", toFormat: String = "dd-MM-yyyy"): String {
-    if (this == null) return "Bilinmiyor"
-    val originalFormat = SimpleDateFormat(fromFormat, Locale.getDefault())
-    val targetFormat = SimpleDateFormat(toFormat, Locale.getDefault())
+fun String?.formatDate(
+    fromPattern: String = "yyyy-MM-dd",
+    toPattern: String = "dd MMM yyyy",
+    displayLocale: Locale = Locale.getDefault()
+): String {
+    if (this.isNullOrBlank()) return "Bilinmiyor"
+
     return try {
-        val date = originalFormat.parse(this)
-        if (date != null) targetFormat.format(date) else "Geçersiz Tarih"
-    } catch (e: ParseException) {
+        val parser = SimpleDateFormat(fromPattern, Locale.ROOT)
+        val date = parser.parse(this)
+
+        val formatter = SimpleDateFormat(toPattern, displayLocale)
+        date?.let { formatter.format(it) } ?: "Geçersiz Tarih"
+    } catch (_: ParseException) {
         "Geçersiz Tarih"
     }
 }

@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -6,6 +8,14 @@ plugins {
     alias(libs.plugins.hilt.plugin)
     alias(libs.plugins.google.services)
     alias(libs.plugins.kotlinx.serialization.plugin)
+}
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.inputStream().use {
+        localProperties.load(it)
+    }
 }
 
 android {
@@ -20,6 +30,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+        buildConfigField("String", "TMDB_BEARER_TOKEN", "\"${localProperties.getProperty("TMDB_BEARER_TOKEN")}\"")
     }
 
     buildTypes {
@@ -40,6 +52,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -106,5 +119,11 @@ dependencies {
 
     // datastore
     implementation(libs.androidx.datastore.preferences)
+
+
+    // paging
+    implementation (libs.androidx.paging.runtime)
+    implementation (libs.androidx.paging.compose)
+
 }
 

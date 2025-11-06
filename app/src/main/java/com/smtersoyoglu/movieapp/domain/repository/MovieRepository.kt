@@ -1,5 +1,6 @@
 package com.smtersoyoglu.movieapp.domain.repository
 
+import androidx.paging.PagingData
 import com.smtersoyoglu.movieapp.common.Resource
 import com.smtersoyoglu.movieapp.domain.model.movie.Genre
 import com.smtersoyoglu.movieapp.domain.model.movie.Movie
@@ -7,6 +8,7 @@ import com.smtersoyoglu.movieapp.domain.model.movie.MovieCredits
 import com.smtersoyoglu.movieapp.domain.model.movie.MovieDetails
 import com.smtersoyoglu.movieapp.domain.model.movie.MovieImages
 import com.smtersoyoglu.movieapp.domain.model.movie.MovieVideos
+import com.smtersoyoglu.movieapp.domain.model.movie.MovieWatchProviders
 import com.smtersoyoglu.movieapp.domain.model.person.PersonDetails
 import com.smtersoyoglu.movieapp.domain.model.person.PersonExternalIds
 import com.smtersoyoglu.movieapp.domain.model.person.PersonImage
@@ -17,19 +19,21 @@ interface MovieRepository {
 
     fun getTrendingMovies(timeWindow: String = "week", language: String = "en-US"): Flow<Resource<List<Movie>>>
 
-    fun getNowPlayingMovies(language: String = "en-US", page: Int = 1, region: String? = null, ): Flow<Resource<List<Movie>>>
+    fun getNowPlayingMovies(language: String = "en-US", region: String? = null): Flow<PagingData<Movie>>
 
-    fun getPopularMovies(language: String = "en-US", page: Int = 1, region: String? = null, ): Flow<Resource<List<Movie>>>
+    fun getPopularMovies(language: String = "en-US", region: String? = null, ): Flow<PagingData<Movie>>
 
-    fun getTopRatedMovies(language: String = "en-US", page: Int = 1, region: String? = null, ): Flow<Resource<List<Movie>>>
+    fun getTopRatedMovies(language: String = "en-US", region: String? = null, ): Flow<PagingData<Movie>>
 
-    fun getUpcomingMovies(language: String = "en-US", page: Int = 1, region: String? = null, ): Flow<Resource<List<Movie>>>
+    fun getUpcomingMovies(language: String = "en-US", region: String? = null, ): Flow<PagingData<Movie>>
 
     suspend fun getMovieDetails(movieId: Int, language: String = "en-US", appendToResponse: String? = null): Resource<MovieDetails>
 
     suspend fun getMovieCredits(movieId: Int, language: String = "en-US") : Resource<MovieCredits>
 
     suspend fun getMovieVideos(movieId: Int, language: String = "en-US") : Resource<MovieVideos>
+
+    suspend fun getMovieWatchProviders(movieId: Int): Resource<MovieWatchProviders>
 
     suspend fun getSimilarMovies(movieId: Int, language: String = "en-US", page: Int = 1) : Resource<List<Movie>>
 
@@ -43,7 +47,7 @@ interface MovieRepository {
 
     suspend fun getPersonImages(personId: Int): Resource<List<PersonImage>>
 
-    suspend fun getSearchMovies(query: String, page: Int = 1, includeAdult: Boolean = false, language: String = "en-US") : Resource<List<Movie>>
+    fun getSearchMovies(query: String, includeAdult: Boolean = false, language: String = "en-US"): Flow<PagingData<Movie>>
 
     suspend fun getGenres(language: String = "en-US") : Resource<List<Genre>>
 

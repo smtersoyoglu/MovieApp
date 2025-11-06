@@ -49,6 +49,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.smtersoyoglu.movieapp.R
 import com.smtersoyoglu.movieapp.common.formatDate
@@ -65,7 +66,7 @@ fun FavoriteScreen(
     viewModel: FavoriteViewModel = hiltViewModel(),
     navigateToDetail: (Int) -> Unit,
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(uiState.message) {
@@ -119,7 +120,7 @@ fun FavoriteScreen(
                             FavoriteItem(
                                 favorite = favorite,
                                 onMovieClick = navigateToDetail,
-                                onRemoveClick = { viewModel.removeFavorite(favorite) }
+                                onRemoveClick = { viewModel.removeFavorite(favorite.id) }
                             )
                         }
                     }

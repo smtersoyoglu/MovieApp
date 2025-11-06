@@ -41,14 +41,22 @@
 
     <!-- Detail Screen  -->
     <string name="overview">Overview</string>
+    <string name="watch_providers">Watch Options</string>
     <string name="images">Images</string>
-    <string name="no_overview_available">No overview available</string>
+    <string name="where_to_watch">Where to Watch</string>
+    <string name="subscription">Subscription</string>
+    <string name="rent">Rent</string>
+    <string name="buy">Buy</string>
+    <string name="free">Free</string>
+    <string name="no_overview_available">Overview not available</string>
     <string name="no_images_available">No images available</string>
+    <string name="no_watch_providers_available">No watch options available for this movie</string>
     <string name="cast">Cast</string>
     <string name="see_all">See All</string>
-    <string name="no_cast_information_available">No cast information available</string>
+    <string name="no_cast_information_available">Cast information not available</string>
     <string name="similar_movies">Similar Movies</string>
     <string name="no_similar_movies_found">No similar movies found</string>
+
 
     <!-- Favorite Screen  -->
     <string name="favorites">Favorites</string>
@@ -72,6 +80,7 @@
     <!-- Search Screen  -->
     <string name="search_title">Search</string>
     <string name="search_movies">Search Movies</string>
+    <string name="error_loading_more">Error loading more items</string>
 
     <!-- Profile Screen  -->
     <string name="about">About</string>

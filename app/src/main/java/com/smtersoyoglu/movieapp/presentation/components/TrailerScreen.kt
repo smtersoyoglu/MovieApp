@@ -41,7 +41,6 @@ fun TrailerScreen(
     val lifecycleOwner = LocalLifecycleOwner.current
     val isPaused = remember { mutableStateOf(false) }
 
-    // Ekranı yatay moda zorla ve sistem çubuklarını gizle
     DisposableEffect(Unit) {
         val activity = context as? Activity
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE

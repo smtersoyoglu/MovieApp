@@ -27,8 +27,8 @@ class PersonDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(PersonUiState())
-    val uiState: StateFlow<PersonUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(PersonDetailUiState())
+    val uiState: StateFlow<PersonDetailUiState> = _uiState.asStateFlow()
 
     private val args = savedStateHandle.toRoute<Screen.Person>()
 
@@ -99,7 +99,7 @@ class PersonDetailViewModel @Inject constructor(
         _uiState.update { it.copy(isBiographyExpanded = !it.isBiographyExpanded) }
     }
 
-    private fun updateState(block: PersonUiState.() -> PersonUiState) {
+    private fun updateState(block: PersonDetailUiState.() -> PersonDetailUiState) {
         _uiState.update(block)
     }
 }

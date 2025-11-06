@@ -1,6 +1,7 @@
 package com.smtersoyoglu.movieapp.domain.usecase.detail
 
 import com.smtersoyoglu.movieapp.domain.model.favorite.FavoriteMovie
+import com.smtersoyoglu.movieapp.domain.model.movie.MovieDetails
 import com.smtersoyoglu.movieapp.domain.repository.FavoriteRepository
 import javax.inject.Inject
 

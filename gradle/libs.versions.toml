@@ -1,7 +1,7 @@
 [versions]
 accompanistPager = "0.28.0"
 agp = "8.9.0"
-core = "12.1.1"
+core = "13.0.0"
 datastorePreferences = "1.1.2"
 kotlin = "2.1.10"
 coreKtx = "1.15.0"
@@ -26,6 +26,8 @@ firebase = "33.12.0"
 googleServices = "4.4.2"
 firebaseAuth = "23.2.0"
 uiTextGoogleFonts = "1.8.0"
+pagingCompose = "3.3.5"
+
 
 [libraries]
 accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanistPager" }
@@ -66,6 +68,9 @@ coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coi
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
+
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingCompose" }
+androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "pagingCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

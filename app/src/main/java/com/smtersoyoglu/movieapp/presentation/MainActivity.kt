@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) { innerPadding ->
-                    val startDestination = Screen.Welcome
+                    val startDestination = Screen.Home
                     NavigationGraph(
                         navController = navController,
                         startDestination = startDestination,

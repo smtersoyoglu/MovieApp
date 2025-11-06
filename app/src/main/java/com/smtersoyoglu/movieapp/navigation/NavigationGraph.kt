@@ -10,6 +10,7 @@ import com.smtersoyoglu.movieapp.navigation.Screen.Welcome
 import com.smtersoyoglu.movieapp.navigation.Screen.Login
 import com.smtersoyoglu.movieapp.navigation.Screen.Register
 import com.smtersoyoglu.movieapp.navigation.Screen.Home
+import com.smtersoyoglu.movieapp.navigation.Screen.SeeAll
 import com.smtersoyoglu.movieapp.navigation.Screen.Detail
 import com.smtersoyoglu.movieapp.navigation.Screen.Trailer
 import com.smtersoyoglu.movieapp.navigation.Screen.Person
@@ -25,6 +26,7 @@ import com.smtersoyoglu.movieapp.presentation.person.PersonDetailScreen
 import com.smtersoyoglu.movieapp.presentation.profile.ProfileScreen
 import com.smtersoyoglu.movieapp.presentation.register.RegisterScreen
 import com.smtersoyoglu.movieapp.presentation.search.SearchScreen
+import com.smtersoyoglu.movieapp.presentation.seeall.SeeAllScreen
 import com.smtersoyoglu.movieapp.presentation.welcome.WelcomeScreen
 
 @Composable
@@ -64,7 +66,17 @@ fun NavigationGraph(
             HomeScreen(
                 navigateToMovieDetail = { movieId ->
                     navController.navigate(Detail(movieId))
+                },
+                navigateToMovieList = { title, type ->
+                    navController.navigate(SeeAll(title, type))
                 }
+            )
+        }
+
+        composable<SeeAll> {
+            SeeAllScreen(
+                onBack = { navController.navigateUp() },
+                navigateToDetail = { id -> navController.navigate(Detail(id)) }
             )
         }
 

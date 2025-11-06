@@ -5,7 +5,7 @@ import com.smtersoyoglu.movieapp.domain.model.person.PersonExternalIds
 import com.smtersoyoglu.movieapp.domain.model.person.PersonImage
 import com.smtersoyoglu.movieapp.domain.model.person.PersonMovieCredits
 
-data class PersonUiState (
+data class PersonDetailUiState (
     val isLoading: Boolean = false,
     val personDetails: PersonDetails? = null,
     val personMovieCredits: PersonMovieCredits? = null,

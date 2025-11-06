@@ -1,7 +1,7 @@
 package com.smtersoyoglu.movieapp.di
 
+import com.smtersoyoglu.movieapp.BuildConfig
 import com.smtersoyoglu.movieapp.common.Constants.BASE_URL
-import com.smtersoyoglu.movieapp.common.Constants.TMDB_BEARER_TOKEN
 import com.smtersoyoglu.movieapp.data.source.remote.MovieService
 import dagger.Module
 import dagger.Provides
@@ -23,7 +23,7 @@ object NetworkModule {
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
                     .addHeader("Accept", "application/json")
-                    .addHeader("Authorization", "Bearer $TMDB_BEARER_TOKEN")
+                    .addHeader("Authorization", "Bearer ${BuildConfig.TMDB_BEARER_TOKEN}")
                     .build()
                 chain.proceed(request)
             }
